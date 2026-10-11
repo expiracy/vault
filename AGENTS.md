@@ -24,4 +24,4 @@ Before agents make overlapping edits to a shared design, project summary, index,
 
 While overlapping work lacks a coordinated writer, keep contributions in task context until the assignment is resolved. This is a cooperation rule, not an automatic filesystem lock.
 
-These local rules implement the requested maintenance policy and reviewed workflow safeguards. The wider layout, catalogue, skills, and integration in [the design](planning/docs-repo-design.md) still require implementation. Check [the current-state record](CURRENT.md) for what exists and has been verified.
+These local rules implement the requested maintenance policy and reviewed workflow safeguards. The catalogue, helper, project descriptor, and documentation skills now implement the core layout in [the maintained design](planning/docs-repo-design.md). Check [the current-state record](CURRENT.md) for the scope of completed integration tests and remaining limitations. Global instructions and skills do not grant access outside the session's filesystem permissions.

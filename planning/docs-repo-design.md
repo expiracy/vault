@@ -1,8 +1,8 @@
-# Proposed central documentation repository
+# Central documentation repository design
 
-Status: revised design draft. Updated: 11 October 2026.
+Status: maintained design with implemented core and scoped integration evidence. Updated: 11 October 2026. Writing defaults remain provisional.
 
-Present-state evidence is recorded separately in [CURRENT.md](../CURRENT.md). At this point, the project contains research and planning documents. The catalogue, project descriptors, skills, helper scripts, and cross-project discovery integration are proposed. They have not been implemented by this project.
+Present-state evidence is recorded separately in [CURRENT.md](../CURRENT.md). The catalogue, project descriptor, helper, installer, and two skills implement the core design. User-level discovery is configured locally. Completed checks and unverified scopes are recorded independently; optional documents and style refinements remain conventions or proposals until needed and checked.
 
 Confirmed requirements:
 
@@ -13,7 +13,19 @@ Confirmed requirements:
 - Markdown documents with images and diagrams.
 - Update appropriate existing documents to reflect new information by default. Create a new document only when explicitly requested or when requested work or an agreed workflow needs a document with no appropriate existing home.
 
-The five reviewed issues are now resolved in the document roles and workflow below. Their operating rules are recorded in [AGENTS.md](../AGENTS.md) for this workspace. The wider repository structure, catalogue, skills, and cross-project integration still require implementation and a pilot. Resolving a design issue does not establish that the corresponding runtime capability exists.
+The five reviewed issues are resolved in the document roles and workflow below, with operating rules in [AGENTS.md](../AGENTS.md). The core is now implemented for the user's full setup test. Resolving a design issue or installing a component does not establish untested runtime behaviour.
+
+## Current implementation
+
+Canonical project descriptors live at `projects/<project-id>/PROJECT.md`. The documentation project's descriptor routes to this existing design, the research comparison, and the root current-state record. Existing suitable documents remain at their current paths.
+
+`scripts/docs_repo.py` derives its root from its own location by default, so it works from another workspace. It safely loads YAML frontmatter with PyYAML, validates unique routing identities, generates deterministic `CATALOG.md`, finds candidate projects, and checks supported local document/media links and anchors. `--root PATH` allows isolated fixtures and relocated checkouts. It is a bounded consistency checker, not a complete Markdown parser or proof of implementation correctness. Remote URL and viewer checks are separate.
+
+The canonical `docs-context` and `write-project-doc` skills live under `.agents/skills/`. The latter has one on-demand Markdown style reference. They resolve the central root from local `~/.agents/agent-docs.json`, or their resolved canonical location if configuration is absent. The skill instructions apply the maintenance rules when working from another code checkout and preserve scope, evidence, and historical checkpoints.
+
+On Windows, `scripts/install-local.ps1` adds a bounded managed block to global `~/.codex/AGENTS.md`, writes `docs_root` in `~/.agents/agent-docs.json`, and links user skill directories to the canonical skill folders using junctions. It preserves unrelated settings, is idempotent, and refuses an existing different docs root or conflicting skill destination. The machine-specific root is not stored in tracked skill instructions. Reinstall at the same root after updates if needed; review configuration deliberately before moving the central repo.
+
+Filesystem access is independent of discovery. The external CLI integration test grants the central repo with `--add-dir`; no global permission override is installed. Shared-document coordination remains an agent cooperation rule.
 
 ## Document maintenance rule
 
@@ -21,15 +33,30 @@ The default is to update the appropriate existing document. Read the relevant fi
 
 Create a new document only when the user explicitly requests one, or when requested work or an agreed workflow needs a document with no appropriate existing home. A changed requirement, new finding, or revision ordinarily belongs in the existing document. Avoid dated replacements, numbered copies, and supplementary files created solely for updates. Supporting images and diagram assets can still be added when needed.
 
-The future `docs-context` and `write-project-doc` skills must follow this rule. Their templates describe a document's shape when one is needed, rather than requiring a new file for every invocation. A distinct authorised task may need one context record; subsequent messages, findings, and revisions update that record. Extending a feature reuses its maintained design.
+The `docs-context` and `write-project-doc` skills follow this rule. Their guidance describes a document's shape when one is needed, rather than requiring a new file for every invocation. A distinct authorised task may need one context record; subsequent messages, findings, and revisions update that record. Extending a feature reuses its maintained design.
 
 ## Recommended approach
+
+The document flow is shown below. [Editable Mermaid source](assets/docs-workflow.mmd) describes the same flow as the portable SVG fallback. These diagrams describe routing and evidence ownership; the current-state record establishes which integration checks have passed.
+
+![An agent finds the project through the catalogue, updates its maintained design using code and checks, and preserves task outcomes in an existing context and completion checkpoint.](assets/docs-workflow.svg)
+
+```mermaid
+flowchart LR
+    A[Agent] --> B[Catalogue]
+    B --> C[Project descriptor]
+    C --> D[Maintained design]
+    C --> E[Existing task context]
+    F[Code and checks] --> D
+    D --> E
+    E --> G[Completion checkpoint]
+```
 
 Build a small convention around ordinary files. Reuse the central-store idea from [OpenSpec](https://github.com/Fission-AI/OpenSpec/blob/main/docs/stores-beta/user-guide.md), description-based selection from [Kiro](https://kiro.dev/docs/steering/), and current-context summaries from [Memory Bank](https://github.com/cline/cline/blob/main/docs/best-practices/memory-bank.mdx). Keep the custom work focused on discovery, task state, and writing style.
 
 The initial project can work directly from local files. A service, semantic database, website, and full specification framework can be considered later if a demonstrated need appears.
 
-## Proposed layout
+## Layout conventions
 
 ```text
 docs/
@@ -59,7 +86,7 @@ docs/
       write-project-doc/
         SKILL.md
         references/                 Writing style and document conventions
-        assets/                     Templates
+        assets/                     Optional templates, when needed
   scripts/                          Catalogue generation and consistency check
 ```
 
@@ -193,7 +220,7 @@ If a writer has not been coordinated while overlapping edits are active, keep co
 
 ## Writing skills and media
 
-Start with two focused skills:
+The core uses two focused skills:
 
 | Skill | Purpose | Main outputs |
 | --- | --- | --- |
@@ -208,13 +235,11 @@ Use relative image paths inside documents. Keep feature media in `features/asset
 
 Use short decision records for decisions that matter beyond one task. Record context, status, decision, and consequences. Preserve a superseded record and link its replacement. [ADR precedent](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
 
-## Implementation sequence
+## Implementation and remaining work
 
-1. Finalise the project descriptor, change-state notation, task checkpoint, and media conventions using the resolved workflow below. Use this documentation project as the first real example.
-2. Create the catalogue helper and a small consistency check for descriptor identities, catalogue entries, and local document/media paths. Git is now initialised; commit implementation milestones to the existing history.
-3. Draft the two skills and one example design document. Refine the style from user edits to that example.
-4. Configure the startup pointer, cross-project skill discovery, and filesystem access. Test with a fresh agent starting in another project.
-5. Pilot separate tasks, overlapping work on the same maintained feature, and a handoff. Refine where the observed workflow fails.
+The descriptor, generated catalogue, consistency helper, two skills, Windows installer, and editable diagram with SVG fallback are implemented. This documentation project is the first real indexed project. The checkpoints below distinguish the initial rules-only pilot from the subsequent installed setup tests.
+
+The remaining style work is to review a representative real document with the user and refine the existing style reference from those edits. New projects can be indexed as they are needed. Other hosts and review viewers need their own access and rendering checks before their behaviour is claimed. Shared-document coordination remains cooperative; introduce enforcement only if real work demonstrates that need.
 
 Pilot acceptance checks:
 
@@ -249,7 +274,7 @@ Follow-up questions during design reuse the design task. If another agent is con
 
 ## Design review resolutions
 
-Reviewed and revised: 11 October 2026. The user requested that the five identified issues be addressed. They are resolved as design definitions and local operating rules; their cross-project operation remains to be demonstrated in the pilot.
+Reviewed and revised: 11 October 2026. The user requested that the five identified issues be addressed. They are resolved as design definitions and local operating rules. The checkpoints below record the representative cases exercised locally and through fresh external Codex sessions.
 
 | Reviewed issue | Resolution |
 | --- | --- |
@@ -263,9 +288,9 @@ OpenSpec's maintained domain specs and separate change records provide a useful 
 
 The original ADR convention preserves superseded decisions, which supports retaining a historical account even while the maintained design changes. [ADR history convention](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
 
-The catalogue, skills, and cross-project integration remain unimplemented in [CURRENT.md](../CURRENT.md). Git now preserves the documentation. The isolated pilot below demonstrated document reuse, scoped states, historical retrieval, and recovery with explicit routing. A later integration pilot must demonstrate automatic discovery, access from another project's workspace, installed skills, overlapping edits, and media rendering before those capabilities can be described as working.
+The catalogue, skills, helper, and user-level pointer now exist; [CURRENT.md](../CURRENT.md) records their observed state. Git preserves the documentation. The earlier isolated pilot below demonstrated rules before those components existed. The subsequent full integration checks cover discovery, external access, installed skills, shared edits, and media within their stated environments; neither pilot proves arbitrary viewers or sessions work automatically.
 
-The reviewed structural and workflow issues are now specified. Exact prose style, final template notation, and the first external project for the pilot remain open. The next implementation work is to create the catalogue and skills, configure discovery and access, and exercise these rules with real tasks.
+The reviewed structural and workflow issues are specified and the core is implemented. Exact prose style remains provisional pending user feedback. Optional document forms can be refined from real work without creating empty scaffolding. Further integration work follows observed gaps rather than assuming all environments share the tested access and rendering behaviour.
 
 ## Completion checkpoint: docs-workflow-refinements
 
@@ -310,3 +335,41 @@ Checks on the committed documentation baseline: five Markdown files, fourteen lo
 Setup audit: the real repository has no `CATALOG.md`, `projects/`, `.agents/skills/`, or `scripts/`. The custom documentation skills were absent from both inspected user skill directories. The global `.codex/AGENTS.md` was empty, and targeted configuration searches found no central-docs pointer. Those missing components prevent an end-to-end discovery and installed-skill test today.
 
 Remaining verification: automatic project selection, filesystem access in an independently started external session, catalogue generation, installed skills, concurrent shared edits and handoff, agreed prose style, and media rendering/portability. The fixture pilot does not establish these capabilities. The next implementation scope remains the catalogue and skills, followed by their integration pilot.
+
+## Completion checkpoint: docs-full-setup-validation
+
+Recorded: 11 October 2026. Work identifier: `docs-full-setup-validation`.
+
+Requested deliverable: after committing the initial documents and exercising their rules, the user requested testing all of the setup. This authorised implementing the missing catalogue, skills, local installation, and checks, then exercising discovery and documentation work end to end. Delivered: the core implementation, local user installation, automated checks, and actual agent/media pilots below. The earlier checkpoints retain the state and scope of their original deliveries.
+
+The implementation basis at delivery is:
+
+- Canonical `projects/<project-id>/PROJECT.md` frontmatter owns names, descriptions, aliases, and repository identities. The helper generates the catalogue and returns matching candidates; agents confirm scope through descriptors and task context. This real repo currently indexes only `agent-docs` and reuses its existing root and planning documents.
+- Extensions revise the maintained feature or project design. A distinct authorised scope can need one task context; follow-ups reuse it. Current facts, proposals, decision state, implementation state, and scoped verification remain separate. Design delivery or acceptance alone does not authorise implementation.
+- Task checkpoints retain material contracts and evidence. A coordinator assigns one shared-document writer before overlapping work and explicitly coordinates handoffs. These are cooperation rules, not filesystem locks.
+- The two canonical skills are linked into user scope on this Windows machine. The managed global instruction block and local `docs_root` expose discovery. Session filesystem permissions remain independent; the external pilot used an explicit `--add-dir` grant.
+- Documents use relative media links, editable Mermaid source, and an SVG fallback. The consistency helper has a documented bounded Markdown/HTML syntax scope. Existing Markdown remains readable when helper dependencies are absent. The writing reference is provisional pending user feedback.
+
+| Exercise | Observed result and scope |
+| --- | --- |
+| Automated helper and installer checks | `python -m unittest discover -s tests -v` ran 23 tests: 22 passed, one skipped because Windows file-symlink creation requires a privilege unavailable to this process. Coverage includes safe and duplicate YAML handling, recursive aliases, metadata/catalogue updates, candidate ambiguity and repository filtering, supported links/anchors/media, relocation, and installer idempotence, unrelated-content preservation, and conflict refusal. A separate directory-junction fixture confirmed the helper rejects a project that resolves outside the repo. |
+| Skill validation and real installation | Both manifests passed the Skill Creator `quick_validate.py`. The installer configured `C:/Users/james/.agents/agent-docs.json`, junctions under `C:/Users/james/.agents/skills/`, and the managed block in `C:/Users/james/.codex/AGENTS.md`. Inspection confirmed the two junctions resolve to the canonical tracked skill directories. No tracked skill contains this machine's absolute root. |
+| Fresh external bootstrap | From an unrelated temporary working directory, Codex's prompt-input inspection exposed the managed global instructions and exactly one metadata entry for each custom skill. This checked actual skill descriptions, not just mentions in the global pointer. |
+| External design-only extension | A separately started Codex session received a natural Delivery Board design request without a docs path or expected output path. It read both installed skills and the catalogue, found the synthetic project, updated its existing dashboard feature, and created only one context for the distinct filter-design task. The task completed while change `dashboard-filters` remained `proposed` / `not-started` / `not-checked`. Source-free fixture assumptions stayed labelled as assumptions; the original delivery checkpoint hash stayed unchanged. |
+| Independent external recovery | A second fresh session received only the project/task subject and a read-only resumption request. It read the context skill and catalogue, found the same completed design task, distinguished delivery from implementation/runtime verification, recovered the unresolved date-source question, and identified review as the next action. It made no edits or new task. |
+| Parallel contributions and explicit writer handoff | In the isolated search clone, `/root/workflow_check` was assigned sole writer of the maintained feature and index; `/root/design_review` wrote its ranking contribution in its own context and sent it for integration. The writer integrated both proposals. Root ended that assignment and explicitly handed the shared documents to the ranking contributor. Its follow-up refined title-only ranking, excluded category/date weighting, retained stable ties and default-off behaviour, and reused the same proposal and task. Exactly two new task contexts and no competing task designs resulted. Both changes stayed proposed and unimplemented. Affected links/anchors/fences and Git whitespace checks passed. Root confirmed unchanged source, all earlier task histories, the original feature account, and the completed highlight context. |
+| Markdown, diagrams, and relocation | A snapshot of 20 then-current files was hash-checked and moved before rendering. A custom local viewer using marked 17.0.5, Playwright 1.62.1, Chrome 155.0.8059.39, and Mermaid 12.1.0 rendered seven nodes and seven edges. The Mermaid fence matched the editable `.mmd`; the SVG loaded at 1100 by 330 pixels. Relative local links returned HTTP 200, the relocated helper check passed, and screenshots were inspected for legibility and clipping. This proves this Chrome viewer's result, not Codex or GitHub rendering. |
+
+Test environment: Windows, PowerShell, Python 3.14.3 with PyYAML 6.0.3 in the repo's ignored `.venv`; fresh external runs used the installed app's Codex CLI `0.162.0-alpha.17.2` with its configured default model. Both external sessions exited successfully. Ephemeral transcript/subagent-hook warnings appeared in CLI stderr; these results cover the completed primary sessions and inspected documents, not those hooks.
+
+Preservation evidence: Delivery Board's original checkpoint retained SHA-256 `9da59037637ec1148c08da78013dcd04be3cf2157bf2155871dc29d35d54c270`. In the shared-edit clone, the completed highlight context retained `f559f283906b8e68200a5287bd91501ae342f7950551c4735c05e6a24a3594b4` across handoff; application source retained `18a2d08c0b50110ff4a991f566697d295baf7fc7a9d360ea6071c1ac9337bde8`. The final synthetic feature hash was `be7f69c08e91e790f0274063b25cc6ad86aa4727f47ceeeee2e8e2000d7287b7`. Original keyword/filter history hashes and the unchanged baseline feature prefix were checked against the earlier fixture revision `c2d80ac55229137f76c1d2b6fcc1b8270e94abb5` and its recorded hashes.
+
+Local diagnostic locations for this run, not durable or portable configuration:
+
+- External bootstrap, design/recovery traces, copied four-file Delivery Board output, and its hash manifest: `C:/Users/james/AppData/Local/Temp/docs-outside-8ec270e255d24e649bde332a4f462c5f`.
+- Shared-edit clone and `shared-edit-result.json`: `C:/Users/james/AppData/Local/Temp/agent-docs-pilot-b887a88e2ecb4eebacacd174a46344c4`.
+- Relocation manifest, `result.json`, moved snapshot, and inspected screenshots: `C:/Users/james/AppData/Local/Temp/agent-docs-media-f0c13a508f5541509ba3f3f390a928e6`.
+
+The temporary Delivery Board project was copied and hash-checked before removal from the real repo. The catalogue was regenerated to contain only the real documentation project. No synthetic application or pilot task is committed here. The implementation and this evidence are delivered together as the next local Git milestone after `0d857ea`; its exact revision is available in Git history. Existing research and historical checkpoint prose are retained.
+
+Limits and next action: the observed core setup passes within these environments. Cross-platform installation, other agent/session permission configurations, arbitrary viewers, and external URLs were not verified. Writer coordination remains cooperative. User approval of the final prose style remains open; refine the existing style reference from a real document review rather than claiming that preference is already agreed. Add real project descriptors when needed and recheck claims affected by future source or environment changes.

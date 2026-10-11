@@ -1,0 +1,8 @@
+flowchart LR
+    A[Agent] --> B[Catalogue]
+    B --> C[Project descriptor]
+    C --> D[Maintained design]
+    C --> E[Existing task context]
+    F[Code and checks] --> D
+    D --> E
+    E --> G[Completion checkpoint]

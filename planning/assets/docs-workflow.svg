@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="330" viewBox="0 0 1100 330" role="img" aria-labelledby="title desc">
+  <title id="title">Shared documentation workflow</title>
+  <desc id="desc">An agent uses the catalogue and project descriptor to find the maintained design and task context. Code and checks inform the design; the task preserves a completion checkpoint.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+    <style>text{font-family:Arial,sans-serif;font-size:17px;fill:#172033} rect{fill:#f1f5f9;stroke:#64748b;stroke-width:1.5;rx:10} .edge{fill:none;stroke:#475569;stroke-width:2;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect x="1" y="1" width="1098" height="328" style="fill:white;stroke:#dbe2ea"/>
+  <rect x="25" y="120" width="100" height="60"/><text x="75" y="155" text-anchor="middle">Agent</text>
+  <rect x="175" y="120" width="140" height="60"/><text x="245" y="155" text-anchor="middle">Catalogue</text>
+  <rect x="365" y="120" width="180" height="60"/><text x="455" y="155" text-anchor="middle">Project descriptor</text>
+  <rect x="615" y="45" width="185" height="60"/><text x="707" y="80" text-anchor="middle">Maintained design</text>
+  <rect x="615" y="195" width="185" height="60"/><text x="707" y="230" text-anchor="middle">Existing task context</text>
+  <rect x="365" y="25" width="180" height="60"/><text x="455" y="60" text-anchor="middle">Code and checks</text>
+  <rect x="860" y="195" width="210" height="60"/><text x="965" y="230" text-anchor="middle">Completion checkpoint</text>
+  <path class="edge" d="M125 150H175"/><path class="edge" d="M315 150H365"/>
+  <path class="edge" d="M545 150H575V75H615"/><path class="edge" d="M545 150H575V225H615"/>
+  <path class="edge" d="M545 55H580V75H615"/><path class="edge" d="M707 105V195"/>
+  <path class="edge" d="M800 225H860"/>
+</svg>
