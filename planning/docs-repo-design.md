@@ -211,7 +211,7 @@ Use short decision records for decisions that matter beyond one task. Record con
 ## Implementation sequence
 
 1. Finalise the project descriptor, change-state notation, task checkpoint, and media conventions using the resolved workflow below. Use this documentation project as the first real example.
-2. Create the catalogue helper and a small consistency check for descriptor identities, catalogue entries, and local document/media paths. Initialise Git when implementing the agreed repository.
+2. Create the catalogue helper and a small consistency check for descriptor identities, catalogue entries, and local document/media paths. Git is now initialised; commit implementation milestones to the existing history.
 3. Draft the two skills and one example design document. Refine the style from user edits to that example.
 4. Configure the startup pointer, cross-project skill discovery, and filesystem access. Test with a fresh agent starting in another project.
 5. Pilot separate tasks, overlapping work on the same maintained feature, and a handoff. Refine where the observed workflow fails.
@@ -255,7 +255,7 @@ Reviewed and revised: 11 October 2026. The user requested that the five identifi
 | --- | --- |
 | No maintained feature-design home. | One indexed existing feature or project design is authoritative. The suggested default is `features/<feature-id>.md`; task designs are optional distinct artifacts. |
 | Mixed current and proposed behaviour. | Separate current design from identified changes. Each change has independent decision, implementation, and verification states, with evidence scope. Detailed facts have one owner. |
-| Mutable links obscure history. | Existing task contexts preserve completion checkpoints and relevant design contracts. Git enables exact commit-and-path references later; a mutable link or revision label alone is insufficient. |
+| Mutable links obscure history. | Existing task contexts preserve completion checkpoints and relevant design contracts. Git provides exact commit-and-path references; a mutable link or revision label alone is insufficient. |
 | Concurrent tasks share documents. | A coordinator assigns one writer before overlapping edits to shared documents. Contributors use task records or coordination messages; no automatic lock is claimed. |
 | Completion mismatches the request. | Requested deliverables govern completion. Design-only work can finish before implementation, and acceptance alone does not authorise code changes. |
 
@@ -263,7 +263,7 @@ OpenSpec's maintained domain specs and separate change records provide a useful 
 
 The original ADR convention preserves superseded decisions, which supports retaining a historical account even while the maintained design changes. [ADR history convention](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
 
-The catalogue, skills, and cross-project integration remain unimplemented in [CURRENT.md](../CURRENT.md). Git has now been initialised for the user's requested documentation commit. A pilot must still demonstrate discovery, access, document reuse, and recovery from a fresh session before these capabilities can be described as working.
+The catalogue, skills, and cross-project integration remain unimplemented in [CURRENT.md](../CURRENT.md). Git now preserves the documentation. The isolated pilot below demonstrated document reuse, scoped states, historical retrieval, and recovery with explicit routing. A later integration pilot must demonstrate automatic discovery, access from another project's workspace, installed skills, overlapping edits, and media rendering before those capabilities can be described as working.
 
 The reviewed structural and workflow issues are now specified. Exact prose style, final template notation, and the first external project for the pilot remain open. The next implementation work is to create the catalogue and skills, configure discovery and access, and exercise these rules with real tasks.
 
@@ -286,3 +286,27 @@ Checks: local document links and Markdown code-fence balance were checked. An in
 Limits: no code feature, catalogue, skill, shared-file locking mechanism, or cross-project integration was implemented or exercised. No Git revision is available. This checkpoint preserves the relevant design basis, not the exact earlier contents of every document.
 
 The checkpoint is kept in this existing design while task-record infrastructure is unimplemented. It is a historical account of this revision. Preserve it when the maintained design changes and append dated corrections or amendments where needed.
+
+## Completion checkpoint: docs-commit-and-workflow-pilot
+
+Recorded: 11 October 2026. Work identifier: `docs-commit-and-workflow-pilot`.
+
+Requested deliverable: commit the existing documentation and test the current setup. Delivered: initial documentation commit `5f59540882edaf238f7a0f1e1c58cb583bf78205`, followed by actual agent edits and a fresh-agent recovery test in an isolated clone. This exercised the local rules; it did not build the proposed catalogue, skills, or cross-project integration.
+
+The synthetic project had one maintained search feature, a project descriptor and index, and a completed keyword-search task. Its seeded code initially supported keyword search only. The coordinator assigned one documentation writer; reviewers and the recovery agent had read-only roles. Fixture files and code were kept outside this repository.
+
+| Exercise | Observed result and checks |
+| --- | --- |
+| Design an existing feature extension. | The agent updated the maintained search document, created one context for the distinct design scope, and added one index entry. The design task completed while its change stayed `proposed` / `not-started` / `not-checked`. Code and the original task remained unchanged. No competing feature or task design appeared. |
+| Accept the design in a follow-up. | The same documents were updated. The design task stayed complete; the change became `accepted` / `not-started` / `not-checked`. The delivered checkpoint text and source remained unchanged. Exact delivery commit/path references were added separately. |
+| Record a checked implementation subset. | The coordinator implemented category filtering only in the fixture. `python fixture_checks.py` passed three keyword assertions and `python category_checks.py` passed nine category/default assertions on Windows with Python 3.14.3. The agent recorded category results as `implemented` / `passed`, dates as `not-started` / `not-checked`, and the full change as `accepted` / `partial` / `not-checked`. The full implementation task remained in progress; its requested scope was not narrowed. |
+| Recover work in a fresh agent. | With no earlier conversation supplied, a read-only agent recovered the full requested scope, checked category subset, pending dates and combined interface, next checks, existing implementation context, and maintained feature. It found no contradiction blocking resumption and no need for another task or design file. The clone path and task subject were supplied explicitly. |
+| Retrieve historical design after current facts changed. | `git show` recovered both the earlier maintained design and its task context at the exact delivery commit. Original keyword history and the completed design checkpoint stayed unchanged as implementation progress was recorded. The earlier snapshot describes design-only delivery, not later implementation. |
+
+Fixture revision evidence, all in the temporary clone rather than this repository: baseline `65db34aebc60371f62347cba744822f34918ebb9`; design delivery `db1913d1b6978d5d9a7ee528906e7414485e53ec`; accepted design `0d3b3ad942e6273203967a5749743431cb068d44`; category source and checks `9b99283be47452b48e1e1f3074b2c6bcef38179d`; partial-progress documents `c2d80ac55229137f76c1d2b6fcc1b8270e94abb5`. The maintained feature path was `projects/search/features/search.md`; task contexts were under `projects/search/tasks/`. Local diagnostic checkout: `C:/Users/james/AppData/Local/Temp/agent-docs-pilot-b887a88e2ecb4eebacacd174a46344c4`. That temporary location is evidence for this run, not portable project configuration or durable storage.
+
+Checks on the committed documentation baseline: five Markdown files, fourteen local links including anchors, balanced code fences, and Git whitespace checks passed. Pilot assertions checked document counts, change states, original source hashes, unchanged historical records, and exact Git retrieval. This is observed cooperation in representative cases, not an enforcement guarantee.
+
+Setup audit: the real repository has no `CATALOG.md`, `projects/`, `.agents/skills/`, or `scripts/`. The custom documentation skills were absent from both inspected user skill directories. The global `.codex/AGENTS.md` was empty, and targeted configuration searches found no central-docs pointer. Those missing components prevent an end-to-end discovery and installed-skill test today.
+
+Remaining verification: automatic project selection, filesystem access in an independently started external session, catalogue generation, installed skills, concurrent shared edits and handoff, agreed prose style, and media rendering/portability. The fixture pilot does not establish these capabilities. The next implementation scope remains the catalogue and skills, followed by their integration pilot.
