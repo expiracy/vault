@@ -1,0 +1,27 @@
+# Documentation maintenance
+
+Before writing documentation, find and read the existing document that covers the same topic and purpose. Update that document in place by default, integrating new information and correcting or removing outdated statements wherever they appear. Keep its status, evidence, and links consistent with the changes.
+
+Create a new document only when the user explicitly requests one, or when the requested work or an agreed workflow requires a document that has no appropriate existing home. A new finding, changed requirement, or revision is normally an update to an existing document. Do not create dated replacements, numbered copies, or supplemental documents merely to record an update. This rule concerns documents and does not prevent adding supporting images or diagram assets when needed.
+
+Keep proposed behaviour separate from observed current state. An accepted design does not establish that its behaviour is implemented or verified. Preserve material decision history with concise dated notes, supersession links, or existing historical records while keeping the maintained account correct.
+
+## Maintained documents and change states
+
+Reuse the indexed maintained feature or project design for an extension. Keep an appropriate existing document at its current path. When a new feature needs a document with no existing home, the suggested default is `features/<feature-id>.md`. Task records link to that design instead of creating competing copies. Project indexes route to the owning documents; project current-state summaries link to detailed feature facts rather than duplicating them.
+
+Separate observed current design from identified changes. Track each change's decision, implementation, and verification independently. A document containing both current facts and future changes must not have one blanket state applied to all its contents. Record evidence, date, revision, and environment where relevant. When results differ, record implementation and verification per required scope. Overall verification passes only when relevant checks cover the full declared scope; do not narrow that scope without user authorisation. If relevant source or environment facts change, recheck affected claims or mark them as needing recheck.
+
+## Task scope and history
+
+Follow-ups and resumed work reuse the existing task context. Distinct authorised work with new scope can have one new task context under the agreed workflow, while reusing the maintained design. Record the requested deliverable. A design-only task completes by delivering a coherent reviewable design with its status and open issues clear. Implementation follows when requested or already authorised, not merely because the design has been accepted.
+
+Preserve a dated completion checkpoint inside the existing task context: delivered scope, checks and limitations, material decisions and rationale, and relevant requirements or contracts. Link stable change identifiers and, when available, exact docs and code commits with paths. Before Git exists, the checkpoint must preserve the relevant historical facts itself; a mutable link or revision label cannot recover old contents. Keep earlier checkpoints when reopening original task scope. Mark historical errors with dated corrections and retain the original delivery account. Do not rewrite a completed task as though a later extension was included in it.
+
+## Shared edits
+
+Before agents make overlapping edits to a shared design, project summary, index, decision record, or catalogue, one coordinator assigns a single writer. Record the assignment in existing task context and agent instructions. Other agents contribute through their own task records or coordination messages. The writer rereads the document, preserves unrelated edits, reconciles conflicts, and integrates contributions. Coordinate handoffs explicitly. Separate task IDs do not remove this requirement for shared files.
+
+While overlapping work lacks a coordinated writer, keep contributions in task context until the assignment is resolved. This is a cooperation rule, not an automatic filesystem lock.
+
+These local rules implement the requested maintenance policy and reviewed workflow safeguards. The wider layout, catalogue, skills, and integration in [the design](planning/docs-repo-design.md) still require implementation. Check [the current-state record](CURRENT.md) for what exists and has been verified.
