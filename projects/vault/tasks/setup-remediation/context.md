@@ -1,6 +1,6 @@
 # Vault setup remediation
 
-Task: `setup-remediation`. Started: 11 October 2026. Status: in progress.
+Task: `setup-remediation`. Started and completed: 11 October 2026. Status: complete.
 
 Requested deliverable: fix the six findings from the Vault setup review, test the setup again, and commit the existing and new authorised changes. The maintained design remains [Vault design](../../../../planning/docs-repo-design.md).
 
@@ -10,7 +10,7 @@ Root coordinates this task and is the sole writer of the maintained design, curr
 
 The six findings are: relocated Python launchers retaining the old path; installer write failures leaving inconsistent links and configuration; obsolete desktop project and stale current-state text; uncommitted setup changes; false link-check failures for escaped Markdown; and temporary-only integration evidence.
 
-Existing style, relocation, and task-tool changes must be preserved. The unrelated `.ultracode/` directory is outside this task's commit. The user authorised creating a private GitHub repository named `vault`. [expiracy/vault](https://github.com/expiracy/vault) has been created and verified private; `origin` points to it. Commit and push verification remain pending.
+Existing style, relocation, and task-tool changes were preserved. The unrelated `.ultracode/` directory is outside this task's commits. The user authorised creating a private GitHub repository named `vault`. [expiracy/vault](https://github.com/expiracy/vault) is private; `origin` points to it, `master` is its default branch, and the pushed implementation revision was verified exactly.
 
 ## Progress and next action
 
@@ -18,7 +18,7 @@ The relocated environment, helper and installer are repaired. The live installer
 
 The original setup chat's saved folder now points to Vault, with its original archive state restored and no turn started. The verified empty former directory has been removed. The user confirmed the obsolete `docs` desktop entry is gone from the sidebar; the subsequent project-list API check also returned Vault without the obsolete entry.
 
-The retained browser run passed. Five fresh isolated design, recovery, contributor, integration and handoff sessions completed successfully. An independent aggregate final-fixture audit passed the strengthened state and file-scope checks, and the current helper passed against their output. Root independently confirmed that both retained reports match all 23 relevant current input hashes. Root will commit only the authorised files, replay a clean checkout, push the private backup, and verify the remote revision.
+The retained browser run passed. Five fresh isolated design, recovery, contributor, integration and handoff sessions completed successfully. An independent aggregate final-fixture audit passed the strengthened state and file-scope checks, and the current helper passed against their output. Root independently confirmed that both retained reports match all 23 relevant current input hashes. A clean Git checkout passed catalogue, links and offline replay with Windows line-ending conversion enabled. The implementation and preserved changes are committed and backed up privately.
 
 ## Tools and checks
 
@@ -55,4 +55,27 @@ The five live sessions ran the earlier loaded harness and an earlier copied help
 
 The synthetic sessions' default Python lacked PyYAML, so agent-authored contexts record fallback structural checks and that limitation. Driver and post-run checks used the repaired Vault environment and passed. Future fixture startup guidance identifies the harness's PyYAML-capable interpreter. This does not establish arbitrary viewers, agents or permission configurations.
 
-[Git attributes](../../../../.gitattributes) keep canonical text at LF and preserve retained fixture bytes. This prevents Windows checkout conversion from invalidating the historical hash manifest; the original tool and JSON fixture retain their recorded CRLF bytes. A clean-checkout replay will verify this before delivery.
+[Git attributes](../../../../.gitattributes) keep canonical text at LF and preserve retained fixture bytes. This prevents Windows checkout conversion from invalidating the historical hash manifest; the original tool and JSON fixture retain their recorded CRLF bytes. A clean-checkout replay verified this with `core.autocrlf=true`.
+
+## Completion checkpoint: setup-remediation
+
+Recorded: 11 October 2026. Delivered: all six review findings, the fresh setup checks and the requested commit. The user additionally authorised the private backup; the implementation commit and prior history have been pushed.
+
+| Finding | Delivered result and verification |
+| --- | --- |
+| Moved Python launchers | Regenerated activation scripts and pip launchers at Vault's path, using CPython 3.14.3 and bundled pip 25.3; PyYAML 6.0.3 remains available and `pip check` passes. The ignored environment is local; tracked requirements and setup instructions support recreation. |
+| Installer partial failure | Staged publication with rollback restores files and both skill links after late failures, including dangling links. Fourteen installer tests pass; the live installation passed twice with unrelated startup content and canonical sources preserved. |
+| Stale desktop paths | Current and original setup chats use Vault. The original chat remained archived and no turn started. The verified empty old root was deleted. User confirmation and a subsequent API list establish removal of the obsolete desktop entry. |
+| Uncommitted setup and no remote | Prior writing-style, relocation and task-tool changes are preserved in the implementation commit. Private GitHub `origin` and tracking branch are configured; the remote implementation hash matches local Git. |
+| Escaped Markdown false positives | Escaped brackets, code in link labels and literal destination backticks are handled within the documented syntax scope. Twenty-four helper tests pass; the privileged file-symlink test is skipped. |
+| Temporary-only integration evidence | A resettable fixture, replay harness, historical hash manifest, current compact reports and screenshot are retained. Ten harness tests, current-source browser/installation checks, five live roles with a later aggregate audit, and clean-checkout replay pass within their recorded scopes. |
+
+Implementation and initial documentation revision: [7e5ffc3716c360e6e1d1641e0904418df056e5cd](https://github.com/expiracy/vault/commit/7e5ffc3716c360e6e1d1641e0904418df056e5cd). Code paths: `scripts/docs_repo.py`, `scripts/install-local.ps1`, `scripts/test_integration.py` and `tests/`. Documentation paths: `planning/docs-repo-design.md`, `CURRENT.md`, `projects/vault/PROJECT.md` and the canonical skills. This checkpoint is a later documentation update; earlier completed checkpoints remain intact.
+
+Final unit result: 49 tests run, 48 passed, one privilege skip. Both manifests validate; catalogue, supported links, dependencies and staged whitespace checks pass. A clean local Git clone at the exact implementation revision, checked out with `core.autocrlf=true`, passed catalogue, supported links and offline integration using the documented Python/PyYAML runtime and no untracked fixture or source files; all relevant input hashes remain identical. GitHub privacy and default branch were verified separately, and `git ls-remote` matched the pushed implementation hash.
+
+Material decisions: retain configuration and skill names for compatibility; use reversible installer staging rather than changes to global permissions; preserve historical fixture bytes; retain scoped evidence rather than treating design delivery as runtime implementation. The earlier in-flight driver and copied helper are distinguished from the later current-source audit in the retained report.
+
+Limits: the Windows file-symlink privilege remains unavailable. Installer rollback does not cover abrupt termination or independently failed rollback. Agent coordination is cooperative. The media check covers the custom Chrome viewer; Codex/GitHub rendering and other hosts are unverified. The live fixture's PyYAML limitation and the final guard scope are described above. These limits do not leave any of the six authorised repairs unfinished.
+
+Next action: no remaining task work. Recheck affected scopes when source or environment changes; future project work adds appropriate descriptors and reuses maintained documents.

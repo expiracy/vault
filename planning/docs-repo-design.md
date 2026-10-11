@@ -45,11 +45,11 @@ Originating task: [setup-remediation](../projects/vault/tasks/setup-remediation/
 | Relocated Python environment | accepted | implemented | passed: regenerated activation scripts and pip launchers resolve to Vault; PyYAML remains available. |
 | Installer failure recovery | accepted | implemented | passed: 14 installer tests, including rollback after publication; the real installation passed twice. |
 | Desktop project and current-state correction | accepted | implemented | passed: the user confirmed sidebar removal and the subsequent API list excludes `docs`; both chats use Vault and the empty former directory is removed. |
-| Commit and private backup | accepted | partial | Private `expiracy/vault` exists and `origin` is configured; commit and remote revision checks are pending. |
+| Commit and private backup | accepted | implemented | passed: implementation commit `7e5ffc3716c360e6e1d1641e0904418df056e5cd` is on private `origin/master`; the remote hash matches local Git. |
 | Escaped Markdown and destination parsing | accepted | implemented | passed: 24 helper tests, one privileged file-symlink skip; the integrated consistency check passed. |
-| Durable integration fixtures and harness | accepted | partial | not-checked for the full scope. |
+| Durable integration fixtures and harness | accepted | implemented | passed within recorded scopes: retained fixtures, ten harness tests, offline/installed-file/browser checks, five live roles with a separate final audit, and clean-checkout replay. |
 
-The root agent is the single writer of the shared design, summaries and indexes. File ownership and handoffs are recorded in the task context. Historical setup checkpoints below retain their original delivery accounts.
+The root agent is the single writer of the shared design, summaries and indexes. File ownership, the exact implementation revision, checks and limitations are recorded in the [task's completion checkpoint](../projects/vault/tasks/setup-remediation/context.md#completion-checkpoint-setup-remediation). Historical setup checkpoints below retain their original delivery accounts.
 
 ## Document maintenance rule
 

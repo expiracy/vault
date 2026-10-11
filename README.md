@@ -14,7 +14,7 @@ Current records:
 
 The design defines maintained feature documents, separate change states, task completion checkpoints, and coordination for shared edits. Local operating rules are in `AGENTS.md`. Project frontmatter owns discovery metadata; the helper generates the catalogue. The two skills are maintained in `.agents/skills/` and can be linked into user scope for other projects.
 
-The initial documentation and first isolated pilot are committed to local Git history. That earlier pilot tested the rules before the catalogue and skills existed. The current-state record distinguishes it from the subsequent full integration tests.
+The documentation, setup repairs and repeatable checks are committed and backed up in private [expiracy/vault](https://github.com/expiracy/vault). The first isolated pilot tested the rules before the catalogue and skills existed. The current-state record distinguishes it from subsequent integration tests and records their scopes.
 
 The current-state record describes what exists and what has been checked. Maintained designs distinguish current behaviour from identified changes. Accepting a design does not establish implementation or verification.
 
