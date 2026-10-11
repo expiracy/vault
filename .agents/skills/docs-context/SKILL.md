@@ -1,11 +1,11 @@
 ---
 name: docs-context
-description: Find central project documentation and recover or update task context when starting or resuming project work, looking up decisions, designing changes, or recording progress.
+description: Find project documentation and task-owned tools in Vault, and recover or update context when starting or resuming project work, looking up decisions, designing changes, or recording progress.
 ---
 
-# Central project context
+# Vault project context
 
-Use the shared documentation repository to find relevant prior work and leave a reviewable checkpoint. Finding documentation does not change the user's requested deliverable or authorise additional implementation.
+Use Vault, the shared repository for project documentation and task tools, to find relevant prior work and leave a reviewable checkpoint. Discovery does not change the user's requested deliverable or authorise additional implementation.
 
 ## Locate the repository
 
@@ -26,6 +26,10 @@ When useful, run the helper at `scripts/docs_repo.py` under the selected root. P
 - `check` checks descriptors and local document/media links.
 
 Use `--help` if the helper interface differs. A stale catalogue is a routing problem: inspect canonical descriptors before relying on its entries. Regenerate with `catalog` only as part of authorised changes and after coordinating any overlapping catalogue edits. Missing runtime dependencies do not prevent reading existing Markdown.
+
+## Task tools
+
+When a task owns a script or utility with no suitable home in another repo, read [the task tools guide](references/task-tools.md). Find existing tools through the task context's Tools section. Keep task-only source under its `tools/` folder and update the existing context with run instructions, dependencies, inputs/outputs, effects, and actual check results. Use existing task authorisation and session permissions for execution; a saved tool is not automatically checked.
 
 ## Recover and checkpoint
 

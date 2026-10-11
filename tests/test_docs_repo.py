@@ -190,6 +190,94 @@ class DocsRepoTests(unittest.TestCase):
         self.assert_ok("catalog")
         self.assert_ok("check")
 
+    def test_escaped_opening_brackets_are_literal_with_odd_backslash_counts(self):
+        self.project()
+        self.assert_ok("catalog")
+        for count in (1, 3, 5):
+            with self.subTest(backslashes=count):
+                prefix = "\\" * count
+                self.write("README.md", f"{prefix}[literal](absent.md)\n!{prefix}[literal image](absent.svg)\n{prefix}[literal][missing]\n")
+                self.assert_ok("check")
+
+        self.write("README.md", "\\[literal](absent.md)\n[actual](actual-missing.md)\n")
+        status, _, error = self.run_helper("check")
+        self.assertNotEqual(status, 0)
+        self.assertIn("actual-missing.md", error)
+        self.assertNotIn("absent.md", error)
+
+    def test_even_backslash_counts_keep_real_links_and_references(self):
+        self.project()
+        self.write("target.md", "# Target\n")
+        self.assert_ok("catalog")
+        for count in (0, 2, 4):
+            with self.subTest(backslashes=count):
+                prefix = "\\" * count
+                self.write("README.md", f"{prefix}[actual](target.md)\n{prefix}[actual][valid]\n[valid]: target.md\n")
+                self.assert_ok("check")
+                self.write("README.md", f"{prefix}[actual](absent.md)\n")
+                self.assert_bad("missing local target", "check")
+                self.write("README.md", f"{prefix}[actual][missing]\n")
+                self.assert_bad("undefined reference", "check")
+        # Escaping an image's ! still leaves an ordinary, active link.
+        self.write("README.md", "\\![actual](absent.md)\n")
+        self.assert_bad("missing local target", "check")
+
+    def test_inline_code_spans_use_matching_runs_and_unescaped_openers(self):
+        self.project()
+        self.assert_ok("catalog")
+        self.write("README.md", '`[example](absent.md)`\n``[example](absent.md) and ` text``\n`[reference][missing] <img src="absent.svg">`\n')
+        self.assert_ok("check")
+        for count in (0, 1, 2, 3, 4):
+            with self.subTest(backslashes=count):
+                prefix = "\\" * count
+                self.write("README.md", f"{prefix}`[actual](absent.md){prefix}`\n")
+                if count % 2:
+                    self.assert_bad("missing local target", "check")
+                else:
+                    self.assert_ok("check")
+        self.write("README.md", "`[actual](absent.md)``\n")
+        self.assert_bad("missing local target", "check")
+        self.write("README.md", "`unclosed\n[actual](absent.md)\nclosing`\n")
+        self.assert_bad("missing local target", "check")
+
+    def test_backticks_in_destinations_and_html_attributes_are_preserved(self):
+        self.project()
+        self.write("docs/a`b`.md", "# Target\n")
+        self.write("docs/a`b`.svg", "<svg/>\n")
+        self.write("README.md", '[bare](docs/a`b`.md#target)\n[angle](<docs/a`b`.md> "title `code`")\n[`label`](docs/a`b`.md)\n[reference][feature]\n[feature]: docs/a`b`.md#target\n<img src="docs/a`b`.svg">\n``[example](absent`part`.md)``\n')
+        self.assert_ok("catalog")
+        self.assert_ok("check")
+        self.write("README.md", "[actual](absent`part`.md)\n")
+        self.assert_bad("missing local target", "check")
+
+    def test_link_syntax_in_code_labels_does_not_hide_the_outer_destination(self):
+        self.project()
+        self.write("target.md", "# Target\n")
+        self.write("a`b`.md", "# Target\n")
+        self.assert_ok("catalog")
+        for label in ("`[example](absent.md)`", "outer `[example](absent.md)` label", "``[example](absent`part`.md)``"):
+            with self.subTest(label=label):
+                self.write("README.md", f"[{label}](target.md)\n[{label}](a`b`.md)\n")
+                self.assert_ok("check")
+                self.write("README.md", f"[{label}](actual-missing.md)\n")
+                status, _, error = self.run_helper("check")
+                self.assertNotEqual(status, 0)
+                self.assertIn("actual-missing.md", error)
+                self.assertNotIn("absent.md", error)
+
+    def test_unc_and_ambiguous_protocol_relative_links_remain_rejected(self):
+        self.project()
+        self.assert_ok("catalog")
+        for link in (
+            "[ambiguous](//example.com/docs)\n",
+            r"[unc](<\\\\server\share\absent.md>)" + "\n",
+            "[encoded](%5C%5Cserver%5Cshare%5Cabsent.md)\n",
+            "[file](file://server/share/absent.md)\n",
+        ):
+            with self.subTest(link=link):
+                self.write("README.md", link)
+                self.assert_bad("absolute local link", "check")
+
     def test_find_all_matches_and_repository_filter_without_writes(self):
         self.project("first", "first", "Search product records", "aliases: [products]\nrepositories: ['https://example.test/first.git']\n")
         self.project("second", "second", "Search research records", "repositories: ['https://example.test/second']\n")

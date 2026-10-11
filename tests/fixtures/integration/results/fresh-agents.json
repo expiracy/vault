@@ -1,0 +1,135 @@
+{
+  "fixture": "synthetic Delivery Board; no live documentation or installation mutation",
+  "scopes": {
+    "offline-routing-lifecycle": {
+      "status": "passed",
+      "evidence": {
+        "routing": "matching descriptor and relocated links passed",
+        "lifecycle": "saved design-only output retains change states, history and recovery facts",
+        "scope": "deterministic replay; fresh agents were not exercised by this check"
+      }
+    },
+    "task-tool": {
+      "status": "passed",
+      "evidence": "default=3, active-only=2, input preserved, invalid input rejected without report replacement"
+    },
+    "media-source-portability": {
+      "status": "passed",
+      "evidence": "current fence matches editable source; SVG parses; relocated media links resolve (rendering unchecked)"
+    },
+    "installed-user-files": {
+      "status": "passed",
+      "evidence": "actual user pointer and both canonical skill links inspected read-only"
+    },
+    "fresh-agents": {
+      "status": "passed",
+      "evidence": {
+        "startup": "fresh CLI startup loaded managed guidance and both skill descriptions exactly once",
+        "design": "fresh design-only writer passed state/history/structure checks",
+        "recovery": {
+          "delivered": "Completed a reviewable filter design: optional status and inclusive from/to dates combined with AND, preserving ID/status fields and input order, with validation, missing-date handling, clear behaviour and review cases. Decision remains proposed.",
+          "implemented": false,
+          "runtime_verified": false,
+          "next_action": "Project owner to confirm the date field, value type and timestamp timezone, then review the design and missing-date policy. Assigned writer to record the answer; rerun full structural checks with PyYAML. Acceptance and implementation require later instructions.",
+          "open_issue": "Authoritative date source and timezone remain unresolved. Full structural checks were blocked by missing PyYAML; fallback link checks passed. No application or runtime evidence exists."
+        },
+        "shared_writer": "fresh contributor, integration writer and explicit handoff passed",
+        "scope": "actual installed startup inspected; synthetic root selected through isolated startup guidance"
+      }
+    },
+    "browser-rendering": {
+      "status": "not-checked"
+    }
+  },
+  "requested_checks_passed": true,
+  "recorded_at_utc": "2026-10-11T17:41:19.906404+00:00",
+  "environment": {
+    "python": "3.14.3",
+    "platform": "Windows",
+    "codex": "codex-cli 0.162.0-alpha.17.2"
+  },
+  "live_run_guard_scope": "The five sessions executed the earlier driver. It checked full-root equality for recovery, contributor feature/index preservation, original list/tool preservation, and completed filter-context preservation after integration. The newly added full per-role allowlists did not execute inside that already-loaded driver.",
+  "used_copied_source_sha256": {
+    "media/docs-workflow.mmd": "d68d0060fed737345d21a40a79450245467be6325ff31ddb9ce488875e00b3b2",
+    "media/docs-workflow.svg": "052cf4323097efae27f424b9a4d4ab6cffbb9f6acb7ae3671dd72d1215b1d8a0",
+    "media/workflow.md": "1f8fcdbc2b3ac652ddaca94d00119fd2b660cadab07e92249cef99860a57b212",
+    "scripts/docs_repo.py": "1a835965fdcbe0c1de092c0417861dac29aa24d818d30d21ec75b49487a51bd5",
+    ".agents/skills/docs-context/SKILL.md": "86eee0b4cb957fab15f18e7b378a7503254fd0230178d9f8c11b9fc4fcb086f7",
+    ".agents/skills/write-project-doc/SKILL.md": "683639c6586606fbff7f4b6354880c17a0ee333f4f694166ab10e136bd196b10",
+    ".agents/skills/write-project-doc/references/markdown-style.md": "9e98f67ac52d3f93e66483dd120511c42cce4dcec01f95df5de8a73ba8c0f54d",
+    ".agents/skills/docs-context/references/task-tools.md": "f53c977ae021b54638063536b78373670563dbccc032f1707ef0a1b00814067d"
+  },
+  "final_fixture_sha256": {
+    "AGENTS.md": "95adc053d2923c12208818b42b0af325209f991562f78bb4f0088001283ab5f3",
+    "CATALOG.md": "071518f051d47a2589cdb7bfcfd21bdb61e83f1e59096c2200fb757ce9ebade1",
+    "media/docs-workflow.mmd": "d68d0060fed737345d21a40a79450245467be6325ff31ddb9ce488875e00b3b2",
+    "media/docs-workflow.svg": "052cf4323097efae27f424b9a4d4ab6cffbb9f6acb7ae3671dd72d1215b1d8a0",
+    "media/workflow.md": "1f8fcdbc2b3ac652ddaca94d00119fd2b660cadab07e92249cef99860a57b212",
+    "scripts/docs_repo.py": "1a835965fdcbe0c1de092c0417861dac29aa24d818d30d21ec75b49487a51bd5",
+    "projects/delivery-board/PROJECT.md": "1934f2db4868de9eeaaf556e7586b857173f0f2ab2fbe8bec356c1ce065625d3",
+    "projects/unrelated/PROJECT.md": "e660ee9e09c2821adc08262f3b4f9d5966194cec587e684e85efd7af9debc656",
+    "projects/delivery-board/features/dashboard.md": "86bb1a6400dd47e4d61408cb228d2ff87d9ec8670f5b045bcd239d031e1add11",
+    "projects/delivery-board/tasks/count-json-items/context.md": "5ee17eefd70eab55c61ba882d4484a8e65fb2fbf196ad5c0e437b044743b5eac",
+    "projects/delivery-board/tasks/dashboard-filters/context.md": "46b1627822ddfd5e3b9fb23d353ab0e7dc536b56fe97b87926ef90182f30fdbb",
+    "projects/delivery-board/tasks/dashboard-ranking/context.md": "d51e1458b4ebcab48db93813ceaccbebda7b87237f7f41bd1c129761e8230efe",
+    "projects/delivery-board/tasks/delivery-list/context.md": "2cab730fefbee482e3e9968c629c201f4947a27e0f6470dc4f79dec1fa484850",
+    "projects/delivery-board/tasks/count-json-items/inputs/items.json": "39c9fdc1093e33a6b2d678568880215f3fec23441e82dedc7c522ef5079d8885",
+    "projects/delivery-board/tasks/count-json-items/tools/count_items.py": "c0e54fe2dbcd5e90ae5486643f41e5276015dea05695e03cec2a6d79bdcb59eb",
+    ".agents/skills/docs-context/SKILL.md": "86eee0b4cb957fab15f18e7b378a7503254fd0230178d9f8c11b9fc4fcb086f7",
+    ".agents/skills/write-project-doc/SKILL.md": "683639c6586606fbff7f4b6354880c17a0ee333f4f694166ab10e136bd196b10",
+    ".agents/skills/write-project-doc/references/markdown-style.md": "9e98f67ac52d3f93e66483dd120511c42cce4dcec01f95df5de8a73ba8c0f54d",
+    ".agents/skills/docs-context/references/task-tools.md": "f53c977ae021b54638063536b78373670563dbccc032f1707ef0a1b00814067d"
+  },
+  "post_run_strengthened_audit": {
+    "status": "passed",
+    "scope": "Independent final whole-fixture comparison against seed/current copied inputs, accounting for the known older helper copy; this is an aggregate final audit, not retrospective independent per-phase snapshots.",
+    "allowed_final_changes": [
+      "projects/delivery-board/PROJECT.md",
+      "projects/delivery-board/features/dashboard.md",
+      "projects/delivery-board/tasks/dashboard-filters/context.md",
+      "projects/delivery-board/tasks/dashboard-ranking/context.md"
+    ],
+    "new_implementation_or_unrelated_changes": false,
+    "preserved_current_design": true,
+    "final_proposal_states": {
+      "dashboard-filters": {
+        "decision": "proposed",
+        "implementation": "not-started",
+        "verification": "not-checked"
+      },
+      "dashboard-ranking": {
+        "decision": "proposed",
+        "implementation": "not-started",
+        "verification": "not-checked"
+      }
+    },
+    "current_helper_check": "Descriptors, catalogue and supported local links passed.",
+    "used_helper_sha256": "1a835965fdcbe0c1de092c0417861dac29aa24d818d30d21ec75b49487a51bd5",
+    "current_helper_sha256": "6ef5a1bce371d4469190f1c8862f7f9eb17c109698904592a52ffdf3b19277ed"
+  },
+  "current_replay_source_sha256": {
+    ".agents/skills/docs-context/references/task-tools.md": "f53c977ae021b54638063536b78373670563dbccc032f1707ef0a1b00814067d",
+    ".agents/skills/docs-context/SKILL.md": "86eee0b4cb957fab15f18e7b378a7503254fd0230178d9f8c11b9fc4fcb086f7",
+    ".agents/skills/write-project-doc/references/markdown-style.md": "9e98f67ac52d3f93e66483dd120511c42cce4dcec01f95df5de8a73ba8c0f54d",
+    ".agents/skills/write-project-doc/SKILL.md": "683639c6586606fbff7f4b6354880c17a0ee333f4f694166ab10e136bd196b10",
+    "planning/assets/docs-workflow.mmd": "d68d0060fed737345d21a40a79450245467be6325ff31ddb9ce488875e00b3b2",
+    "planning/assets/docs-workflow.svg": "052cf4323097efae27f424b9a4d4ab6cffbb9f6acb7ae3671dd72d1215b1d8a0",
+    "scripts/docs_repo.py": "6ef5a1bce371d4469190f1c8862f7f9eb17c109698904592a52ffdf3b19277ed",
+    "scripts/test_integration.py": "72baf869b0613622f615c6a6bb75e952d14b4fd62af9490cf7bbc75eb9e2775c",
+    "tests/fixtures/integration/browser.cjs": "a7aec63d4ca7295897c9c5bd4c2f3922c296809165e2fb9fdc3f68b81721854a",
+    "tests/fixtures/integration/historical/projects/delivery-board/features/dashboard.md": "0523e8e566077e9d21792a648facb435ffa61a8f9db6600b8c1b7f17a4e743ab",
+    "tests/fixtures/integration/historical/projects/delivery-board/PROJECT.md": "9a5019e0dff02713b6f33bbca249350ee257f71ed73fb0ad3f6b1447dfe3eabd",
+    "tests/fixtures/integration/historical/projects/delivery-board/tasks/dashboard-filters/context.md": "dcb8031d1e80d026fb8a92383830b719f15995be9c0480f396c7f61f5219ee84",
+    "tests/fixtures/integration/historical/projects/delivery-board/tasks/delivery-list/context.md": "9da59037637ec1148c08da78013dcd04be3cf2157bf2155871dc29d35d54c270",
+    "tests/fixtures/integration/provenance.json": "e13c1c3590ba0c6ae37d4f213a6e91e5fc301f075d4d9d1cce9835c77df3c048",
+    "tests/fixtures/integration/seed/AGENTS.md": "95adc053d2923c12208818b42b0af325209f991562f78bb4f0088001283ab5f3",
+    "tests/fixtures/integration/seed/projects/delivery-board/features/dashboard.md": "1fc216e3cd4db017476aa392655ec368584157b2c0f3994275e0611dc0e0dbe0",
+    "tests/fixtures/integration/seed/projects/delivery-board/PROJECT.md": "e7f992b37769fc75be7349c9ff767fd35d24fa6f89d8fc177a10e6a76dbbe958",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/count-json-items/context.md": "5ee17eefd70eab55c61ba882d4484a8e65fb2fbf196ad5c0e437b044743b5eac",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/count-json-items/inputs/items.json": "39c9fdc1093e33a6b2d678568880215f3fec23441e82dedc7c522ef5079d8885",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/count-json-items/tools/count_items.py": "c0e54fe2dbcd5e90ae5486643f41e5276015dea05695e03cec2a6d79bdcb59eb",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/delivery-list/context.md": "2cab730fefbee482e3e9968c629c201f4947a27e0f6470dc4f79dec1fa484850",
+    "tests/fixtures/integration/seed/projects/unrelated/PROJECT.md": "e660ee9e09c2821adc08262f3b4f9d5966194cec587e684e85efd7af9debc656",
+    "planning/docs-repo-design.md#mermaid-fence": "68c0cdf5c3d2fde8ed138023f0bdb5335e862175962d30d4c1b469643601c0e2"
+  }
+}

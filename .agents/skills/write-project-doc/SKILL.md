@@ -1,9 +1,9 @@
 ---
 name: write-project-doc
-description: Write or revise Markdown project designs, research notes, guides, and decision records in the central docs repo, preserving existing documents, evidence, change states, and linked media.
+description: Write or revise Markdown project designs, research notes, guides, and decision records in Vault, the central project repository, preserving existing documents, evidence, change states, and linked media.
 ---
 
-# Write a project document
+# Write a Vault project document
 
 Produce the requested reviewable document in its appropriate existing home. A document request or accepted design does not authorise implementation unless the user has also requested it.
 
@@ -17,9 +17,11 @@ Before overlapping edits, follow the central coordinated-writer rule. Keep contr
 
 ## Write and verify
 
-Read [the Markdown style reference](references/markdown-style.md) when composing or substantially revising prose or media. Its British-English defaults are provisional; follow explicit user preferences and refine the reference from actual user feedback.
+Read and apply [the writing style guide](references/markdown-style.md) when composing or substantially revising prose or media. It records the user's preference for simple, formal English, concise wording without unnecessary repetition or stock AI phrasing, and bullets or tables where useful. Follow explicit instructions for the document and refine the guide from further user feedback.
 
 For maintained designs, distinguish current facts from identified changes and record each change's independent decision, implementation, and verification states. Preserve the change's delta and rationale when integrating checked behaviour. Follow the central scoped-evidence and historical-checkpoint rules; do not present partial checks as full verification or rewrite a completed task to include a later extension.
+
+When documenting task-owned tools, read `.agents/skills/docs-context/references/task-tools.md` under the resolved Vault root. Keep source links and reproducible run instructions in the existing task context. Distinguish a saved script from an executed or checked one, and keep application tools in their owning repo where appropriate.
 
 Check the revised document's links, media paths, evidence, status, and affected index entries. Use the root's Python environment with `scripts/docs_repo.py --root ROOT check`, replacing `ROOT` with the resolved path; prefer `.venv` when present, otherwise Python with PyYAML. Run `catalog --check` when routing metadata changes and regenerate with `catalog` when authorised. These checks establish structural consistency, not the truth of implementation claims. Inspect a diagram or image in the intended viewer when its rendering matters, and state any untested viewer scope.
 

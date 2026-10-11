@@ -1,10 +1,14 @@
-# Documentation maintenance
+# Vault maintenance
 
 Before writing documentation, find and read the existing document that covers the same topic and purpose. Update that document in place by default, integrating new information and correcting or removing outdated statements wherever they appear. Keep its status, evidence, and links consistent with the changes.
 
 Create a new document only when the user explicitly requests one, or when the requested work or an agreed workflow requires a document that has no appropriate existing home. A new finding, changed requirement, or revision is normally an update to an existing document. Do not create dated replacements, numbered copies, or supplemental documents merely to record an update. This rule concerns documents and does not prevent adding supporting images or diagram assets when needed.
 
 Keep proposed behaviour separate from observed current state. An accepted design does not establish that its behaviour is implemented or verified. Preserve material decision history with concise dated notes, supersession links, or existing historical records while keeping the maintained account correct.
+
+## Writing style
+
+Apply the [writing style guide](.agents/skills/write-project-doc/references/markdown-style.md) when writing project documents. Follow explicit user instructions for the document.
 
 ## Maintained documents and change states
 
@@ -23,5 +27,9 @@ Preserve a dated completion checkpoint inside the existing task context: deliver
 Before agents make overlapping edits to a shared design, project summary, index, decision record, or catalogue, one coordinator assigns a single writer. Record the assignment in existing task context and agent instructions. Other agents contribute through their own task records or coordination messages. The writer rereads the document, preserves unrelated edits, reconciles conflicts, and integrates contributions. Coordinate handoffs explicitly. Separate task IDs do not remove this requirement for shared files.
 
 While overlapping work lacks a coordinated writer, keep contributions in task context until the assignment is resolved. This is a cooperation rule, not an automatic filesystem lock.
+
+## Task tools
+
+Vault also holds useful task scripts and small utilities with no suitable home in another repository. Follow the [task tools guide](.agents/skills/docs-context/references/task-tools.md). Use the existing task context to index source and record the command, working directory, dependencies, inputs/outputs, effects, and scoped checks. Store task-only source in `tasks/<task-id>/tools/`; root `scripts/` remains Vault infrastructure. Reuse and revise appropriate existing tools. Shared tools follow the coordinated-writer rule above.
 
 These local rules implement the requested maintenance policy and reviewed workflow safeguards. The catalogue, helper, project descriptor, and documentation skills now implement the core layout in [the maintained design](planning/docs-repo-design.md). Check [the current-state record](CURRENT.md) for the scope of completed integration tests and remaining limitations. Global instructions and skills do not grant access outside the session's filesystem permissions.

@@ -1,12 +1,13 @@
-# Central documentation repository design
+# Vault design
 
-Status: maintained design with implemented core and scoped integration evidence. Updated: 11 October 2026. Writing defaults remain provisional.
+Status: maintained design with implemented core, scoped integration evidence, and recorded user writing preferences. Updated: 11 October 2026.
 
 Present-state evidence is recorded separately in [CURRENT.md](../CURRENT.md). The catalogue, project descriptor, helper, installer, and two skills implement the core design. User-level discovery is configured locally. Completed checks and unverified scopes are recorded independently; optional documents and style refinements remain conventions or proposals until needed and checked.
 
 Confirmed requirements:
 
 - One central docs repository with subfolders accessible to agents working across projects.
+- The project and checkout are named Vault. It also holds useful task tools that have no suitable home in another repository.
 - Folder descriptions that help agents find relevant context, similar to skill descriptions.
 - Readable records of current task context and progress for user audit.
 - Skills for producing documents in the user's preferred style.
@@ -21,11 +22,34 @@ Canonical project descriptors live at `projects/<project-id>/PROJECT.md`. The do
 
 `scripts/docs_repo.py` derives its root from its own location by default, so it works from another workspace. It safely loads YAML frontmatter with PyYAML, validates unique routing identities, generates deterministic `CATALOG.md`, finds candidate projects, and checks supported local document/media links and anchors. `--root PATH` allows isolated fixtures and relocated checkouts. It is a bounded consistency checker, not a complete Markdown parser or proof of implementation correctness. Remote URL and viewer checks are separate.
 
-The canonical `docs-context` and `write-project-doc` skills live under `.agents/skills/`. The latter has one on-demand Markdown style reference. They resolve the central root from local `~/.agents/agent-docs.json`, or their resolved canonical location if configuration is absent. The skill instructions apply the maintenance rules when working from another code checkout and preserve scope, evidence, and historical checkpoints.
+The canonical `docs-context` and `write-project-doc` skills live under `.agents/skills/`. Their on-demand references cover writing style and task tools. They resolve the central root from local `~/.agents/agent-docs.json`, or their resolved canonical location if configuration is absent. The configuration names and skill names remain stable for compatibility. The instructions apply maintenance rules from other code checkouts and preserve scope, evidence, and historical checkpoints.
 
-On Windows, `scripts/install-local.ps1` adds a bounded managed block to global `~/.codex/AGENTS.md`, writes `docs_root` in `~/.agents/agent-docs.json`, and links user skill directories to the canonical skill folders using junctions. It preserves unrelated settings, is idempotent, and refuses an existing different docs root or conflicting skill destination. The machine-specific root is not stored in tracked skill instructions. Reinstall at the same root after updates if needed; review configuration deliberately before moving the central repo.
+On Windows, `scripts/install-local.ps1` adds a bounded managed block to global `~/.codex/AGENTS.md`, writes `docs_root` in `~/.agents/agent-docs.json`, and links user skill directories to the canonical skill folders using junctions. It preserves unrelated settings, is idempotent, and refuses conflicting roots or destinations. Explicit `-PreviousDocsRoot` supports an authorised relocation by matching the former configuration and managed links before retargeting them. Machine-specific roots are not stored in tracked skill instructions.
+
+The installer stages generated files and junctions, retains original entries until publication succeeds, and rolls back completed operations after a runtime failure. This includes restoring dangling junctions after a failed relocation. It refuses read-only destination files before mutation. Abrupt termination is outside the rollback guarantee; independently failed rollback retains the original backups and reports their transaction identifier.
+
+The helper recognises escaped opening brackets by backslash parity and masks inline code in link labels while preserving destinations containing literal backticks. Its bounded syntax scope still excludes multiline links, multiline code spans and indented code. Ambiguous `//host/path` destinations remain rejected as possible local UNC paths.
+
+Task-only utilities live under their owning task's `tools/` directory, with source links and run instructions in its existing context. This is an ordinary file convention, not a hosted execution service. The [task tools guide](../.agents/skills/docs-context/references/task-tools.md) defines ownership, invocation, dependencies, effects, results, and checks.
 
 Filesystem access is independent of discovery. The external CLI integration test grants the central repo with `--add-dir`; no global permission override is installed. Shared-document coordination remains an agent cooperation rule.
+
+[The integration harness](../scripts/test_integration.py) and [retained fixtures](../tests/fixtures/integration/) make the earlier temporary-only checks replayable. Offline checks inspect routing, relocation, saved design/history/recovery invariants, media source, and a JSON-count tool. Optional checks inspect the real installation read-only, run fresh isolated Codex roles, and render the diagram in a custom browser viewer. Results record each checked or unchecked scope and relevant source hashes. These fixtures establish the bounded examples, not arbitrary project workflows or all Markdown viewers.
+
+## Change setup-remediation
+
+Originating task: [setup-remediation](../projects/vault/tasks/setup-remediation/context.md), authorised on 11 October 2026 after the setup review. The requested scope is all six findings, a fresh setup check, and a commit. The user also authorised a private GitHub repository named `vault` for off-machine backup.
+
+| Scope | Decision | Implementation | Verification |
+| --- | --- | --- | --- |
+| Relocated Python environment | accepted | implemented | passed: regenerated activation scripts and pip launchers resolve to Vault; PyYAML remains available. |
+| Installer failure recovery | accepted | implemented | passed: 14 installer tests, including rollback after publication; the real installation passed twice. |
+| Desktop project and current-state correction | accepted | implemented | passed: the user confirmed sidebar removal and the subsequent API list excludes `docs`; both chats use Vault and the empty former directory is removed. |
+| Commit and private backup | accepted | partial | Private `expiracy/vault` exists and `origin` is configured; commit and remote revision checks are pending. |
+| Escaped Markdown and destination parsing | accepted | implemented | passed: 24 helper tests, one privileged file-symlink skip; the integrated consistency check passed. |
+| Durable integration fixtures and harness | accepted | partial | not-checked for the full scope. |
+
+The root agent is the single writer of the shared design, summaries and indexes. File ownership and handoffs are recorded in the task context. Historical setup checkpoints below retain their original delivery accounts.
 
 ## Document maintenance rule
 
@@ -59,7 +83,7 @@ The initial project can work directly from local files. A service, semantic data
 ## Layout conventions
 
 ```text
-docs/
+vault/
   README.md                         Human introduction
   AGENTS.md                         Instructions for working inside this repo
   CATALOG.md                        Generated project descriptions and links
@@ -67,6 +91,7 @@ docs/
     <project-id>/
       PROJECT.md                    Project description and document/task index
       current.md                    Project-level facts and links to feature facts
+      tools/                        Shared project utilities, when justified
       features/                     Maintained feature documents, when needed
         <feature-id>.md             Current design and separately labelled changes
         assets/<feature-id>/        Feature images and diagram sources
@@ -77,12 +102,15 @@ docs/
           research.md               Sources and findings, when needed
           design.md                 Only for a separately needed/requested design
           assets/                   Images and editable diagram sources
+          tools/                    Task-only scripts and utilities
+          outputs/                  Regenerated results, ignored by default
       decisions/                    Significant lasting decisions, when needed
       guides/                       Maintained project guides, when needed
   .agents/
     skills/
       docs-context/
         SKILL.md
+        references/                 Task-tool storage and invocation guidance
       write-project-doc/
         SKILL.md
         references/                 Writing style and document conventions
@@ -105,7 +133,7 @@ Each feature has one maintained design home when it needs documentation. Prefer 
 | `PROJECT.md` | Project discovery, scope, and routing. | Relevant feature designs, task contexts, and project facts. |
 | Maintained feature or project design | Detailed current design, evidence for feature claims, proposed changes, and material design rationale. | Originating tasks, decisions, source files, and checks. |
 | `current.md` | Project-level environment or integration facts, with evidence. | Feature facts at their canonical design sections. |
-| Task `context.md` | Requested deliverable, scope, progress, next action, and historical completion checkpoints. | Maintained design and stable change identifiers. |
+| Task `context.md` | Requested deliverable, scope, progress, next action, tool run instructions, and historical completion checkpoints. | Maintained design, canonical tools, results, and stable change identifiers. |
 | Existing decision records | Significant decision context, rationale, and supersession history. | Affected designs and tasks. |
 
 Task-specific designs are optional. Use one when the user requests a separate document or the task needs a distinct design with no suitable existing home, such as a cross-project change. In that case, the task design owns the detailed proposal, and affected feature documents link to it instead of reproducing it. Once implementation is checked, integrate the resulting current facts into their maintained feature documents and retain the proposal's history through its task checkpoint.
@@ -114,16 +142,15 @@ Task-specific designs are optional. Use one when the user requests a separate do
 
 Each project folder carries its own canonical descriptor in `PROJECT.md`. Use frontmatter for a stable name and a short description of the context and when to consult it. Repository identities and aliases are optional routing aids. The body is the maintained project overview, with scope, constraints, and links to relevant documents.
 
-An illustrative descriptor for this documentation project:
+An illustrative descriptor for Vault:
 
 ```yaml
 ---
-name: agent-docs
+name: vault
 description: >-
-  Central agent documentation, project discovery, task context, and Markdown
-  writing conventions. Consult when designing or maintaining the shared docs
-  repo or the skills that use it.
-aliases: [shared-docs, docs-repo]
+  Shared project documentation, discovery, task context, writing conventions,
+  and task-tool storage. Consult when building or using Vault and its skills.
+aliases: [agent-docs, shared-docs, docs-repo]
 repositories: []
 ---
 ```
@@ -229,7 +256,7 @@ The core uses two focused skills:
 
 Keep instructions brief. Put the selected writing style and substantial document-type guidance in references, and reusable output templates in assets. Skill frontmatter and supporting resources follow the [Agent Skills format](https://agentskills.io/specification).
 
-The exact prose style remains open. Existing report-writing preferences offer a starting point, but general docs need a representative example before report-specific rules are adopted. The first writing exercise should be a short real design document that the user can edit. Those corrections become the style reference.
+The user has specified simple, formal English, concise wording, no unnecessary repetition or stock AI phrasing, and bullets or tables where useful. The existing [writing style guide](../.agents/skills/write-project-doc/references/markdown-style.md) owns these rules and includes short examples. `write-project-doc` applies it, and the repo instructions and index link to it. Further corrections from real document reviews update the same guide.
 
 Use relative image paths inside documents. Keep feature media in `features/assets/<feature-id>/` when using the suggested layout, and task-only media in the task's `assets/` folder. Existing documents can retain their existing media locations. Link reusable media rather than copying it into every task. Use Mermaid for diagrams where the viewer renders it, with an SVG or PNG alternative when needed. Alt text explains what the image shows, and nearby prose or a caption explains its significance. [Markdown and media links](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax), [Mermaid support](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).
 
@@ -239,7 +266,7 @@ Use short decision records for decisions that matter beyond one task. Record con
 
 The descriptor, generated catalogue, consistency helper, two skills, Windows installer, and editable diagram with SVG fallback are implemented. This documentation project is the first real indexed project. The checkpoints below distinguish the initial rules-only pilot from the subsequent installed setup tests.
 
-The remaining style work is to review a representative real document with the user and refine the existing style reference from those edits. New projects can be indexed as they are needed. Other hosts and review viewers need their own access and rendering checks before their behaviour is claimed. Shared-document coordination remains cooperative; introduce enforcement only if real work demonstrates that need.
+Writing preferences are recorded; further style refinements can come from user edits to real documents. New projects can be indexed as they are needed. Other hosts and review viewers need their own access and rendering checks before their behaviour is claimed. Shared-document coordination remains cooperative; introduce enforcement only if real work demonstrates that need.
 
 Pilot acceptance checks:
 
@@ -290,7 +317,7 @@ The original ADR convention preserves superseded decisions, which supports retai
 
 The catalogue, skills, helper, and user-level pointer now exist; [CURRENT.md](../CURRENT.md) records their observed state. Git preserves the documentation. The earlier isolated pilot below demonstrated rules before those components existed. The subsequent full integration checks cover discovery, external access, installed skills, shared edits, and media within their stated environments; neither pilot proves arbitrary viewers or sessions work automatically.
 
-The reviewed structural and workflow issues are specified and the core is implemented. Exact prose style remains provisional pending user feedback. Optional document forms can be refined from real work without creating empty scaffolding. Further integration work follows observed gaps rather than assuming all environments share the tested access and rendering behaviour.
+The reviewed structural and workflow issues are specified and the core is implemented. The user's writing preferences are recorded in the maintained style guide. Optional document forms can be refined from real work without creating empty scaffolding. Further integration work follows observed gaps rather than assuming all environments share the tested access and rendering behaviour.
 
 ## Completion checkpoint: docs-workflow-refinements
 
@@ -372,4 +399,36 @@ Local diagnostic locations for this run, not durable or portable configuration:
 
 The temporary Delivery Board project was copied and hash-checked before removal from the real repo. The catalogue was regenerated to contain only the real documentation project. No synthetic application or pilot task is committed here. The implementation and this evidence are delivered together as the next local Git milestone after `0d857ea`; its exact revision is available in Git history. Existing research and historical checkpoint prose are retained.
 
+Amendment, 11 October 2026, setup remediation: the implementation and this checkpoint were committed at `1c58e473971eeccf9caa48daa1b597d1d7017dd6`, including `planning/docs-repo-design.md`, `scripts/docs_repo.py`, `scripts/install-local.ps1` and the canonical skills. The remediation now retains the four historical Delivery Board outputs and a resettable synthetic fixture under `tests/fixtures/integration/`, with a hash manifest and replay harness. This later evidence retention does not change what was committed or verified in the original delivery.
+
 Limits and next action: the observed core setup passes within these environments. Cross-platform installation, other agent/session permission configurations, arbitrary viewers, and external URLs were not verified. Writer coordination remains cooperative. User approval of the final prose style remains open; refine the existing style reference from a real document review rather than claiming that preference is already agreed. Add real project descriptors when needed and recheck claims affected by future source or environment changes.
+
+## Completion checkpoint: writing-style-preferences
+
+Recorded: 11 October 2026, follow-up after setup commit `1c58e47`.
+
+Requested deliverable: a writing style document specifying concise, simple but formal English, no stock AI phrasing or unnecessary repetition, and bullets and tables where needed. Delivered: the existing style reference was revised in place, with practical rules and three short editing examples. The writing skill and repo instructions apply it; the README and project index make it accessible. Current-state summaries now distinguish these specified preferences from the earlier provisional defaults.
+
+Checks: supported local document links and catalogue consistency passed; the revised skill passed the Skill Creator validator, and Git whitespace checks passed. Reading through the installed user-skill junction returned the updated guide. A read-only review informed the rules for precision, consistent terms, useful formatting, and removing filler without losing evidence. The earlier completion checkpoints retain their original delivery accounts.
+
+Scope: this follow-up records and integrates writing instructions. It does not establish automatic style compliance or rerun the external agent pilot against the revised preferences. Further user feedback updates the same guide.
+
+## Completion checkpoint: vault-rename-and-task-tools
+
+Recorded: 11 October 2026. Status: documentation, tool support, and checkout-content relocation delivered; desktop project and active chat path updates, and empty old directory cleanup pending.
+
+Requested deliverable: rename the project to Vault, move the checkout from `docs` to `vault`, and support task scripts with no suitable home in another repo. The user explicitly confirmed the folder move. Existing writing-style changes are retained.
+
+Delivered conventions: Vault's descriptor is `projects/vault/PROJECT.md`; `agent-docs`, `shared-docs`, and `docs-repo` remain discovery aliases. The existing design, current-state record, instructions, and skills were updated. A focused task-tools guide was added because that workflow had no existing guide. Task-only utilities live under the owning task's `tools/`; its existing context owns source links, invocation and working directory, dependencies, inputs/outputs, effects, and actual check results. Application tools stay in their owning repo. Shared utilities can be linked and later promoted when shared ownership is justified. Regenerated task outputs are ignored by default. No separate tool catalogue, execution service, or empty task/tool scaffolding was created.
+
+Checks before the live move: the full suite ran 29 tests, with 28 passing and one skipped for unavailable Windows file-symlink privilege. Ten installer tests include explicit relocation, unchanged canonical sources/settings, conflict refusal before mutation, dangling links, Unicode through Windows PowerShell, and refusal of unsupported JSON depth. Both skill manifests validate. Local links and catalogue checks pass; new and former project names both route to the same descriptor.
+
+The isolated task-tool fixture at `C:/Users/james/AppData/Local/Temp/vault-task-tools-pilot-w02lu2tz` saved and executed a standard-library JSON item-count script, refined it at the same path, and reran the literal command from its context. Default mode counted three items before and after refinement; active-only mode counted two. The input remained unchanged and the earlier phase checkpoint was preserved with a dated command clarification. The helper accepted the linked script and JSON input/output paths. This checks the three-item fixture and its two modes, not arbitrary scripts or production data.
+
+Migration outcome: all 1,032 checkout files, including `.git`, the environment, and pending writing-style changes, were moved to `C:/Users/james/Documents/repos/vault` with unchanged SHA-256 hashes. Windows held the original root open, so contents were moved with verified paths and the remaining empty child directories removed without recursive deletion. The old `docs` root is empty but still held open. The real user pointer, both skill junctions, and managed startup block now use Vault. Structural checks, catalogue consistency, and discovery through the new name and former alias passed from the moved checkout.
+
+The installed CLI's supported experimental `project/update` changed the existing saved protocol project to Vault at the new root; a separate read verified it. The active desktop project list still reports its legacy docs entry, and this chat's stored cwd remains the old path. A fresh client could not update unloaded thread settings; loading the same chat was refused because it already has an active writer. No chat was interrupted or recreated, and no permission profile was changed. The desktop stores a separate legacy project entry still containing the former name and root, so a restart alone is not established to correct it. Updating that desktop entry and the active chat path, and deleting the empty old root, remain pending; this checkpoint does not claim that the active app moved. Migration diagnostics and the file-hash manifest are local temporary evidence at `C:/Users/james/AppData/Local/Temp/vault-relocation-30e31dd951904e3281a3eece419bb5b5`.
+
+The configuration filename `agent-docs.json`, key `docs_root`, skill names, and managed block markers stay stable for compatibility. The installer uses an explicit matching `-PreviousDocsRoot`; it removes only preflighted directory links without traversing their canonical source. Filesystem permissions remain session-specific. Earlier checkpoints preserve the names, paths, and scope of their original deliveries.
+
+Amendment, 11 October 2026, setup remediation: this current chat already runs from Vault. The original setup chat's saved folder has now been corrected through the supported local protocol, with its archive state restored and no turn started. The verified empty former directory has been removed, and the Python activation scripts and pip launchers have been regenerated at the new path. After the user confirmed removal of the obsolete desktop entry, the live API also returned Vault without `docs`. The [remediation task](../projects/vault/tasks/setup-remediation/context.md) records the later checks without rewriting this earlier delivery account.

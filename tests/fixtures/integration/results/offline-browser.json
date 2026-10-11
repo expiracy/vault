@@ -1,0 +1,91 @@
+{
+  "recorded_at_utc": "2026-10-11T17:43:12.894921+00:00",
+  "environment": {
+    "python": "3.14.3",
+    "platform": "Windows"
+  },
+  "source_sha256": {
+    ".agents/skills/docs-context/references/task-tools.md": "f53c977ae021b54638063536b78373670563dbccc032f1707ef0a1b00814067d",
+    ".agents/skills/docs-context/SKILL.md": "86eee0b4cb957fab15f18e7b378a7503254fd0230178d9f8c11b9fc4fcb086f7",
+    ".agents/skills/write-project-doc/references/markdown-style.md": "9e98f67ac52d3f93e66483dd120511c42cce4dcec01f95df5de8a73ba8c0f54d",
+    ".agents/skills/write-project-doc/SKILL.md": "683639c6586606fbff7f4b6354880c17a0ee333f4f694166ab10e136bd196b10",
+    "planning/assets/docs-workflow.mmd": "d68d0060fed737345d21a40a79450245467be6325ff31ddb9ce488875e00b3b2",
+    "planning/assets/docs-workflow.svg": "052cf4323097efae27f424b9a4d4ab6cffbb9f6acb7ae3671dd72d1215b1d8a0",
+    "scripts/docs_repo.py": "6ef5a1bce371d4469190f1c8862f7f9eb17c109698904592a52ffdf3b19277ed",
+    "scripts/test_integration.py": "72baf869b0613622f615c6a6bb75e952d14b4fd62af9490cf7bbc75eb9e2775c",
+    "tests/fixtures/integration/browser.cjs": "a7aec63d4ca7295897c9c5bd4c2f3922c296809165e2fb9fdc3f68b81721854a",
+    "tests/fixtures/integration/historical/projects/delivery-board/features/dashboard.md": "0523e8e566077e9d21792a648facb435ffa61a8f9db6600b8c1b7f17a4e743ab",
+    "tests/fixtures/integration/historical/projects/delivery-board/PROJECT.md": "9a5019e0dff02713b6f33bbca249350ee257f71ed73fb0ad3f6b1447dfe3eabd",
+    "tests/fixtures/integration/historical/projects/delivery-board/tasks/dashboard-filters/context.md": "dcb8031d1e80d026fb8a92383830b719f15995be9c0480f396c7f61f5219ee84",
+    "tests/fixtures/integration/historical/projects/delivery-board/tasks/delivery-list/context.md": "9da59037637ec1148c08da78013dcd04be3cf2157bf2155871dc29d35d54c270",
+    "tests/fixtures/integration/provenance.json": "e13c1c3590ba0c6ae37d4f213a6e91e5fc301f075d4d9d1cce9835c77df3c048",
+    "tests/fixtures/integration/seed/AGENTS.md": "95adc053d2923c12208818b42b0af325209f991562f78bb4f0088001283ab5f3",
+    "tests/fixtures/integration/seed/projects/delivery-board/features/dashboard.md": "1fc216e3cd4db017476aa392655ec368584157b2c0f3994275e0611dc0e0dbe0",
+    "tests/fixtures/integration/seed/projects/delivery-board/PROJECT.md": "e7f992b37769fc75be7349c9ff767fd35d24fa6f89d8fc177a10e6a76dbbe958",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/count-json-items/context.md": "5ee17eefd70eab55c61ba882d4484a8e65fb2fbf196ad5c0e437b044743b5eac",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/count-json-items/inputs/items.json": "39c9fdc1093e33a6b2d678568880215f3fec23441e82dedc7c522ef5079d8885",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/count-json-items/tools/count_items.py": "c0e54fe2dbcd5e90ae5486643f41e5276015dea05695e03cec2a6d79bdcb59eb",
+    "tests/fixtures/integration/seed/projects/delivery-board/tasks/delivery-list/context.md": "2cab730fefbee482e3e9968c629c201f4947a27e0f6470dc4f79dec1fa484850",
+    "tests/fixtures/integration/seed/projects/unrelated/PROJECT.md": "e660ee9e09c2821adc08262f3b4f9d5966194cec587e684e85efd7af9debc656",
+    "planning/docs-repo-design.md#mermaid-fence": "68c0cdf5c3d2fde8ed138023f0bdb5335e862175962d30d4c1b469643601c0e2"
+  },
+  "fixture": "synthetic Delivery Board; no live documentation or installation mutation",
+  "scopes": {
+    "offline-routing-lifecycle": {
+      "status": "passed",
+      "evidence": {
+        "routing": "matching descriptor and relocated links passed",
+        "lifecycle": "saved design-only output retains change states, history and recovery facts",
+        "scope": "deterministic replay; fresh agents were not exercised by this check"
+      }
+    },
+    "task-tool": {
+      "status": "passed",
+      "evidence": "default=3, active-only=2, input preserved, invalid input rejected without report replacement"
+    },
+    "media-source-portability": {
+      "status": "passed",
+      "evidence": "current fence matches editable source; SVG parses; relocated media links resolve (rendering unchecked)"
+    },
+    "installed-user-files": {
+      "status": "passed",
+      "evidence": "actual user pointer and both canonical skill links inspected read-only"
+    },
+    "fresh-agents": {
+      "status": "not-checked"
+    },
+    "browser-rendering": {
+      "status": "passed",
+      "evidence": {
+        "status": "passed",
+        "viewer": {
+          "node": "v24.19.0",
+          "browser": "155.0.8059.39",
+          "playwright": "1.62.1",
+          "marked": "17.0.5",
+          "mermaid": "12.1.0"
+        },
+        "metrics": {
+          "nodes": 7,
+          "edges": 7,
+          "image": [
+            {
+              "complete": true,
+              "width": 1100,
+              "height": 330
+            }
+          ],
+          "links": [
+            "docs-workflow.mmd"
+          ],
+          "clipped": false
+        },
+        "scope": "custom local Markdown viewer; Codex and GitHub rendering remain unchecked",
+        "dependency": "Mermaid loaded from pinned jsDelivr URL; network required",
+        "screenshot": "workflow.png",
+        "retained_screenshot": "tests/fixtures/integration/results/workflow.png"
+      }
+    }
+  },
+  "requested_checks_passed": true
+}

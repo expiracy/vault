@@ -1,0 +1,4 @@
+# Keep canonical text stable across checkouts and retain fixture byte hashes.
+* text=auto eol=lf
+tests/fixtures/integration/** -text whitespace=cr-at-eol
+*.png binary

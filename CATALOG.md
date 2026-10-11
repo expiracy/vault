@@ -4,4 +4,4 @@ Generated from project frontmatter. Regenerate with `python scripts/docs_repo.py
 
 | Project | Description | Aliases | Repositories |
 | --- | --- | --- | --- |
-| [agent-docs](projects/agent-docs/PROJECT.md) | Central agent documentation, folder discovery, task context, and Markdown writing conventions. Consult when building or using the shared documentation repository, its catalogue, or documentation skills. | docs-repo, shared-docs |  |
+| [vault](projects/vault/PROJECT.md) | Vault's shared project documentation, discovery, task context, writing skills, and task-tool conventions. Consult when building or using Vault, its catalogue, documentation skills, or storage for standalone task utilities. | agent-docs, docs-repo, shared-docs | https://github.com/expiracy/vault |

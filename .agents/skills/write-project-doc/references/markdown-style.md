@@ -1,14 +1,36 @@
-# Markdown writing and media
+# Project documentation writing style
 
-These are provisional defaults drawn from the user's earlier report-writing preferences. The general Markdown style has not yet been agreed through a representative document. Explicit user instructions and feedback take precedence.
+User preferences recorded on 11 October 2026: simple, formal English; concise wording; no unnecessary repetition or stock AI phrasing; bullets and tables where useful. Use British spelling by default. Explicit instructions for a particular document take precedence.
 
-## Prose and structure
+## Language and length
 
-Use British English, plain words, active sentences, and a restrained tone. State the concrete point early, then develop the evidence or reasoning needed to assess it. Prefer connected paragraphs. Use headings when they help navigation and lists or tables when items are genuinely sequential, parallel, or easier to compare. Avoid forcing a template or adding sections with no useful content.
+- Use familiar words, direct sentences, and a neutral, formal tone. Prefer `use` to `utilise` and `start` to `commence`. Avoid slang, conversational asides, and ornate language.
+- State the purpose or outcome early. Name the action, subject, and consequence precisely. Use active voice when the actor matters.
+- Keep terminology consistent. Repeat a precise term when needed instead of replacing it with loose synonyms.
+- State each point once in the maintained account. Repeat only when a standalone summary, procedure, or historical checkpoint requires it; link to the detail where possible.
+- Remove filler, obvious explanations, and sentences that merely restate a heading or the preceding paragraph. Do not add a conclusion that repeats the document without a useful decision or next action.
+- Avoid stock introductions and transitions such as "Let's delve into", "It is important to note", and "In today's fast-paced world". State the relevant fact directly.
+- Avoid promotional adjectives, vague claims, rhetorical questions, forced contrasts, and formulaic lists of three. Use specific evidence instead of calling an approach "robust", "seamless", or "comprehensive" without a defined basis.
+- Include the reasoning, constraints, evidence, and uncertainty needed to assess the subject. Concision must preserve meaning and necessary technical detail.
 
-Explain what changes, why, and how a reader can check it. Name the affected behaviour, interfaces, constraints, trade-offs, and open issues when relevant. Keep implementation details only when they help the document's reader make a decision. Avoid promotional language, vague claims, decorative emphasis, and repeated summaries.
+## Structure and formatting
+
+- Prefer bullet points for distinct requirements, actions, findings, or options. Keep their wording parallel. Use numbered steps when order matters.
+- Use tables for comparisons, mappings, or repeated fields. Keep cells brief and avoid repeating the table in nearby prose.
+- Use short paragraphs for connected reasoning. Add descriptive headings only where they help navigation; omit empty or unnecessary sections.
+- Use emphasis sparingly for terms or decisions that need attention. Avoid decorative formatting and forced templates.
+
+Illustrative edits:
+
+| Avoid | Prefer |
+| --- | --- |
+| It is important to note that agents should first consult the project index. | Read the project index before editing. |
+| This robust approach enables seamless collaboration across multiple agents. | One assigned writer updates the shared design. |
+| In summary, the catalogue is a list of projects, as described above. | Omit the repeated summary. |
 
 Read the surrounding document before revising it. Integrate the change into its existing account and repair stale references elsewhere. Retain material decision history and completed checkpoints; historical corrections are dated amendments rather than silent rewrites.
+
+Before delivery, remove duplication and filler, then check that the meaning, scope, evidence, and uncertainty remain intact.
 
 ## Current facts and changes
 

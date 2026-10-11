@@ -1,0 +1,14 @@
+{
+  "recorded_date": "2026-10-11",
+  "basis": "Retained original small outputs and tool source from docs-full-setup-validation and vault-rename-and-task-tools pilots; raw transcripts and user configuration are excluded.",
+  "historical_records": "historical/ contains preserved previous pilot output, not present-state product claims.",
+  "seed": "seed/ contains a resettable synthetic baseline; current canonical skills, helper and media are copied by the harness.",
+  "sha256": {
+    "historical/projects/delivery-board/PROJECT.md": "9a5019e0dff02713b6f33bbca249350ee257f71ed73fb0ad3f6b1447dfe3eabd",
+    "historical/projects/delivery-board/features/dashboard.md": "0523e8e566077e9d21792a648facb435ffa61a8f9db6600b8c1b7f17a4e743ab",
+    "historical/projects/delivery-board/tasks/dashboard-filters/context.md": "dcb8031d1e80d026fb8a92383830b719f15995be9c0480f396c7f61f5219ee84",
+    "historical/projects/delivery-board/tasks/delivery-list/context.md": "9da59037637ec1148c08da78013dcd04be3cf2157bf2155871dc29d35d54c270",
+    "seed/projects/delivery-board/tasks/count-json-items/tools/count_items.py": "c0e54fe2dbcd5e90ae5486643f41e5276015dea05695e03cec2a6d79bdcb59eb",
+    "seed/projects/delivery-board/tasks/count-json-items/inputs/items.json": "39c9fdc1093e33a6b2d678568880215f3fec23441e82dedc7c522ef5079d8885"
+  }
+}

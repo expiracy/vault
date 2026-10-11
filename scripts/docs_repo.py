@@ -22,6 +22,8 @@ LINK_START = re.compile(r"!?\[(?:\\.|[^\]\\\n])*\]\(")
 REFERENCE = re.compile(r"!?\[((?:\\.|[^\]\\\n])*)\]\[([^\]\n]*)\]")
 DEFINITION = re.compile(r"^ {0,3}\[([^\]\n]+)\]:\s*(<[^>\n]*>|(?:\\.|[^\s])+)", re.M)
 MARKDOWN_ESCAPE = re.compile(r"\\([!\"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~])")
+HTML_TAG = re.compile(r"</?[a-zA-Z](?:[^\"'>]|\"[^\"]*\"|'[^']*')*>")
+BACKTICKS = re.compile(r"`+")
 
 
 class Invalid(ValueError):
@@ -226,9 +228,9 @@ def anchors(text: str) -> set[str]:
     return result
 
 
-def inline_destination(text: str, offset: int) -> str | None:
-    """Read an angle or balanced-parenthesis destination after an opening (."""
-    def finishes_link(index: int) -> bool:
+def inline_link(text: str, offset: int) -> tuple[str, int] | None:
+    """Read a destination and the full link's end after an opening (."""
+    def finishes_link(index: int) -> int | None:
         while index < len(text) and text[index].isspace():
             index += 1
         if index < len(text) and text[index] in "\"'(":
@@ -243,17 +245,18 @@ def inline_destination(text: str, offset: int) -> str | None:
                 else:
                     index += 1
             else:
-                return False
+                return None
             while index < len(text) and text[index].isspace():
                 index += 1
-        return index < len(text) and text[index] == ")"
+        return index + 1 if index < len(text) and text[index] == ")" else None
 
     index = offset
     while index < len(text) and text[index].isspace():
         index += 1
     if index < len(text) and text[index] == "<":
         end = text.find(">", index + 1)
-        return text[index + 1:end] if end != -1 and finishes_link(end + 1) else None
+        closing = finishes_link(end + 1) if end != -1 else None
+        return (text[index + 1:end], closing) if closing is not None else None
     start, depth = index, 0
     while index < len(text):
         char = text[index]
@@ -264,17 +267,104 @@ def inline_destination(text: str, offset: int) -> str | None:
             depth += 1
         elif char == ")":
             if not depth:
-                return text[start:index]
+                return text[start:index], index + 1
             depth -= 1
         elif char.isspace() and not depth:
-            return text[start:index] if finishes_link(index) else None
+            closing = finishes_link(index)
+            return (text[start:index], closing) if closing is not None else None
         index += 1
     return None
 
 
+def inline_destination(text: str, offset: int) -> str | None:
+    parsed = inline_link(text, offset)
+    return parsed[0] if parsed is not None else None
+
+
+def escaped(text: str, offset: int) -> bool:
+    """Markdown punctuation is escaped by an odd number of backslashes."""
+    start = offset
+    while start and text[start - 1] == "\\":
+        start -= 1
+    return (offset - start) % 2 == 1
+
+
+def code_span_end(text: str, offset: int) -> int | None:
+    opener = BACKTICKS.match(text, offset)
+    line_end = text.find("\n", opener.end())
+    for closing in BACKTICKS.finditer(text, opener.end(), len(text) if line_end == -1 else line_end):
+        if len(closing[0]) == len(opener[0]):
+            return closing.end()
+    return None
+
+
+def inline_link_start(text: str, offset: int) -> tuple[int, list[tuple[int, int]]] | None:
+    """Find ]( outside label code spans, retaining their masking ranges."""
+    bracket = offset + (1 if text[offset:offset + 1] == "!" else 0)
+    if text[bracket:bracket + 1] != "[" or escaped(text, bracket):
+        return None
+    index, depth = bracket + 1, 1
+    code_spans = []
+    while index < len(text) and text[index] != "\n":
+        char = text[index]
+        if char == "\\":
+            index += 2
+            continue
+        if char == "`":
+            end = code_span_end(text, index)
+            if end is not None:
+                code_spans.append((index, end))
+                index = end
+                continue
+            index = BACKTICKS.match(text, index).end()
+            continue
+        if char == "[":
+            depth += 1
+        elif char == "]":
+            depth -= 1
+            if not depth:
+                return (index + 2, code_spans) if text[index + 1:index + 2] == "(" else None
+        index += 1
+    return None
+
+
+def without_inline_code(text: str) -> str:
+    """Mask code spans, preserving line positions and actual link destinations."""
+    output = list(text)
+    index = 0
+    while index < len(text):
+        # A destination or HTML attribute is parsed as part of its enclosing
+        # construct; its backticks do not start a Markdown code span.
+        definition = DEFINITION.match(text, index)
+        if definition:
+            index = definition.end()
+            continue
+        link = inline_link_start(text, index)
+        if link is not None:
+            parsed = inline_link(text, link[0])
+            if parsed is not None:
+                for start, end in link[1]:
+                    output[start:end] = " " * (end - start)
+                index = parsed[1]
+                continue
+        tag = HTML_TAG.match(text, index)
+        if tag:
+            index = tag.end()
+            continue
+        if text[index] == "`" and not escaped(text, index):
+            end = code_span_end(text, index)
+            if end is not None:
+                output[index:end] = " " * (end - index)
+                index = end
+            else:
+                index = BACKTICKS.match(text, index).end()
+            continue
+        index += 1
+    return "".join(output)
+
+
 def link_targets(text: str) -> tuple[list[tuple[str, int]], list[str]]:
-    text = without_examples(text)
-    text = re.sub(r"(`+)(.+?)\1", lambda m: " " * len(m[0]), text)
+    text = without_inline_code(without_examples(text))
     found, errors = [], []
     references = set()
     def markdown_destination(value: str) -> str:
@@ -284,12 +374,18 @@ def link_targets(text: str) -> tuple[list[tuple[str, int]], list[str]]:
         references.add(" ".join(match[1].split()).casefold())
         found.append((markdown_destination(match[2].strip("<>")), text.count("\n", 0, match.start()) + 1))
     for match in LINK_START.finditer(text):
+        bracket = match.start() + (1 if match[0].startswith("!") else 0)
+        if escaped(text, bracket):
+            continue
         target = inline_destination(text, match.end())
         if target is None:
             errors.append(f"line {text.count(chr(10), 0, match.start()) + 1}: malformed inline link")
         else:
             found.append((markdown_destination(target), text.count("\n", 0, match.start()) + 1))
     for match in REFERENCE.finditer(text):
+        bracket = match.start() + (1 if match[0].startswith("!") else 0)
+        if escaped(text, bracket):
+            continue
         reference = " ".join((match[2] or match[1]).split()).casefold()
         if reference not in references:
             errors.append(f"line {text.count(chr(10), 0, match.start()) + 1}: undefined reference {reference!r}")
@@ -354,7 +450,8 @@ def parser() -> argparse.ArgumentParser:
         "reference definitions and explicit references, quoted HTML href/src, ATX/setext headings and HTML id/name anchors. "
         "Fenced/inline code, frontmatter and comments are skipped. Heading fragments use a GitHub-style basic slug "
         "with duplicate suffixes. This is a bounded syntax checker, not a complete Markdown AST: indented code, "
-        "multiline links/headings and extension-specific generated anchors are unsupported. Remote/deep links are skipped; "
+        "multiline links/headings/code spans and extension-specific generated anchors are unsupported. Remote/deep links are skipped; "
+        "protocol-relative //host/path links are treated as UNC paths and rejected. "
         "local paths must remain inside the repository, including symlinks."
     )
     result = argparse.ArgumentParser(description=description, epilog=syntax)
