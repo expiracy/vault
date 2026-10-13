@@ -2,6 +2,8 @@
 
 Task: `setup-remediation`. Started and completed: 11 October 2026. Status: complete.
 
+Historical delivery: the skill and installer components described here were removed on 12 October 2026 by the [remove-skills task](../remove-skills/context.md). This record preserves their original scope and checks; it does not describe a current installation. GitHub visibility was changed to public separately on 12 October 2026.
+
 Requested deliverable: fix the six findings from the Vault setup review, test the setup again, and commit the existing and new authorised changes. The maintained design remains [Vault design](../../../../planning/docs-repo-design.md).
 
 ## Scope and ownership
@@ -32,7 +34,7 @@ Vault infrastructure is kept in root `scripts/`; these tools support the maintai
 .\.venv\Scripts\python.exe scripts/test_integration.py --installed-user-dir C:/Users/james --output "$env:TEMP\vault-integration.json"
 ```
 
-The [consistency helper](../../../../scripts/docs_repo.py) reads descriptors and supported links; `catalog` without `--check` rewrites only the generated catalogue. The [installer](../../../../scripts/install-local.ps1) updates the selected user directory's managed startup block, root pointer and skill links. Its [tests](../../../../tests/test_install_local.py) use isolated temporary directories and simulate failed writes, late file locks, fresh-install cleanup and dangling-link rollback. The real installation was rerun idempotently in this task.
+The [consistency helper](../../../../scripts/docs_repo.py) reads descriptors and supported links; `catalog` without `--check` rewrites only the generated catalogue. The [historical installer](https://github.com/expiracy/vault/blob/0001181ef771face3a4c2a7e4287bfc304e6b603/scripts/install-local.ps1) updates the selected user directory's managed startup block, root pointer and skill links. Its [historical tests](https://github.com/expiracy/vault/blob/0001181ef771face3a4c2a7e4287bfc304e6b603/tests/test_install_local.py) use isolated temporary directories and simulate failed writes, late file locks, fresh-install cleanup and dangling-link rollback. The real installation was rerun idempotently in this task.
 
 The [integration harness](../../../../scripts/test_integration.py) copies [retained synthetic fixtures](../../../../tests/fixtures/integration/) into isolated temporary directories, runs the helper and the fixture's JSON tool, and writes a JSON result. It does not edit live documentation or global installation. Optional agent sessions consume account usage and require network access; optional browser rendering requires Node, Playwright, marked, Chrome and the pinned Mermaid CDN. Omitted scopes remain `not-checked`. Raw diagnostic transcripts and temporary absolute paths are not required for offline replay.
 

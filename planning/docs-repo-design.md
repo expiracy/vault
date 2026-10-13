@@ -1,8 +1,8 @@
 # Vault design
 
-Status: maintained design with implemented core, scoped integration evidence, and recorded user writing preferences. Updated: 11 October 2026.
+Status: maintained design with implemented core, separately tracked changes, scoped integration evidence, and recorded user writing preferences. Updated: 13 October 2026.
 
-Present-state evidence is recorded separately in [CURRENT.md](../CURRENT.md). The catalogue, project descriptor, helper, installer, and two skills implement the core design. User-level discovery is configured locally. Completed checks and unverified scopes are recorded independently; optional documents and style refinements remain conventions or proposals until needed and checked.
+Present-state evidence is recorded separately in [CURRENT.md](../CURRENT.md). The catalogue, project descriptor, consistency helper and ordinary guidance implement the core design. Vault contains no packaged agent skills or local installer. Completed checks and unverified scopes are recorded independently; accepted file metadata support remains unimplemented.
 
 Confirmed requirements:
 
@@ -10,8 +10,10 @@ Confirmed requirements:
 - The project and checkout are named Vault. It also holds useful task tools that have no suitable home in another repository.
 - Folder descriptions that help agents find relevant context, similar to skill descriptions.
 - Readable records of current task context and progress for user audit.
-- Skills for producing documents in the user's preferred style.
+- Ordinary writing guidance for producing documents in the user's preferred style.
+- Vault contains no packaged agent skills or skill installer.
 - Markdown documents with images and diagrams.
+- Optional YAML frontmatter for metadata about an individual file, including an associated webpage and intended sync direction. Metadata must be easy to parse separately and remove without changing the file's body.
 - Update appropriate existing documents to reflect new information by default. Create a new document only when explicitly requested or when requested work or an agreed workflow needs a document with no appropriate existing home.
 
 The five reviewed issues are resolved in the document roles and workflow below, with operating rules in [AGENTS.md](../AGENTS.md). The core is now implemented for the user's full setup test. Resolving a design issue or installing a component does not establish untested runtime behaviour.
@@ -22,21 +24,27 @@ Canonical project descriptors live at `projects/<project-id>/PROJECT.md`. The do
 
 `scripts/docs_repo.py` derives its root from its own location by default, so it works from another workspace. It safely loads YAML frontmatter with PyYAML, validates unique routing identities, generates deterministic `CATALOG.md`, finds candidate projects, and checks supported local document/media links and anchors. `--root PATH` allows isolated fixtures and relocated checkouts. It is a bounded consistency checker, not a complete Markdown parser or proof of implementation correctness. Remote URL and viewer checks are separate.
 
-The canonical `docs-context` and `write-project-doc` skills live under `.agents/skills/`. Their on-demand references cover writing style and task tools. They resolve the central root from local `~/.agents/agent-docs.json`, or their resolved canonical location if configuration is absent. The configuration names and skill names remain stable for compatibility. The instructions apply maintenance rules from other code checkouts and preserve scope, evidence, and historical checkpoints.
-
-On Windows, `scripts/install-local.ps1` adds a bounded managed block to global `~/.codex/AGENTS.md`, writes `docs_root` in `~/.agents/agent-docs.json`, and links user skill directories to the canonical skill folders using junctions. It preserves unrelated settings, is idempotent, and refuses conflicting roots or destinations. Explicit `-PreviousDocsRoot` supports an authorised relocation by matching the former configuration and managed links before retargeting them. Machine-specific roots are not stored in tracked skill instructions.
-
-The installer stages generated files and junctions, retains original entries until publication succeeds, and rolls back completed operations after a runtime failure. This includes restoring dangling junctions after a failed relocation. It refuses read-only destination files before mutation. Abrupt termination is outside the rollback guarantee; independently failed rollback retains the original backups and reports their transaction identifier.
+Operating instructions live in `AGENTS.md`. Writing and task-tool guidance lives in ordinary documents under `projects/vault/guides/`. Agents receive Vault's location through their session or external configuration; Vault does not install skills or change global agent settings.
 
 The helper recognises escaped opening brackets by backslash parity and masks inline code in link labels while preserving destinations containing literal backticks. Its bounded syntax scope still excludes multiline links, multiline code spans and indented code. Ambiguous `//host/path` destinations remain rejected as possible local UNC paths.
 
-Task-only utilities live under their owning task's `tools/` directory, with source links and run instructions in its existing context. This is an ordinary file convention, not a hosted execution service. The [task tools guide](../.agents/skills/docs-context/references/task-tools.md) defines ownership, invocation, dependencies, effects, results, and checks.
+Task-only utilities live under their owning task's `tools/` directory, with source links and run instructions in its existing context. This is an ordinary file convention, not a hosted execution service. The [task tools guide](../projects/vault/guides/task-tools.md) defines ownership, invocation, dependencies, effects, results, and checks.
 
 Filesystem access is independent of discovery. The external CLI integration test grants the central repo with `--add-dir`; no global permission override is installed. Shared-document coordination remains an agent cooperation rule.
 
-[The integration harness](../scripts/test_integration.py) and [retained fixtures](../tests/fixtures/integration/) make the earlier temporary-only checks replayable. Offline checks inspect routing, relocation, saved design/history/recovery invariants, media source, and a JSON-count tool. Optional checks inspect the real installation read-only, run fresh isolated Codex roles, and render the diagram in a custom browser viewer. Results record each checked or unchecked scope and relevant source hashes. These fixtures establish the bounded examples, not arbitrary project workflows or all Markdown viewers.
+[The integration harness](../scripts/test_integration.py) and [retained fixtures](../tests/fixtures/integration/) make bounded checks replayable. Offline checks inspect routing, relocation, saved design/history/recovery invariants, media source and a JSON-count tool. Optional checks run isolated Codex roles using ordinary instructions and guides, or render the diagram in a custom browser viewer. Results record each checked or unchecked scope and relevant source hashes. Historical reports retain the input hashes and installation checks from their original runs; they do not verify the revised harness.
+
+## Change remove-skills
+
+Decision: `accepted` on 12 October 2026, following the user's instruction that Vault should not have skills. Implementation: `implemented`. Verification: `passed` for the local unit, catalogue/link and offline integration checks. Live-agent and browser checks for this revision remain `not-checked`. [Task, plan and delivery checkpoint](../projects/vault/tasks/remove-skills/context.md).
+
+Vault stores project documentation, file metadata conventions and task tools. Packaged skills and the local skill installer are removed. Their useful writing and task-tool references are retained as ordinary project guides. Catalogue discovery and document checks remain available without a skill installation; the integration fixture uses workspace instructions and plain guides. No global user configuration is changed.
+
+This supersedes the skill and installer components of the historical setup below. The accepted file metadata description remains in place; metadata parsing/removal and webpage syncing are separate pending work.
 
 ## Change setup-remediation
+
+Historical delivery recorded on 11 October 2026. Its skill installation components are superseded by [Change remove-skills](#change-remove-skills); the recorded checks below describe that earlier revision.
 
 Originating task: [setup-remediation](../projects/vault/tasks/setup-remediation/context.md), authorised on 11 October 2026 after the setup review. The requested scope is all six findings, a fresh setup check, and a commit. The user also authorised a private GitHub repository named `vault` for off-machine backup.
 
@@ -57,7 +65,7 @@ The default is to update the appropriate existing document. Read the relevant fi
 
 Create a new document only when the user explicitly requests one, or when requested work or an agreed workflow needs a document with no appropriate existing home. A changed requirement, new finding, or revision ordinarily belongs in the existing document. Avoid dated replacements, numbered copies, and supplementary files created solely for updates. Supporting images and diagram assets can still be added when needed.
 
-The `docs-context` and `write-project-doc` skills follow this rule. Their guidance describes a document's shape when one is needed, rather than requiring a new file for every invocation. A distinct authorised task may need one context record; subsequent messages, findings, and revisions update that record. Extending a feature reuses its maintained design.
+The maintenance rules in `AGENTS.md` apply to document edits. A distinct authorised task may need one context record; subsequent messages, findings and revisions update that record. Extending a feature reuses its maintained design.
 
 ## Recommended approach
 
@@ -106,16 +114,7 @@ vault/
           outputs/                  Regenerated results, ignored by default
       decisions/                    Significant lasting decisions, when needed
       guides/                       Maintained project guides, when needed
-  .agents/
-    skills/
-      docs-context/
-        SKILL.md
-        references/                 Task-tool storage and invocation guidance
-      write-project-doc/
-        SKILL.md
-        references/                 Writing style and document conventions
-        assets/                     Optional templates, when needed
-  scripts/                          Catalogue generation and consistency check
+  scripts/                          Catalogue generation, consistency and fixture checks
 ```
 
 Use existing documents when they already serve the purpose. Only create optional documents and folders when separate content warrants them or the user requests them. A small task can use one `context.md` with its requested deliverable, goal, progress, and next action. Larger work can link to existing research and design documents or create distinct ones where needed. A project can exist before any code repository exists.
@@ -149,7 +148,7 @@ An illustrative descriptor for Vault:
 name: vault
 description: >-
   Shared project documentation, discovery, task context, writing conventions,
-  and task-tool storage. Consult when building or using Vault and its skills.
+  and task-tool storage. Consult when building or using Vault's document conventions.
 aliases: [agent-docs, shared-docs, docs-repo]
 repositories: []
 ---
@@ -161,7 +160,27 @@ A small helper generates `CATALOG.md` from project frontmatter. The committed ca
 
 An agent can read the short catalogue, select a matching project, and open its descriptor. Known repository identity should help selection, while descriptions support conceptual requests spanning several repositories. If several projects match, load their descriptors or clarify the scope before writing. Do not choose a task merely because it is the newest one.
 
-These descriptors are a custom convention. They will not automatically appear in an agent's available context like registered skills do.
+These descriptors are a custom convention with no automatic loading semantics.
+
+## Change file-metadata
+
+Decision: `accepted` on 12 October 2026, following the user's request to describe optional file metadata. Implementation: `not-started`. Verification: `not-checked`. [Design task and delivery checkpoint](../projects/vault/tasks/file-metadata/context.md).
+
+A Markdown file may begin with a YAML mapping between two `---` delimiter lines. The block describes that file and stays with its content. Frontmatter remains required for project descriptors; other documents can omit it, in which case the whole file is the body.
+
+For example, a page associated with a webpage it should be synced to can record:
+
+```yaml
+---
+sync:
+  url: https://example.com/my-page
+  direction: vault-to-web
+---
+```
+
+Consumers should use a safe YAML parser to read the leading block separately from the body. Removing metadata should remove only that block and its delimiters, preserving the remaining content and line endings exactly. Delimiters or YAML examples later in the body are ordinary content. Malformed YAML or an unclosed leading block must be reported rather than silently removing content.
+
+The fields record an association and intended sync direction. Automatic webpage syncing requires separate implementation. The current helper handles project descriptor metadata; a general interface for reading or stripping individual files' metadata has not been implemented or checked.
 
 ## Proposed behaviour and present state
 
@@ -203,21 +222,17 @@ Update the owning document when new evidence supports a changed claim. Integrate
 
 ## Agent discovery and access
 
-The intended reading path is:
+The reading path uses ordinary documents:
 
 ```text
-Agent's startup guidance
-  -> Central docs location and CATALOG.md
+Vault location supplied through the session or external agent configuration
+  -> CATALOG.md
   -> Relevant PROJECT.md
-  -> Relevant maintained feature/project design and explicit task context
+  -> Maintained design and matching task context
   -> Detailed documents needed for the work
 ```
 
-For Codex, use a short global `AGENTS.md` pointer to make the docs location known across projects. Make the reusable skills available at user scope or through a supported plugin. Repo-local skills are useful for development in this repository but do not automatically load in unrelated code repos. [Instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [skill discovery](https://learn.chatgpt.com/docs/build-skills).
-
-The bootstrap should say where the docs live and when to consult the catalogue. Detailed operating instructions belong in the skill, and project facts belong in project documents. This avoids copying the same content into every code repository.
-
-Configure filesystem access to the docs root for sessions that need it. An instruction or skill cannot grant that access. Validate the integration from another project's workspace during the pilot, including read and write access.
+`AGENTS.md` owns the maintenance workflow. Project descriptors and indexes route readers to existing context; the writing and task-tool guides provide reusable guidance. Vault does not provide an automatic cross-project discovery or skill installation service. Supply its location when working elsewhere and grant the session the filesystem access its task needs. Instructions alone do not grant access.
 
 ## Task context and audit
 
@@ -245,18 +260,9 @@ Other agents keep contributions and evidence in their existing task records or s
 
 If a writer has not been coordinated while overlapping edits are active, keep contributions in the task context until the assignment is resolved. These are cooperation rules, not automatic filesystem locks. The pilot must exercise two agents working on the same feature as well as on separate task records.
 
-## Writing skills and media
+## Writing guidance and media
 
-The core uses two focused skills:
-
-| Skill | Purpose | Main outputs |
-| --- | --- | --- |
-| `docs-context` | Find the owning project and maintained design, select or resume the task, recover context, and record meaningful checkpoints. | Project indexes, task context, evidence links, and catalogue updates when metadata changes. |
-| `write-project-doc` | Revise the owning document using the chosen voice, change states, citations, and figure conventions. Create a separate document only when the maintenance rule permits it. | Maintained designs, research notes, guides, and decision records with linked media. |
-
-Keep instructions brief. Put the selected writing style and substantial document-type guidance in references, and reusable output templates in assets. Skill frontmatter and supporting resources follow the [Agent Skills format](https://agentskills.io/specification).
-
-The user has specified simple, formal English, concise wording, no unnecessary repetition or stock AI phrasing, and bullets or tables where useful. The existing [writing style guide](../.agents/skills/write-project-doc/references/markdown-style.md) owns these rules and includes short examples. `write-project-doc` applies it, and the repo instructions and index link to it. Further corrections from real document reviews update the same guide.
+`AGENTS.md` owns document maintenance, task recovery and shared-writer rules. The ordinary [writing style guide](../projects/vault/guides/markdown-style.md) records the user's preference for simple, formal English, concise wording, no unnecessary repetition or stock AI phrasing, and bullets or tables where useful. The [task tools guide](../projects/vault/guides/task-tools.md) covers useful utilities. Further corrections update these documents in place.
 
 Use relative image paths inside documents. Keep feature media in `features/assets/<feature-id>/` when using the suggested layout, and task-only media in the task's `assets/` folder. Existing documents can retain their existing media locations. Link reusable media rather than copying it into every task. Use Mermaid for diagrams where the viewer renders it, with an SVG or PNG alternative when needed. Alt text explains what the image shows, and nearby prose or a caption explains its significance. [Markdown and media links](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax), [Mermaid support](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).
 
@@ -264,14 +270,14 @@ Use short decision records for decisions that matter beyond one task. Record con
 
 ## Implementation and remaining work
 
-The descriptor, generated catalogue, consistency helper, two skills, Windows installer, and editable diagram with SVG fallback are implemented. This documentation project is the first real indexed project. The checkpoints below distinguish the initial rules-only pilot from the subsequent installed setup tests.
+The descriptor, generated catalogue, consistency helper, ordinary guides and editable diagram with SVG fallback are retained. Skills and the local installer are removed. This documentation project is the first real indexed project. The historical checkpoints below distinguish earlier rules-only and installed setup tests; the removal task records checks for the revised repository.
 
 Writing preferences are recorded; further style refinements can come from user edits to real documents. New projects can be indexed as they are needed. Other hosts and review viewers need their own access and rendering checks before their behaviour is claimed. Shared-document coordination remains cooperative; introduce enforcement only if real work demonstrates that need.
 
 Pilot acceptance checks:
 
 - A fresh agent can identify the correct project from its description and repository identity without reading unrelated project documents.
-- An agent starting outside the docs workspace can find and access the relevant docs.
+- An agent supplied with Vault's location can find relevant documents through the catalogue and project index, subject to session filesystem access.
 - A fresh session can recover a task's state and next action, including what has and has not been verified.
 - A reader can distinguish current behaviour, accepted decisions, and proposals. An accepted but unimplemented design is never presented as a working capability.
 - A design-only task can complete while its change remains unimplemented, and acceptance alone does not trigger implementation.
@@ -300,6 +306,8 @@ This is an illustrative walkthrough, not an implemented feature in this repo. As
 Follow-up questions during design reuse the design task. If another agent is concurrently designing search ranking, the coordinator assigns one writer for the shared search document and both agents contribute through their own task records. The project current-state summary links to the maintained search facts rather than duplicating them.
 
 ## Design review resolutions
+
+Historical review and delivery records follow. References to skills and installation describe the earlier setup and are superseded by [Change remove-skills](#change-remove-skills).
 
 Reviewed and revised: 11 October 2026. The user requested that the five identified issues be addressed. They are resolved as design definitions and local operating rules. The checkpoints below record the representative cases exercised locally and through fresh external Codex sessions.
 

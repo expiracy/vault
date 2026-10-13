@@ -2,6 +2,8 @@
 
 Researched: 11 October 2026. Scope: a central documentation repository, folders discoverable through descriptions, persistent task context, user review, and Markdown with images and diagrams.
 
+Follow-up decision, 12 October 2026: Vault must not contain skills or a skill installer. The [maintained design](../planning/docs-repo-design.md#change-remove-skills) uses ordinary instructions and guides. The alternatives and earlier local inspection below remain research history.
+
 The inspected projects cover useful parts of this idea. The closest precedents are OpenSpec Stores for central planning and Kiro Steering for description-based context selection. A small custom layer looks appropriate for the user's combination of requirements. This is a design judgement, not a claim that no other complete solution exists.
 
 ## Agent context and planning

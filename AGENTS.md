@@ -8,7 +8,11 @@ Keep proposed behaviour separate from observed current state. An accepted design
 
 ## Writing style
 
-Apply the [writing style guide](.agents/skills/write-project-doc/references/markdown-style.md) when writing project documents. Follow explicit user instructions for the document.
+Apply the [writing style guide](projects/vault/guides/markdown-style.md) when writing project documents. Follow explicit user instructions for the document.
+
+## Finding context
+
+Vault contains project documents and task tools. It does not package agent skills or install agent configuration. Read `CATALOG.md`, select the relevant `PROJECT.md`, then follow its document and task indexes. Confirm the subject through the descriptor and requested scope before editing. Resume the matching task rather than selecting the newest record. Supply Vault's location through the session or external agent configuration when working from another repository.
 
 ## Maintained documents and change states
 
@@ -30,6 +34,6 @@ While overlapping work lacks a coordinated writer, keep contributions in task co
 
 ## Task tools
 
-Vault also holds useful task scripts and small utilities with no suitable home in another repository. Follow the [task tools guide](.agents/skills/docs-context/references/task-tools.md). Use the existing task context to index source and record the command, working directory, dependencies, inputs/outputs, effects, and scoped checks. Store task-only source in `tasks/<task-id>/tools/`; root `scripts/` remains Vault infrastructure. Reuse and revise appropriate existing tools. Shared tools follow the coordinated-writer rule above.
+Vault also holds useful task scripts and small utilities with no suitable home in another repository. Follow the [task tools guide](projects/vault/guides/task-tools.md). Use the existing task context to index source and record the command, working directory, dependencies, inputs/outputs, effects, and scoped checks. Store task-only source in `tasks/<task-id>/tools/`; root `scripts/` remains Vault infrastructure. Reuse and revise appropriate existing tools. Shared tools follow the coordinated-writer rule above.
 
-These local rules implement the requested maintenance policy and reviewed workflow safeguards. The catalogue, helper, project descriptor, and documentation skills now implement the core layout in [the maintained design](planning/docs-repo-design.md). Check [the current-state record](CURRENT.md) for the scope of completed integration tests and remaining limitations. Global instructions and skills do not grant access outside the session's filesystem permissions.
+These local rules implement the requested maintenance policy and reviewed workflow safeguards. The catalogue, helper and project descriptor implement the core layout in [the maintained design](planning/docs-repo-design.md). Check [the current-state record](CURRENT.md) for completed checks and remaining limitations. Instructions do not grant access outside the session's filesystem permissions.

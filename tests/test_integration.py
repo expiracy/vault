@@ -19,15 +19,19 @@ class IntegrationTests(unittest.TestCase):
     def test_offline_replay_reports_unchecked_live_scopes_and_preserves_fixtures(self):
         before = integration.snapshot(integration.FIXTURES)
         with tempfile.TemporaryDirectory() as temporary:
+            checkout = Path(temporary) / "checkout"
+            shutil.copytree(ROOT, checkout, ignore=shutil.ignore_patterns(
+                ".git", ".agents", ".venv", "__pycache__"))
             output = Path(temporary) / "result.json"
-            with redirect_stdout(io.StringIO()):
-                status = integration.main(["--output", str(output)])
-            self.assertEqual(status, 0)
+            with patch.object(integration, "ROOT", checkout), patch.object(
+                    integration, "FIXTURES", checkout / "tests/fixtures/integration"):
+                with redirect_stdout(io.StringIO()):
+                    status = integration.main(["--output", str(output)])
             report = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(status, 0, report["scopes"])
         self.assertTrue(report["requested_checks_passed"])
         self.assertEqual(report["scopes"]["fresh-agents"]["status"], "not-checked")
         self.assertEqual(report["scopes"]["browser-rendering"]["status"], "not-checked")
-        self.assertEqual(report["scopes"]["installed-user-files"]["status"], "not-checked")
         self.assertEqual(before, integration.snapshot(integration.FIXTURES))
 
     def test_bad_historical_design_state_fails_instead_of_inheriting_old_pass(self):
@@ -50,14 +54,6 @@ class IntegrationTests(unittest.TestCase):
                 with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as result:
                     integration.main(arguments)
                 self.assertEqual(result.exception.code, 2)
-
-    def test_bootstrap_accepts_single_message_and_message_array(self):
-        text = "<!-- agent-docs:begin -->\n- docs-context: fixture\n- write-project-doc: fixture\n"
-        message = {"content": [{"text": text, "type": "text"}]}
-        for payload in (message, [message]):
-            with self.subTest(payload_type=type(payload).__name__):
-                with patch.object(integration, "run", return_value=json.dumps(payload)):
-                    self.assertIn("exactly once", integration.check_bootstrap(Path("codex"), Path("outside")))
 
     def test_existing_keep_directory_is_never_reused_or_deleted(self):
         with tempfile.TemporaryDirectory() as temporary:

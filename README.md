@@ -1,56 +1,41 @@
 # Vault
 
-Vault is one central repository for project documentation and task tools used by agents across projects. Documents use Markdown with local images and diagrams. Useful task scripts can live here when they have no suitable home in another repo. [CURRENT.md](CURRENT.md) records the implementation and verification scope.
+Vault is a central repository for project documentation and task tools used across projects. Documents use Markdown with local images and diagrams. Useful task scripts can live here when they have no suitable home in another repository.
 
 Current records:
 
-- [Agent documentation maintenance rules](AGENTS.md)
-- [Writing style guide](.agents/skills/write-project-doc/references/markdown-style.md)
-- [Task tools: storage and run instructions](.agents/skills/docs-context/references/task-tools.md)
+- [Documentation maintenance rules](AGENTS.md)
+- [Writing style guide](projects/vault/guides/markdown-style.md)
+- [Task tools: storage and run instructions](projects/vault/guides/task-tools.md)
 - [Current state and evidence](CURRENT.md)
 - [Existing approaches and sources](research/existing-approaches.md)
 - [Project catalogue](CATALOG.md)
-- [Maintained repository design and checkpoints](planning/docs-repo-design.md)
+- [Maintained design and historical checkpoints](planning/docs-repo-design.md)
 
-The design defines maintained feature documents, separate change states, task completion checkpoints, and coordination for shared edits. Local operating rules are in `AGENTS.md`. Project frontmatter owns discovery metadata; the helper generates the catalogue. The two skills are maintained in `.agents/skills/` and can be linked into user scope for other projects.
+Project frontmatter owns discovery metadata; the helper generates the catalogue. Read `CATALOG.md`, confirm the relevant project through its `PROJECT.md`, and follow its document and task indexes. Supply Vault's location through the session when working from another repository. Vault contains no packaged agent skills or local skill installer.
 
-The documentation, setup repairs and repeatable checks are committed and backed up in private [expiracy/vault](https://github.com/expiracy/vault). The first isolated pilot tested the rules before the catalogue and skills existed. The current-state record distinguishes it from subsequent integration tests and records their scopes.
+The repository is public at [expiracy/vault](https://github.com/expiracy/vault). Current-state records distinguish delivered behaviour from accepted designs and preserve the scope of earlier checks. Optional file metadata is described in [Change file-metadata](planning/docs-repo-design.md#change-file-metadata); general parsing/removal and webpage syncing remain unimplemented.
 
-The current-state record describes what exists and what has been checked. Maintained designs distinguish current behaviour from identified changes. Accepting a design does not establish implementation or verification.
+## Repository checks
 
-## Set up and check
+The optional helper scripts need Python 3.10 or later and PyYAML, as listed in `requirements.txt`. From the repository root, use a Python environment with those dependencies:
 
-Use Python 3.10 or later. On Windows:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe scripts/docs_repo.py catalog
-.\.venv\Scripts\python.exe scripts/docs_repo.py check
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-.\scripts\install-local.ps1
+```sh
+python scripts/docs_repo.py catalog --check
+python scripts/docs_repo.py check
+python -m unittest discover -s tests -v
 ```
 
-The installer adds a managed block to `~/.codex/AGENTS.md`, stores the local root in `~/.agents/agent-docs.json`, and links the two user skills to their canonical repo directories. The configuration filename, `docs_root` key, and skill names are retained for compatibility. It preserves unrelated instructions and configuration and refuses conflicting skill destinations. `-UserDirectory PATH` supports isolated installation tests. The Windows installer uses directory junctions; other platforms can create symlinks in their user skill directory and the equivalent pointer/configuration.
+Invoke the helper by its absolute path from another working directory. `find QUERY` returns candidate projects; `--repository ID` can narrow the search. `catalog --check` detects stale routing metadata; `catalog` regenerates it after authorised descriptor edits. `check` validates descriptors, the generated catalogue and supported local Markdown/HTML links and anchors. These checks do not verify remote URLs, rendering or implementation claims.
 
-The installer stages new files and junctions before publishing them and restores the previous files and links if a runtime operation fails. Read-only destination files are rejected before mutation. Abrupt termination or power loss is outside this guarantee; if rollback itself fails, the error identifies retained recovery backups.
+## Integration checks
 
-After an authorised folder move, run the installer from the new location with `-PreviousDocsRoot PATH` set to the exact former root. This retargets the matching configuration and managed skill links; it does not move the checkout or update Codex's saved project path.
+The [integration harness](scripts/test_integration.py) and [fixtures](tests/fixtures/integration/) replay discovery, relocated links, saved design/recovery states, task history, task-tool behaviour and diagram-source consistency in an isolated scratch repository:
 
-Recreate the Python environment at the new path after a checkout move. Activation scripts and package launchers can retain the former interpreter path even when `python.exe` still works. Keep `requirements.txt` as the dependency source rather than treating a moved `.venv` as portable.
-
-From any working directory, invoke the helper using its absolute path. `find QUERY` returns candidate projects; use `--repository ID` when useful. `catalog --check` detects stale routing metadata without rewriting files. `check` validates descriptors, the generated catalogue, and supported local Markdown/HTML links and anchors. It does not verify remote URLs, rendering, or implementation claims; `--help` describes the syntax scope.
-
-The startup pointer and user skills expose the repository to agents. Each session still needs filesystem access to read or edit it. For a CLI session, grant the central repo through the supported `--add-dir` option when needed. Do not assume discovery creates permission. [Codex instruction loading](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [user skill discovery](https://learn.chatgpt.com/docs/build-skills).
-
-## Repeat integration checks
-
-The retained [integration harness](scripts/test_integration.py) and [fixtures](tests/fixtures/integration/) replay project discovery, relocated links, saved design and recovery states, task history, task-tool behaviour, and diagram-source consistency in an isolated scratch repository:
-
-```powershell
-.\.venv\Scripts\python.exe scripts/test_integration.py --output "$env:TEMP\vault-integration.json"
+```sh
+python scripts/test_integration.py --output /tmp/vault-integration.json
 ```
 
-Add `--installed-user-dir` with the intended user directory to inspect the actual pointer and skill links without editing them. `--agents --codex-bin` with an executable path runs five fresh Codex sessions for startup, design, recovery, contributions, integration and writer handoff. It requires authentication and network access and uses account usage. `--browser` also requires `--node`, `--node-modules` containing Playwright and marked, and `--browser-executable`; its custom viewer loads Mermaid 12.1.0 from a pinned CDN URL.
+Optional `--agents --codex-bin PATH` runs fresh Codex sessions using ordinary workspace instructions and copied guides. It needs authentication and network access and consumes account usage. Optional `--browser` requires `--node`, `--node-modules` containing Playwright and marked, and `--browser-executable`; its custom viewer loads Mermaid from the existing pinned CDN URL.
 
-Each result records the checked scopes and source hashes. Optional checks remain `not-checked` when omitted. The default fixture replay does not establish fresh-agent behaviour or viewer rendering. [Setup remediation context](projects/vault/tasks/setup-remediation/context.md) records commands, retained results, and the final validation scope.
+Results record the checked scopes and input hashes. Omitted live-agent and browser checks remain `not-checked`. Historical results in the fixtures describe their original revisions, including the former skill installation. [Remove-skills context](projects/vault/tasks/remove-skills/context.md) records the revised scope and checks.

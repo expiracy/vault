@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay bounded Vault integration checks without changing the real installation.
+"""Replay bounded Vault integration checks without changing live documentation.
 
 Default checks are offline fixture checks, not proof of agent or viewer behaviour.
 --agents starts fresh Codex sessions against an isolated fixture; --browser renders
@@ -91,7 +91,7 @@ def source_hashes():
     paths = [ROOT / "scripts/test_integration.py", ROOT / "scripts/docs_repo.py",
              ROOT / "planning/assets/docs-workflow.mmd", ROOT / "planning/assets/docs-workflow.svg",
              FIXTURES / "browser.cjs", FIXTURES / "provenance.json"]
-    paths.extend(p for p in (ROOT / ".agents/skills").rglob("*") if p.is_file())
+    paths.extend(p for p in (ROOT / "projects/vault/guides").rglob("*") if p.is_file())
     for folder in ("seed", "historical"):
         paths.extend(p for p in (FIXTURES / folder).rglob("*") if p.is_file())
     hashes = {p.relative_to(ROOT).as_posix(): digest(p) for p in sorted(paths)}
@@ -121,7 +121,7 @@ def helper(root, *arguments):
 def prepare(workdir):
     central = workdir / "original" / "vault"
     shutil.copytree(FIXTURES / "seed", central)
-    shutil.copytree(ROOT / ".agents/skills", central / ".agents/skills")
+    shutil.copytree(ROOT / "projects/vault/guides", central / "guides")
     (central / "scripts").mkdir()
     shutil.copy2(ROOT / "scripts/docs_repo.py", central / "scripts/docs_repo.py")
     media = central / "media"
@@ -142,13 +142,12 @@ def prepare(workdir):
     require(before == snapshot(moved), "Fixture relocation changed content")
     outside = workdir / "outside"
     outside.mkdir()
-    # Scope override belongs to this isolated startup file. The live user pointer
-    # and canonical installation remain untouched.
+    # The test root is supplied through ordinary workspace instructions.
     (outside / "AGENTS.md").write_text(
         "# Isolated integration session\n\n"
         f"For this test, the central Vault is `{moved.as_posix()}`. This explicit "
-        "test-root instruction overrides the installed docs_root value. Read its "
-        "AGENTS.md and copied docs-context/write-project-doc skills, then discover "
+        "test-root instruction selects the fixture. Read its AGENTS.md and writing "
+        "guide at guides/markdown-style.md, then discover "
         "the relevant project through its CATALOG.md. Work only in this synthetic "
         "Vault. Do not edit the live Vault or global user files. Do not spawn or contact "
         "subagents for this fixture run; complete the assigned single-writer or read-only "
@@ -232,36 +231,6 @@ def check_media(root):
     return "current fence matches editable source; SVG parses; relocated media links resolve (rendering unchecked)"
 
 
-def check_installation(user_directory):
-    configured = json.loads((user_directory / ".agents/agent-docs.json").read_text(encoding="utf-8-sig"))
-    require(Path(configured["docs_root"]).resolve() == ROOT, "Installed docs_root points elsewhere")
-    instructions = (user_directory / ".codex/AGENTS.md").read_text(encoding="utf-8-sig")
-    require(instructions.count("<!-- agent-docs:begin -->") == 1
-            and instructions.count("<!-- agent-docs:end -->") == 1,
-            "Startup pointer is missing or duplicated")
-    for name in ("docs-context", "write-project-doc"):
-        installed = user_directory / ".agents/skills" / name / "SKILL.md"
-        require(installed.resolve() == ROOT / ".agents/skills" / name / "SKILL.md",
-                f"Installed {name} does not resolve to canonical source")
-        require(installed.read_bytes() == (ROOT / ".agents/skills" / name / "SKILL.md").read_bytes(),
-                f"Installed {name} content differs")
-    return "actual user pointer and both canonical skill links inspected read-only"
-
-
-def check_bootstrap(binary, outside):
-    output = run([binary, "debug", "prompt-input",
-                  "Find shared project documentation before designing a feature change."], outside)
-    data = json.loads(output)
-    messages = data if isinstance(data, list) else [data]
-    body = "\n".join(block.get("text", "") for message in messages
-                     for block in message.get("content", []))
-    require("agent-docs:begin" in body, "Fresh startup did not load the managed pointer")
-    for name in ("docs-context", "write-project-doc"):
-        require(len(re.findall(r"^- " + re.escape(name) + r":", body, re.M)) == 1,
-                f"Fresh startup must expose exactly one {name} description")
-    return "fresh CLI startup loaded managed guidance and both skill descriptions exactly once"
-
-
 def agent(binary, outside, root, prompt, schema=None):
     command = [binary, "--ask-for-approval", "never", "exec", "--cd", outside,
                "--sandbox", "workspace-write", "--add-dir", root,
@@ -297,8 +266,7 @@ def check_agents(binary, workdir):
         phases[name] = {"before": before, "after": after, "allowed_changes": changes}
         (workdir / "phase-hashes.json").write_text(json.dumps(phases, indent=2) + "\n", encoding="utf-8")
         before = after
-    startup = check_bootstrap(binary, outside)
-    print("Integration: installed startup passed; running fresh design writer.", file=sys.stderr, flush=True)
+    print("Integration: running fresh design writer.", file=sys.stderr, flush=True)
     target = root / "projects/delivery-board"
     old_history = digest(target / "tasks/delivery-list/context.md")
     old_source = digest(target / "tasks/count-json-items/tools/count_items.py")
@@ -400,17 +368,16 @@ def check_agents(binary, workdir):
             "Agent created additional task records")
     require(not list(target.rglob("design.md")), "Agent created competing task design")
     helper(root, "check")
-    return {"startup": startup, "design": "fresh design-only writer passed state/history/structure checks",
+    return {"design": "fresh design-only writer passed state/history/structure checks",
             "recovery": recovery, "shared_writer": "fresh contributor, integration writer and explicit handoff passed",
             "role_changes": {name: data["allowed_changes"] for name, data in phases.items()},
             "used_source_sha256": used_source_hashes,
-            "scope": "actual installed startup inspected; synthetic root selected through isolated startup guidance"}
+            "scope": "synthetic root and plain guides selected through isolated workspace instructions"}
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, help="Write a compact JSON result, without raw agent events")
-    parser.add_argument("--installed-user-dir", type=Path, help="Inspect actual user installation read-only")
     parser.add_argument("--agents", action="store_true", help="Run five fresh Codex sessions (requires network/auth; uses account usage)")
     parser.add_argument("--codex-bin", type=Path, help="Codex executable for --agents")
     parser.add_argument("--browser", action="store_true", help="Render Markdown, SVG and Mermaid in a local browser viewer")
@@ -426,7 +393,7 @@ def main(argv=None):
     report = {"recorded_at_utc": datetime.now(timezone.utc).isoformat(),
               "environment": {"python": platform.python_version(), "platform": platform.system()},
               "source_sha256": source_hashes(),
-              "fixture": "synthetic Delivery Board; no live documentation or installation mutation",
+              "fixture": "synthetic Delivery Board; no live documentation mutation",
               "scopes": {}}
     cleanup = None
     if args.keep_workdir:
@@ -449,8 +416,6 @@ def main(argv=None):
         check("offline-routing-lifecycle", lambda: check_offline(root))
         check("task-tool", lambda: check_task_tool(root))
         check("media-source-portability", lambda: check_media(root))
-        check("installed-user-files", (lambda: check_installation(args.installed_user_dir.resolve()))
-              if args.installed_user_dir else None)
         if args.agents:
             agents_workdir = workdir / "agents"
             agents_workdir.mkdir()
