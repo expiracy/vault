@@ -1,26 +1,18 @@
 # Vault setup remediation
 
-Task: `setup-remediation`. Started and completed: 11 October 2026. Status: complete.
+Task: `setup-remediation`. Started/completed: 11 October 2026. Status: complete. Historical setup; its skills/installer were superseded by the [removal task](../remove-skills/context.md). GitHub visibility changed to public separately on 12 October 2026.
 
-Historical delivery: the skill and installer components described here were removed on 12 October 2026 by the [remove-skills task](../remove-skills/context.md). This record preserves their original scope and checks; it does not describe a current installation. GitHub visibility was changed to public separately on 12 October 2026.
-
-Requested deliverable: fix the six findings from the Vault setup review, test the setup again, and commit the existing and new authorised changes. The maintained design remains [Vault design](../../../../planning/docs-repo-design.md).
+Deliverable: fix six setup-review findings, repeat checks and commit authorised changes. [Maintained design](../../../../planning/docs-repo-design.md); original delivery/evidence remains below.
 
 ## Scope and ownership
 
-Root coordinates this task and is the sole writer of the maintained design, current-state record, README, project index, and this context. The installer agent owns `scripts/install-local.ps1` and `tests/test_install_local.py`; the helper agent owns `scripts/docs_repo.py` and `tests/test_docs_repo.py`; the integration agent owns new reusable test fixtures and the integration harness. Contributions to shared documents go to root by message. Subagents do not stage or commit files; root owns Git operations.
+Root owned shared docs and Git. Installer agent: `scripts/install-local.ps1`, `tests/test_install_local.py`; helper agent: `scripts/docs_repo.py`, `tests/test_docs_repo.py`; integration agent: fixtures/harness. Contributors used messages for shared-doc changes and did not stage/commit.
 
-The six findings are: relocated Python launchers retaining the old path; installer write failures leaving inconsistent links and configuration; obsolete desktop project and stale current-state text; uncommitted setup changes; false link-check failures for escaped Markdown; and temporary-only integration evidence.
-
-Existing style, relocation, and task-tool changes were preserved. The unrelated `.ultracode/` directory is outside this task's commits. The user authorised creating a private GitHub repository named `vault`. [expiracy/vault](https://github.com/expiracy/vault) is private; `origin` points to it, `master` is its default branch, and the pushed implementation revision was verified exactly.
+Findings: relocated launchers, partial installer writes, stale desktop/current-state paths, uncommitted setup, escaped-Markdown false link failures and temporary-only evidence. Existing style/relocation/tool work was preserved; `.ultracode/` was excluded. The user authorised the original private `expiracy/vault` backup; `origin/master` matched the implementation revision at that delivery.
 
 ## Progress and next action
 
-The relocated environment, helper and installer are repaired. The live installer passed twice and retained unrelated startup instructions. The final integrated suite ran 49 tests: 48 passed and one Windows file-symlink test was skipped for missing privilege. Both skill manifests, catalogue consistency, supported links and dependency checks passed.
-
-The original setup chat's saved folder now points to Vault, with its original archive state restored and no turn started. The verified empty former directory has been removed. The user confirmed the obsolete `docs` desktop entry is gone from the sidebar; the subsequent project-list API check also returned Vault without the obsolete entry.
-
-The retained browser run passed. Five fresh isolated design, recovery, contributor, integration and handoff sessions completed successfully. An independent aggregate final-fixture audit passed the strengthened state and file-scope checks, and the current helper passed against their output. Root independently confirmed that both retained reports match all 23 relevant current input hashes. A clean Git checkout passed catalogue, links and offline replay with Windows line-ending conversion enabled. The implementation and preserved changes are committed and backed up privately.
+All six repairs were delivered. Original result: 49 tests, 48 passed, one Windows symlink-privilege skip. Live installer passed twice; browser and five isolated agent roles passed with the recorded audit/runtime limitations. Chats and sidebar paths were corrected, original archive state preserved, empty old root removed. Clean-checkout replay and all 23 relevant input-hash comparisons passed. No original repair work remains; recheck affected scopes when sources/environments change.
 
 ## Tools and checks
 

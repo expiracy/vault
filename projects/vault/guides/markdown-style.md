@@ -1,57 +1,57 @@
 # Project documentation writing style
 
-User preferences recorded on 11 October 2026: simple, formal English; concise wording; no unnecessary repetition or stock AI phrasing; bullets and tables where useful. Use British spelling by default. Explicit instructions for a particular document take precedence.
+Use simple, formal British English and concise wording. Prefer tables, then lists, then prose where applicable. Explicit document requirements take precedence. Preferences recorded 11 October 2026; refined 13 October 2026.
 
 ## Language and length
 
-- Use familiar words, direct sentences, and a neutral, formal tone. Prefer `use` to `utilise` and `start` to `commence`. Avoid slang, conversational asides, and ornate language.
-- State the purpose or outcome early. Name the action, subject, and consequence precisely. Use active voice when the actor matters.
-- Keep terminology consistent. Repeat a precise term when needed instead of replacing it with loose synonyms.
-- State each point once in the maintained account. Repeat only when a standalone summary, procedure, or historical checkpoint requires it; link to the detail where possible.
-- Remove filler, obvious explanations, and sentences that merely restate a heading or the preceding paragraph. Do not add a conclusion that repeats the document without a useful decision or next action.
-- Avoid stock introductions and transitions such as "Let's delve into", "It is important to note", and "In today's fast-paced world". State the relevant fact directly.
-- Avoid promotional adjectives, vague claims, rhetorical questions, forced contrasts, and formulaic lists of three. Use specific evidence instead of calling an approach "robust", "seamless", or "comprehensive" without a defined basis.
-- Include the reasoning, constraints, evidence, and uncertainty needed to assess the subject. Concision must preserve meaning and necessary technical detail.
+- Lead with the purpose, outcome or proposed change. Use concrete nouns, precise verbs and consistent terminology.
+- Prefer familiar words (`use`, `start`) and active voice when the actor matters. Explain technical terms unfamiliar to the intended reader.
+- Keep each paragraph or bullet focused on one connected point. Its sentences should build on one another, with each adding to that point.
+- Remove filler, repetition, slang, ornate wording, promotional claims, stock AI phrases, rhetorical questions and forced contrasts. Avoid decorative emphasis and formulaic lists.
+- State each point once; repeat only when a standalone summary, procedure or historical checkpoint needs it. End when the useful information is complete; include a next action, owner or deadline when relevant and supplied.
+- Preserve facts, conditions, uncertainty, attribution and necessary technical detail. Flag material ambiguity rather than inventing facts or guarantees. Shorter wording must not change meaning or make a proposal sound implemented.
+
+## Document structure
+
+Group related facts, rationale and implications together. Order sections and points so each prepares the reader for the next and advances the document's purpose. For explanations, proposals and design narratives, connect the need, approach, implications and next step; these are a narrative arc, not mandatory headings.
+
+Apply the **whiteboard test**: include only the detail needed to explain the purpose, main parts, responsibilities and flow, or assess key claims and decisions. Explain functions when their roles, inputs/outputs or interactions help understanding; avoid line-by-line code walkthroughs and incidental implementation detail. Prefer stable file/function references; include source line numbers only when essential to locate evidence or perform an action. Link supporting detail that interrupts the explanation.
+
+Specifications, references and procedures retain their required precision and detail; a high-level overview does not replace them.
 
 ## Structure and formatting
 
-- Prefer bullet points for distinct requirements, actions, findings, or options. Keep their wording parallel. Use numbered steps when order matters.
-- Use tables for comparisons, mappings, or repeated fields. Keep cells brief and avoid repeating the table in nearby prose.
-- Use short paragraphs for connected reasoning. Add descriptive headings only where they help navigation; omit empty or unnecessary sections.
-- Use emphasis sparingly for terms or decisions that need attention. Avoid decorative formatting and forced templates.
+Prefer formats in this order where they fit the content:
 
-Illustrative edits:
+| Priority | Format | Use for |
+| --- | --- | --- |
+| 1 | Tables | Comparisons, mappings, repeated fields and structured summaries. |
+| 2 | Bullet points | Related distinct points; number steps when order matters. |
+| 3 | Prose | Connected explanations, reasoning and transitions. |
 
-| Avoid | Prefer |
-| --- | --- |
-| It is important to note that agents should first consult the project index. | Read the project index before editing. |
-| This robust approach enables seamless collaboration across multiple agents. | One assigned writer updates the shared design. |
-| In summary, the catalogue is a list of projects, as described above. | Omit the repeated summary. |
+- Keep list wording parallel and table cells brief. Avoid restating tables in nearby prose.
+- Use descriptive headings only where they help navigation. Follow an established document format; omit empty sections and decorative templates.
 
-Read the surrounding document before revising it. Integrate the change into its existing account and repair stale references elsewhere. Retain material decision history and completed checkpoints; historical corrections are dated amendments rather than silent rewrites.
-
-Before delivery, remove duplication and filler, then check that the meaning, scope, evidence, and uncertainty remain intact.
+Example: “It is important to note that the proposed service would retry failed requests” becomes “The proposed service would retry failed requests.” The proposal remains a proposal.
 
 ## Current facts and changes
 
-In a maintained design, keep **Current design** separate from identified **Change <id>** sections. A section title should preserve the stable change ID. Record the originating task and the substantive change, decision rationale, and relevant evidence.
+Read the surrounding document and update its maintained account. Preserve frontmatter, code, quotations, identifiers, links and historical checkpoints unless the request targets them. Correct historical facts with dated amendments retaining the original account.
 
-Track each change independently:
+Separate current facts from identified changes. Track each change independently:
 
 | State | Values |
 | --- | --- |
 | Decision | `proposed`, `accepted`, `rejected`, `superseded` |
-| Implementation | `not-started`, `partial`, `implemented`, `not-applicable` |
+| Implementation | `not-started`, `partial`, `implemented`, `not-applicable` (only when no implementation is required) |
 | Verification | `not-checked`, `passed`, `failed`, `needs-recheck` |
 
-Design acceptance changes decision state only. Use `not-applicable` only when the change itself needs no implementation, not because the current task is design-only. Record results per required scope when they differ; full verification requires checks covering the full declared scope. Preserve remaining work rather than narrowing the scope to produce a pass.
-
-Support present-state claims with appropriate files, checks, sources, or observations, and their date, revision, and environment. Mark unknown or stale claims clearly. A successful local check does not establish behaviour in another environment. Project current-state summaries link to detailed feature facts; they do not become competing accounts.
+Record evidence, date, revision, environment and checked scope; mark unknown or stale claims. Acceptance alone changes decision state. Project summaries link to detailed facts rather than duplicating them.
 
 ## Sources and media
 
-Link evidence near the claim it supports. Distinguish sourced observations from inference or proposed behaviour. Use exact commits and paths for historical references when available, while retaining the task's material delivery account.
+- Link evidence near the supported claim. Distinguish observation, inference and proposal; use exact commits/paths for historical sources where available.
+- Use relative local links and keep existing media paths. New feature assets belong in `features/assets/<feature-id>/`; task-only assets belong in the task's `assets/`. Link reusable media instead of copying it.
+- Keep editable diagram sources, including `.tex`, beside rendered SVG/PNG assets. Use Mermaid where the viewer supports it; provide a portable fallback when needed. Describe content in alt text and explain the diagram's purpose nearby. Export alone does not verify viewer rendering.
 
-Use relative Markdown links for local documents and images. Keep existing media locations; for a new feature document under the suggested layout, use `features/assets/<feature-id>/`, and keep task-only media in that task's `assets/`. Link reusable assets rather than copying them into each task.
-
-Retain editable diagram sources, including LaTeX/TikZ `.tex` files, beside their rendered assets. Embed SVG or PNG diagrams in Markdown. Mermaid is suitable when the intended viewer supports it; provide an SVG or PNG alternative when needed. An export does not prove that the viewer renders the source diagram. Alt text describes the image's content, and nearby prose explains why it matters. Use visuals to clarify relationships or evidence, rather than decorate the document.
+Before delivery, compare the draft with every supplied fact and open issue. Keep unresolved issues unless new evidence or an explicit instruction resolves or excludes them. Check meaning, status, spelling, scope and links. Run applicable existing checks and report only what was actually checked.

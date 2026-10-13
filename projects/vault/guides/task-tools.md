@@ -1,50 +1,41 @@
 # Task tools in Vault
 
-Vault can hold useful scripts and small utilities produced for a task when they have no suitable home in another repository. Keep application code and its utilities in the owning code repo where one exists. Root `scripts/` is reserved for Vault's infrastructure.
+Retain useful task utilities here when they have no suitable home in another repository. Application code and its utilities stay in the owning code repo; root `scripts/` is Vault infrastructure.
 
 ## Location and ownership
 
-- Put a task-only tool under `projects/<project-id>/tasks/<task-id>/tools/`. Create the folder only when there is a tool to retain.
-- Reuse the existing task context and canonical tool. A revision does not need a new task, script copy, or separate tool document.
-- Save useful deliverables rather than every temporary command or debugging experiment.
-- A project can exist without a code repo. Choose its descriptor by the task's subject; do not place unrelated work in the Vault system project to manufacture a match. A requested standalone task can establish an appropriate project when it needs a new home.
-- When several tasks need the same tool, link to its existing source. Move it to `projects/<project-id>/tools/` only when shared ownership is justified. Update current links and preserve historical commit references.
+- Store task-only source in `projects/<project-id>/tasks/<task-id>/tools/`, created only when needed. Reuse the existing context and canonical tool; keep useful deliverables, not every experiment.
+- Select the project by subject, including projects without code repos. Do not place unrelated work in the Vault system project. An authorised standalone task can establish a project when it needs a home.
+- Link shared source. Move it to `projects/<project-id>/tools/` only when shared ownership warrants it; update current links and preserve historical commit references. Apply the coordinated-writer rule to shared tools.
 
-Suggested layout, with optional entries created only when needed:
+Optional task entries:
 
 ```text
-projects/<project-id>/tasks/<task-id>/
-  context.md
-  tools/
-    build-report.py
-    requirements.txt     Tool dependencies, if required
-    tests/               Meaningful checks, if required
-  outputs/               Regenerated results, ignored by default
-  assets/                Results or fixtures deliberately retained
+context.md
+tools/       Source, tool-specific dependency files and meaningful checks
+outputs/     Regenerated results, ignored by default
+assets/      Deliberately retained deliverables or fixtures
 ```
 
 ## Discover and run
 
-Follow `CATALOG.md` to `PROJECT.md`, then its task index to the existing `context.md`. The context owns a **Tools** section with relative source links and run instructions. No separate tool catalogue, manifest, or README per script is required.
+Follow `CATALOG.md` → `PROJECT.md` → the matching task context. Its **Tools** section owns relative source links and run instructions; no separate tool catalogue, manifest or README per script is required.
 
-Record the details needed to use each tool:
-
-| Detail | Required information |
+| Detail | Record |
 | --- | --- |
-| Purpose and source | What it does and a relative link to the canonical script. |
-| Invocation | Exact command and working directory; include a dry-run option when the tool has one. |
-| Dependencies | Runtime and packages or dependency-file link. State “standard library only” where applicable. |
-| Inputs and outputs | Expected paths or formats and where results are written. |
-| Effects | Files or external state it reads or changes; state “none” for effects that do not apply. |
-| Evidence | Whether it is saved, executed, or checked; actual checks, date, environment, and revision where available. |
+| Purpose/source | Function and canonical source link. |
+| Invocation | Exact command, working directory and available dry-run option. |
+| Dependencies | Runtime/packages or dependency-file link; say “standard library only” when applicable. |
+| Inputs/outputs | Paths/formats and result location. |
+| Effects | Files or external state read/changed; say “none” when applicable. |
+| Evidence | Saved, executed or checked; actual checks, date, environment and revision. |
 
-Keep entries brief. A small tool can use one table row and a short command block. Use paths relative to a stated working directory, or resolve resources relative to the script and accept input/output arguments. Avoid machine-specific paths in maintained run instructions.
+Keep entries brief. Use paths relative to a stated working directory, or resolve resources relative to the script with input/output arguments. Avoid machine-specific maintained commands.
 
-Use the task's existing authorisation and session permissions when executing a tool. Inspect its source when behaviour or effects are unclear. Saving a script or documenting its command does not establish successful execution or correct results.
+Use existing task authorisation and session permissions. Inspect source when behaviour or effects are unclear. Saving a script or command proves neither execution nor correctness.
 
 ## Results and maintenance
 
-- Link useful results from task context. Keep regenerated output under `outputs/`; retain material deliverables or small fixtures deliberately under `assets/` when they belong in Git.
-- Keep dependency environments and bulky generated files out of maintained source. List tool-specific dependencies near the tool rather than adding them to Vault's infrastructure requirements.
-- After changing a tool, run checks appropriate to its behaviour. Update the same context with observed results and remaining limits. Recheck affected claims rather than inheriting an earlier pass.
-- Preserve the delivered tool contract and relevant source/check revisions in the existing completion checkpoint. Follow Vault's coordinated-writer rule when a tool is shared across tasks.
+Link useful results from context. Keep regenerated output in `outputs/`, deliberate material assets/fixtures in `assets/`, and environments or bulky generated files out of maintained source. Record tool-specific dependencies near the tool rather than in Vault's infrastructure requirements.
+
+After changes, run relevant checks and update the same context with results and limits; recheck affected claims. Preserve the delivered contract and exact source/check revisions in its completion checkpoint.

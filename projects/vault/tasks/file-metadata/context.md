@@ -1,14 +1,12 @@
 # Optional file metadata
 
-Task: `file-metadata`. Started and completed: 12 October 2026. Status: complete.
+Task: `file-metadata`. Started/completed: 12 October 2026. Status: complete. Deliverable: optional YAML file/webpage metadata design, with straightforward parsing/removal; implementation was not requested.
 
-Requested deliverable: describe support for optional YAML metadata about an individual file, including an associated webpage, with straightforward parsing and removal. This is documentation work; implementation was not requested.
-
-Maintained design: [Change file-metadata](../../../../planning/docs-repo-design.md#change-file-metadata). Root is the sole writer of this context, the maintained design and the project index. This extends the system documented by the completed [setup-remediation task](../setup-remediation/context.md) without changing its historical scope.
+Owner: root. [Maintained change](../../../../planning/docs-repo-design.md#change-file-metadata); extends the completed [setup task](../setup-remediation/context.md) without changing its historical scope.
 
 ## Progress and next action
 
-The requirement and example are recorded in the maintained design and linked from the [project index](../../PROJECT.md). Decision: `accepted`; implementation: `not-started`; verification: `not-checked`. No remaining documentation work; implement parsing/removal or webpage syncing only when requested.
+Design and [index entry](../../PROJECT.md) delivered: `accepted` / `not-started` / `not-checked`. No documentation work remains. Implement parsing/removal or webpage sync only when requested.
 
 ## Completion checkpoint: file-metadata
 

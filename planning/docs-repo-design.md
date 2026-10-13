@@ -1,75 +1,67 @@
 # Vault design
 
-Status: maintained design with implemented core, separately tracked changes, scoped integration evidence, and recorded user writing preferences. Updated: 13 October 2026.
+Status: maintained design with implemented core, independently tracked changes and scoped evidence. Updated: 13 October 2026.
 
-Present-state evidence is recorded separately in [CURRENT.md](../CURRENT.md). The catalogue, project descriptor, consistency helper and ordinary guidance implement the core design. Vault contains no packaged agent skills or local installer. Completed checks and unverified scopes are recorded independently; accepted file metadata support remains unimplemented.
+Vault holds shared project documentation and task tools. Its catalogue, descriptors, consistency helper and ordinary guides implement the core; [CURRENT.md](../CURRENT.md) records observed state. Vault contains no packaged agent skills or local installer. Accepted file metadata support remains unimplemented.
 
 Confirmed requirements:
 
-- One central docs repository with subfolders accessible to agents working across projects.
-- The project and checkout are named Vault. It also holds useful task tools that have no suitable home in another repository.
-- Folder descriptions that help agents find relevant context, similar to skill descriptions.
-- Readable records of current task context and progress for user audit.
-- Ordinary writing guidance for producing documents in the user's preferred style.
-- Vault contains no packaged agent skills or skill installer.
-- Markdown documents with images and diagrams.
-- Optional YAML frontmatter for metadata about an individual file, including an associated webpage and intended sync direction. Metadata must be easy to parse separately and remove without changing the file's body.
-- Update appropriate existing documents to reflect new information by default. Create a new document only when explicitly requested or when requested work or an agreed workflow needs a document with no appropriate existing home.
+- One central repository and checkout named Vault, accessible to agents across projects, with folder descriptions for finding context.
+- Readable task context and progress for user audit, and ordinary writing guidance reflecting the user's preferences.
+- Markdown with images and diagrams; useful task tools with no suitable home in another repository.
+- Optional YAML file metadata, including webpage association and sync direction, parsed separately and removable without changing the body.
+- Update appropriate existing documents by default. Create a document only when explicitly requested or when requested work or an agreed workflow needs one with no appropriate existing home.
 
-The five reviewed issues are resolved in the document roles and workflow below, with operating rules in [AGENTS.md](../AGENTS.md). The core is now implemented for the user's full setup test. Resolving a design issue or installing a component does not establish untested runtime behaviour.
+The five reviewed issues are addressed below and in [AGENTS.md](../AGENTS.md). Design resolution or component installation does not establish untested runtime behaviour.
 
 ## Current implementation
 
-Canonical project descriptors live at `projects/<project-id>/PROJECT.md`. The documentation project's descriptor routes to this existing design, the research comparison, and the root current-state record. Existing suitable documents remain at their current paths.
+Canonical descriptors at `projects/<project-id>/PROJECT.md` route to maintained documents. Vault's descriptor indexes this design, the research comparison and root current-state record; suitable existing documents keep their paths.
 
-`scripts/docs_repo.py` derives its root from its own location by default, so it works from another workspace. It safely loads YAML frontmatter with PyYAML, validates unique routing identities, generates deterministic `CATALOG.md`, finds candidate projects, and checks supported local document/media links and anchors. `--root PATH` allows isolated fixtures and relocated checkouts. It is a bounded consistency checker, not a complete Markdown parser or proof of implementation correctness. Remote URL and viewer checks are separate.
+`scripts/docs_repo.py` derives its root from its own location; `--root PATH` supports fixtures and relocated checkouts. It safely loads YAML frontmatter with PyYAML, validates unique routing identities, generates deterministic `CATALOG.md`, finds candidate projects and checks supported local links, media and anchors. It is a bounded consistency checker, not a complete Markdown parser or proof of implementation correctness. Remote URLs and viewers require separate checks.
 
-Operating instructions live in `AGENTS.md`. Writing and task-tool guidance lives in ordinary documents under `projects/vault/guides/`. Agents receive Vault's location through their session or external configuration; Vault does not install skills or change global agent settings.
+The helper recognises escaped opening brackets by backslash parity and masks inline code in link labels while preserving destinations containing literal backticks. It excludes multiline links, multiline code spans and indented code. Ambiguous `//host/path` destinations are rejected as possible local UNC paths.
 
-The helper recognises escaped opening brackets by backslash parity and masks inline code in link labels while preserving destinations containing literal backticks. Its bounded syntax scope still excludes multiline links, multiline code spans and indented code. Ambiguous `//host/path` destinations remain rejected as possible local UNC paths.
+Operating instructions live in `AGENTS.md`; ordinary writing and task-tool guides live under `projects/vault/guides/`. Agents receive Vault's location through their session or external configuration. Vault installs no skills or global settings. Filesystem access is separate: the external CLI integration test uses `--add-dir`, with no global permission override. Writer coordination remains cooperative.
 
-Task-only utilities live under their owning task's `tools/` directory, with source links and run instructions in its existing context. This is an ordinary file convention, not a hosted execution service. The [task tools guide](../projects/vault/guides/task-tools.md) defines ownership, invocation, dependencies, effects, results, and checks.
+Task-only utilities belong in their task's `tools/`, with source links and run instructions in its existing context. The [task tools guide](../projects/vault/guides/task-tools.md) defines ownership, commands, dependencies, effects, results and checks. This is a file convention, not a hosted execution service.
 
-Filesystem access is independent of discovery. The external CLI integration test grants the central repo with `--add-dir`; no global permission override is installed. Shared-document coordination remains an agent cooperation rule.
-
-[The integration harness](../scripts/test_integration.py) and [retained fixtures](../tests/fixtures/integration/) make bounded checks replayable. Offline checks inspect routing, relocation, saved design/history/recovery invariants, media source and a JSON-count tool. Optional checks run isolated Codex roles using ordinary instructions and guides, or render the diagram in a custom browser viewer. Results record each checked or unchecked scope and relevant source hashes. Historical reports retain the input hashes and installation checks from their original runs; they do not verify the revised harness.
+[The integration harness](../scripts/test_integration.py) and [retained fixtures](../tests/fixtures/integration/) replay bounded checks. Offline checks cover routing, relocation, saved design/history/recovery invariants, media source and a JSON-count tool. Optional checks run isolated Codex roles with ordinary instructions and guides, or render diagrams in a custom browser viewer. Results identify checked and unchecked scopes and source hashes. Historical input hashes and installation reports describe their original runs, not the revised harness.
 
 ## Change remove-skills
 
-Decision: `accepted` on 12 October 2026, following the user's instruction that Vault should not have skills. Implementation: `implemented`. Verification: `passed` for the local unit, catalogue/link and offline integration checks. Live-agent and browser checks for this revision remain `not-checked`. [Task, plan and delivery checkpoint](../projects/vault/tasks/remove-skills/context.md).
+Decision: `accepted` on 12 October 2026, following the user's instruction that Vault should not have skills. Implementation: `implemented`. Verification: `passed` for local unit, catalogue/link and offline integration checks; live-agent and browser checks for this revision remain `not-checked`. [Task, plan and delivery checkpoint](../projects/vault/tasks/remove-skills/context.md).
 
-Vault stores project documentation, file metadata conventions and task tools. Packaged skills and the local skill installer are removed. Their useful writing and task-tool references are retained as ordinary project guides. Catalogue discovery and document checks remain available without a skill installation; the integration fixture uses workspace instructions and plain guides. No global user configuration is changed.
+Packaged skills and the local installer are removed. Their writing and task-tool references remain ordinary guides; catalogue discovery, document checks and the integration fixture need no skill installation. Global user configuration is unchanged.
 
-This supersedes the skill and installer components of the historical setup below. The accepted file metadata description remains in place; metadata parsing/removal and webpage syncing are separate pending work.
+This supersedes the historical setup's skill and installer components. The accepted file metadata description remains; general parsing/removal and webpage syncing are pending.
 
 ## Change setup-remediation
 
-Historical delivery recorded on 11 October 2026. Its skill installation components are superseded by [Change remove-skills](#change-remove-skills); the recorded checks below describe that earlier revision.
+Historical delivery: 11 October 2026. Skill installation is superseded by [Change remove-skills](#change-remove-skills); these checks describe the earlier revision.
 
-Originating task: [setup-remediation](../projects/vault/tasks/setup-remediation/context.md), authorised on 11 October 2026 after the setup review. The requested scope is all six findings, a fresh setup check, and a commit. The user also authorised a private GitHub repository named `vault` for off-machine backup.
+[Setup-remediation](../projects/vault/tasks/setup-remediation/context.md) was authorised on 11 October 2026 after review: address all six findings, repeat setup checks and commit. The user also authorised a private GitHub repository named `vault` for off-machine backup.
 
 | Scope | Decision | Implementation | Verification |
 | --- | --- | --- | --- |
 | Relocated Python environment | accepted | implemented | passed: regenerated activation scripts and pip launchers resolve to Vault; PyYAML remains available. |
 | Installer failure recovery | accepted | implemented | passed: 14 installer tests, including rollback after publication; the real installation passed twice. |
-| Desktop project and current-state correction | accepted | implemented | passed: the user confirmed sidebar removal and the subsequent API list excludes `docs`; both chats use Vault and the empty former directory is removed. |
-| Commit and private backup | accepted | implemented | passed: implementation commit `7e5ffc3716c360e6e1d1641e0904418df056e5cd` is on private `origin/master`; the remote hash matches local Git. |
-| Escaped Markdown and destination parsing | accepted | implemented | passed: 24 helper tests, one privileged file-symlink skip; the integrated consistency check passed. |
+| Desktop project and current-state correction | accepted | implemented | passed: the user confirmed sidebar removal; the API list excludes `docs`, both chats use Vault and the empty former directory is removed. |
+| Commit and private backup | accepted | implemented | passed: commit `7e5ffc3716c360e6e1d1641e0904418df056e5cd` is on private `origin/master`; remote and local hashes match. |
+| Escaped Markdown and destination parsing | accepted | implemented | passed: 24 helper tests, one privileged file-symlink skip; integrated consistency check passed. |
 | Durable integration fixtures and harness | accepted | implemented | passed within recorded scopes: retained fixtures, ten harness tests, offline/installed-file/browser checks, five live roles with a separate final audit, and clean-checkout replay. |
 
-The root agent is the single writer of the shared design, summaries and indexes. File ownership, the exact implementation revision, checks and limitations are recorded in the [task's completion checkpoint](../projects/vault/tasks/setup-remediation/context.md#completion-checkpoint-setup-remediation). Historical setup checkpoints below retain their original delivery accounts.
+Root was the single writer of shared design, summaries and indexes. The [completion checkpoint](../projects/vault/tasks/setup-remediation/context.md#completion-checkpoint-setup-remediation) records ownership, revision, checks and limitations. Earlier checkpoints below retain their original accounts.
 
 ## Document maintenance rule
 
-The default is to update the appropriate existing document. Read the relevant files first, integrate new information into the maintained account, and correct outdated statements throughout the affected document. Update its status, evidence, and links consistently. Appending a correction while leaving a conflicting claim elsewhere does not make the document correct.
-
-Create a new document only when the user explicitly requests one, or when requested work or an agreed workflow needs a document with no appropriate existing home. A changed requirement, new finding, or revision ordinarily belongs in the existing document. Avoid dated replacements, numbered copies, and supplementary files created solely for updates. Supporting images and diagram assets can still be added when needed.
-
-The maintenance rules in `AGENTS.md` apply to document edits. A distinct authorised task may need one context record; subsequent messages, findings and revisions update that record. Extending a feature reuses its maintained design.
+- Read the appropriate existing document, integrate new information and correct outdated claims throughout it. Keep status, evidence and links consistent; an appended correction cannot resolve conflicting maintained claims.
+- Create a document only when explicitly requested or when requested work or an agreed workflow needs one without an appropriate existing home. Avoid dated replacements, numbered copies or supplements solely for updates. Add supporting assets when needed.
+- Follow `AGENTS.md`. A distinct authorised task may need one context; messages, findings and revisions reuse it. Feature extensions reuse their maintained design.
 
 ## Recommended approach
 
-The document flow is shown below. [Editable Mermaid source](assets/docs-workflow.mmd) describes the same flow as the portable SVG fallback. These diagrams describe routing and evidence ownership; the current-state record establishes which integration checks have passed.
+Use ordinary files for discovery, task state and writing guidance. The diagram shows routing and evidence ownership; [CURRENT.md](../CURRENT.md) records completed integration checks. [Editable Mermaid source](assets/docs-workflow.mmd) matches the SVG fallback.
 
 ![An agent finds the project through the catalogue, updates its maintained design using code and checks, and preserves task outcomes in an existing context and completion checkpoint.](assets/docs-workflow.svg)
 
@@ -84,9 +76,7 @@ flowchart LR
     E --> G[Completion checkpoint]
 ```
 
-Build a small convention around ordinary files. Reuse the central-store idea from [OpenSpec](https://github.com/Fission-AI/OpenSpec/blob/main/docs/stores-beta/user-guide.md), description-based selection from [Kiro](https://kiro.dev/docs/steering/), and current-context summaries from [Memory Bank](https://github.com/cline/cline/blob/main/docs/best-practices/memory-bank.mdx). Keep the custom work focused on discovery, task state, and writing style.
-
-The initial project can work directly from local files. A service, semantic database, website, and full specification framework can be considered later if a demonstrated need appears.
+The approach draws on [OpenSpec's central store](https://github.com/Fission-AI/OpenSpec/blob/main/docs/stores-beta/user-guide.md), [Kiro's description-based selection](https://kiro.dev/docs/steering/) and [Memory Bank's context summaries](https://github.com/cline/cline/blob/main/docs/best-practices/memory-bank.mdx). Consider a service, semantic database, website or full specification framework only after a demonstrated need.
 
 ## Layout conventions
 
@@ -117,31 +107,27 @@ vault/
   scripts/                          Catalogue generation, consistency and fixture checks
 ```
 
-Use existing documents when they already serve the purpose. Only create optional documents and folders when separate content warrants them or the user requests them. A small task can use one `context.md` with its requested deliverable, goal, progress, and next action. Larger work can link to existing research and design documents or create distinct ones where needed. A project can exist before any code repository exists.
-
-These paths are defaults for documents without an existing home. Keep suitable existing documents at their current paths and index them. The current planning document remains this project's design home while it is being refined. Do not move or copy it just to match the suggested layout.
+These are defaults for content without an existing home. Keep and index suitable documents at their current paths, including this design. Create optional files and folders only for warranted content or an explicit request. A small task can use one `context.md`; larger work links to existing research and designs or creates distinct documents where needed. A project need not have a code repository.
 
 ## Maintained designs and task records
 
-Each feature has one maintained design home when it needs documentation. Prefer its existing suitable document. Otherwise use `features/<feature-id>.md`, with a stable identifier, short description, current design, and individually identified changes. A small project may keep one existing project design instead of creating separate feature files.
-
-`PROJECT.md` links to these maintained documents and task contexts. Its feature entries identify the subject and document path; task entries identify the task, requested deliverable, and context path. Detailed facts and task status remain in their owning documents rather than being copied into the index.
+Use one maintained design home per documented feature: its suitable existing document, otherwise `features/<feature-id>.md`. Include a stable identifier, short description, current design and identified changes. A small project can use one project design.
 
 | Document | Owns | Links to |
 | --- | --- | --- |
-| `PROJECT.md` | Project discovery, scope, and routing. | Relevant feature designs, task contexts, and project facts. |
-| Maintained feature or project design | Detailed current design, evidence for feature claims, proposed changes, and material design rationale. | Originating tasks, decisions, source files, and checks. |
-| `current.md` | Project-level environment or integration facts, with evidence. | Feature facts at their canonical design sections. |
-| Task `context.md` | Requested deliverable, scope, progress, next action, tool run instructions, and historical completion checkpoints. | Maintained design, canonical tools, results, and stable change identifiers. |
-| Existing decision records | Significant decision context, rationale, and supersession history. | Affected designs and tasks. |
+| `PROJECT.md` | Discovery, scope and routing. Feature entries identify subject/path; task entries identify task/deliverable/context path. | Maintained designs, task contexts and project facts. |
+| Maintained feature or project design | Detailed current design, feature evidence, proposed changes and material rationale. | Originating tasks, decisions, source and checks. |
+| `current.md` | Project-level environment or integration facts and evidence. | Canonical feature current-design sections. |
+| Task `context.md` | Deliverable, scope, goal, progress, next action, tool instructions and completion checkpoints. | Maintained design, canonical tools, results and stable change identifiers. |
+| Existing decision records | Significant decision context, rationale and supersession history. | Affected designs and tasks. |
 
-Task-specific designs are optional. Use one when the user requests a separate document or the task needs a distinct design with no suitable existing home, such as a cross-project change. In that case, the task design owns the detailed proposal, and affected feature documents link to it instead of reproducing it. Once implementation is checked, integrate the resulting current facts into their maintained feature documents and retain the proposal's history through its task checkpoint.
+Keep detailed facts and status in their owning documents. Use a task design only when separately requested or needed without a suitable home, such as a cross-project proposal. It then owns the detail; feature documents link to it. After checked implementation, integrate current facts into maintained feature documents and preserve proposal history in the task checkpoint.
 
 ## Folder descriptions and catalogue
 
-Each project folder carries its own canonical descriptor in `PROJECT.md`. Use frontmatter for a stable name and a short description of the context and when to consult it. Repository identities and aliases are optional routing aids. The body is the maintained project overview, with scope, constraints, and links to relevant documents.
+`PROJECT.md` is each project's canonical descriptor. Frontmatter holds a stable name and short description of the context and when to consult it; aliases and repository identities are optional routing aids. Its body owns the overview, scope, constraints and document links.
 
-An illustrative descriptor for Vault:
+Illustrative Vault descriptor:
 
 ```yaml
 ---
@@ -154,21 +140,19 @@ repositories: []
 ---
 ```
 
-Derive the folder path and entry-point link from the descriptor's location. Avoid a second hand-maintained path field. Use repository URLs or stable identities where available. Machine-specific checkout paths belong in local configuration.
+Derive folder paths and entry links from descriptor locations; avoid a second maintained path field. Use repository URLs or stable identities where available. Keep machine-specific checkout paths in local configuration.
 
-A small helper generates `CATALOG.md` from project frontmatter. The committed catalogue contains each project's name, description, optional routing aids, and a relative link to its `PROJECT.md`. Descriptions are edited in one place. Regenerate after adding, removing, renaming, or changing a project's routing metadata. Ordinary task updates do not change the catalogue.
+The helper generates committed `CATALOG.md` with each project's name, description, routing aids and relative descriptor link. Edit descriptions once, in frontmatter. Regenerate after project additions, removals, renames or routing-metadata changes; ordinary task updates need no regeneration.
 
-An agent can read the short catalogue, select a matching project, and open its descriptor. Known repository identity should help selection, while descriptions support conceptual requests spanning several repositories. If several projects match, load their descriptors or clarify the scope before writing. Do not choose a task merely because it is the newest one.
-
-These descriptors are a custom convention with no automatic loading semantics.
+Read the catalogue and confirm the subject through a matching descriptor and requested scope. Repository identity aids selection; descriptions support requests spanning repositories. For multiple matches, read the descriptors or clarify before writing. Resume the matching task, not simply the newest. Descriptors have no automatic loading semantics.
 
 ## Change file-metadata
 
 Decision: `accepted` on 12 October 2026, following the user's request to describe optional file metadata. Implementation: `not-started`. Verification: `not-checked`. [Design task and delivery checkpoint](../projects/vault/tasks/file-metadata/context.md).
 
-A Markdown file may begin with a YAML mapping between two `---` delimiter lines. The block describes that file and stays with its content. Frontmatter remains required for project descriptors; other documents can omit it, in which case the whole file is the body.
+A Markdown file may start with a YAML mapping between two `---` delimiter lines. It describes the file and stays with its content. Project descriptors require frontmatter; other documents may omit it, leaving the entire file as body.
 
-For example, a page associated with a webpage it should be synced to can record:
+Example webpage association and intended sync direction:
 
 ```yaml
 ---
@@ -178,51 +162,50 @@ sync:
 ---
 ```
 
-Consumers should use a safe YAML parser to read the leading block separately from the body. Removing metadata should remove only that block and its delimiters, preserving the remaining content and line endings exactly. Delimiters or YAML examples later in the body are ordinary content. Malformed YAML or an unclosed leading block must be reported rather than silently removing content.
+- Read the leading block separately with a safe YAML parser.
+- Remove only that block and its delimiters; preserve all remaining content and line endings exactly.
+- Treat delimiters and YAML examples later in the body as ordinary content.
+- Report malformed YAML or an unclosed leading block; never silently remove content.
 
-The fields record an association and intended sync direction. Automatic webpage syncing requires separate implementation. The current helper handles project descriptor metadata; a general interface for reading or stripping individual files' metadata has not been implemented or checked.
+The fields record intent. Automatic webpage syncing needs separate implementation. The helper handles project descriptors only; general file metadata reading/removal is neither implemented nor checked.
 
 ## Proposed behaviour and present state
 
-In a maintained design, keep the observed current design separate from identified proposed changes. Record implementation gaps and contradictory observations as they are found, even when reality differs from an accepted decision. `current.md` links to the feature's current-design section and holds only project-level facts itself. Neither the project description nor the existence of a proposal establishes that a capability works.
+Keep observed current design separate from identified changes. Record gaps and contradictory observations even when reality differs from an accepted decision. Descriptions and proposals do not establish working capabilities.
 
-| Record | Meaning | What it establishes |
+| Record | Establishes |
+| --- | --- |
+| Confirmed requirement | The user's desired outcome or constraint. |
+| Proposed design | Possible future behaviour under consideration. |
+| Accepted decision | Chosen direction and its source; implementation may be pending. |
+| Implemented, unverified work | Changed files or code, with outstanding checks. |
+| Verified current state | Observed behaviour within the recorded revision, environment and scope. |
+
+Use no blanket acceptance or implementation status for a document containing changes at different stages. Give each change a stable identifier, originating task and independent states:
+
+| State | Values | Record |
 | --- | --- | --- |
-| Confirmed requirement | The user has specified a desired outcome or constraint. | What the system should support. |
-| Proposed design | An approach is being considered. | Possible future behaviour. |
-| Accepted decision | An approach has been chosen, with its source recorded. | The intended direction. Implementation may still be pending. |
-| Implemented, unverified work | Files or code have been changed, but the relevant behaviour has not been checked. | That an implementation exists, with its remaining checks stated. |
-| Verified current state | The relevant claim has supporting evidence from a stated environment or revision. | What was observed to work within that scope at the recorded checkpoint. |
+| Decision | `proposed`, `accepted`, `rejected`, `superseded` | Source and rationale of acceptance or supersession. |
+| Implementation | `not-started`, `partial`, `implemented`, `not-applicable` | Delivered work. `not-applicable` is only for a change requiring no implementation. |
+| Verification | `not-checked`, `passed`, `failed`, `needs-recheck` | Relevant checks, evidence and scope. |
 
-A maintained document has no blanket acceptance or implementation status when it contains changes at different stages. Each proposed change has a stable identifier, its originating task, and independent states:
+Acceptance changes decision state only. A design task can complete while its change stays `not-started` / `not-checked`.
 
-| State | Values | Meaning |
-| --- | --- | --- |
-| Decision | `proposed`, `accepted`, `rejected`, `superseded` | Whether the intended approach has been chosen. Record the source and rationale of acceptance or supersession. |
-| Implementation | `not-started`, `partial`, `implemented`, `not-applicable` | What has been delivered. Use `not-applicable` only when the change itself genuinely needs no implementation. |
-| Verification | `not-checked`, `passed`, `failed`, `needs-recheck` | Results of relevant checks, with their evidence and scope. |
+Record implementation and verification per required scope when results differ. Overall implementation stays `partial` while requested work is missing. Overall verification is `passed` only when relevant checks cover the full declared scope at the stated revision and environment. Otherwise identify failed, stale or unchecked scopes and preserve subset results. Never narrow scope to obtain a pass; record user-authorised scope changes.
 
-Accepting a design changes its decision state, not its implementation or verification states. A design-only task can be complete while its change remains `not-started` and `not-checked`.
-
-When results differ across parts of a change, record implementation and verification per required scope. The overall implementation is `partial` while requested work remains missing. Overall verification is `passed` only when relevant checks cover the full declared scope at the stated revision and environment. Otherwise record failed, stale, or unchecked scope as applicable, while preserving each subset's results. Do not narrow the declared scope merely to obtain a passed result; record any user-authorised scope change.
-
-For the illustrative filters change, the notation would be:
+Illustrative filters change, not a real search implementation in Vault:
 
 | Required scope | Implementation | Verification | Evidence |
 | --- | --- | --- | --- |
-| Category filtering | `implemented` | `passed` | Subset check results, source revision, environment, and date. |
-| Date filtering | `not-started` | `not-checked` | No implementation or check evidence yet. |
-| Whole requested change | `partial` | `not-checked` for the full scope | Category results do not establish date-filter behaviour. |
+| Category filtering | `implemented` | `passed` | Subset results, source revision, environment and date. |
+| Date filtering | `not-started` | `not-checked` | No implementation or check evidence. |
+| Whole requested change | `partial` | `not-checked` for the full scope | Category checks do not establish date filtering. |
 
-These are example states, not results from a real search implementation in this repo.
+Support current claims with files, checks or observations, date, revision and applicable scope, such as workspace, installed skill or agent environment. Local catalogue checks do not establish external discovery.
 
-For present-state claims, record supporting files or checks, the date, and the applicable scope. Scope might be a local workspace, code revision, installed skill, or agent environment. A catalogue that works in the docs workspace does not establish that agents in another project can discover it.
-
-Update the owning document when new evidence supports a changed claim. Integrate verified changes into its current-design section and update any existing affected summaries or guides. Preserve the change's identifier, substantive delta, rationale, outcome, and relevant checkpoint rather than silently deleting its history. Revise active proposals in place. Keep superseded decision records and link their replacements where those records exist. Do not create a new document for each revision. When relevant source or environment facts change, recheck affected claims or mark their verification as needing recheck.
+Integrate verified changes into the owning current-design section and affected summaries or guides. Retain each change's identifier, substantive delta, rationale, outcome and checkpoint. Revise active proposals in place; preserve existing superseded decisions and link replacements. Recheck claims affected by source or environment changes, or mark verification `needs-recheck`.
 
 ## Agent discovery and access
-
-The reading path uses ordinary documents:
 
 ```text
 Vault location supplied through the session or external agent configuration
@@ -232,100 +215,99 @@ Vault location supplied through the session or external agent configuration
   -> Detailed documents needed for the work
 ```
 
-`AGENTS.md` owns the maintenance workflow. Project descriptors and indexes route readers to existing context; the writing and task-tool guides provide reusable guidance. Vault does not provide an automatic cross-project discovery or skill installation service. Supply its location when working elsewhere and grant the session the filesystem access its task needs. Instructions alone do not grant access.
+`AGENTS.md` owns workflow; indexes route to existing context and ordinary guides supply writing/tool instructions. Supply Vault's location and grant the session appropriate filesystem access when working elsewhere. Vault provides no automatic cross-project discovery or skill installation service; instructions alone grant no access.
 
 ## Task context and audit
 
-Record each distinct authorised task in one context document when this workflow is in use. Give it a stable identifier and directory. Record the requested deliverable, scope, goal, status, last update, relevant source repositories and revision where applicable, maintained design paths, and change identifiers. Include progress, unresolved assumptions, constraints, evidence links, and next action. A new message or session does not by itself create a new task.
+Use one stable task directory and context for each distinct authorised task under this workflow. Record identifier, requested deliverable, scope, goal, status, last update, relevant source repositories/revision, maintained design paths and change IDs. Include progress, unresolved assumptions, constraints, evidence and next action. A new message or session does not create a new task.
 
-Task completion is assessed against its requested deliverable. A design task completes when it delivers the requested coherent, reviewable design with constraints, trade-offs, status, and unresolved issues stated. A research task completes against its research scope. An implementation task needs the delivered behaviour and relevant checks. Record the actual outcome and evidence in task context. Do not require implementation to complete a design-only task, and do not start implementation merely because its design is accepted. Carry out implementation when the user's instructions include it.
+Assess completion against the requested deliverable:
 
-Update context at meaningful checkpoints: changed scope, a significant finding, a completed phase, or a handoff. Keep a dated milestone record when reconstructing the sequence would help review. Avoid reproducing the full conversation or every tool call.
+| Task | Completion requires |
+| --- | --- |
+| Design | Coherent, reviewable design with constraints, trade-offs, status and open issues. Implementation is not required. |
+| Research | Delivery of the requested research scope. |
+| Implementation | Delivered behaviour and relevant checks. |
 
-When resuming work, verify source facts relevant to the next action. A recent timestamp does not establish that the source code or external information still matches the document. Link completion claims to checks, resulting files, commits, or other appropriate evidence.
+Record actual outcomes and evidence. Implement only when requested or already authorised; design acceptance alone is insufficient.
 
-Resume or refine unfinished work in its existing task context. When reopening a completed task to finish or correct its original scope, preserve its completion checkpoint and append an amendment for the reopened work. An extension with new scope is a distinct task linked to the earlier one, while reusing the same maintained feature design. Do not reopen a completed task merely to make a later extension part of its original delivery.
+Update context at scope changes, significant findings, phase completion and handoffs. Keep dated milestones when useful for audit, without reproducing the conversation or every tool call. On resumption, verify source facts relevant to the next action; timestamps alone do not establish freshness. Link completion claims to checks, files, commits or appropriate evidence.
 
-Keep completed tasks addressable at their existing paths. Record a dated completion checkpoint in the existing context with delivered scope, check results and their limitations, material decisions and rationale, and a concise account of the requirements and contracts used. Link the maintained design and stable change identifier. Correct a historical claim with a dated amendment that states the correction while retaining the original delivery and understanding. Avoid moving task directories simply to mark them complete.
+- Resume unfinished work in its existing context.
+- Reopen original completed scope by preserving its checkpoint and appending an amendment.
+- Track a new extension as a distinct linked task reusing the maintained design; do not rewrite the earlier delivery to include it.
+- Keep completed tasks at their existing paths. Correct historical errors with dated amendments retaining the original account.
 
-Before Git exists, the checkpoint prose preserves the relevant historical facts. A revision label or link to a mutable document cannot reconstruct its earlier contents. This records the design basis, not an exact copy of the whole document. Once Git is available, also record the exact docs commit and path for the design used, plus code commits for delivered implementation where applicable. Branch names alone are mutable references. Git introduced later cannot recover content already overwritten, so retain earlier prose checkpoints.
+A dated completion checkpoint in the existing context preserves delivered scope, check results and limitations, material decisions/rationale and relevant requirements/contracts. Link the maintained design and stable change ID. Before Git, retain the historical facts in prose: mutable links or revision labels cannot recover overwritten content. This preserves the design basis, not a full document copy. With Git, also record exact docs commits and paths for the design used, plus implementation commits where applicable; branch names are mutable. Retain earlier prose checkpoints because later Git cannot recover prior lost content.
 
-Promote lasting facts into their owning maintained documents and link back to task evidence. Preserve significant decisions in existing records or appropriate dated sections. Git history and milestone records support audit, but implementation claims still need checks within their stated scope.
+Promote lasting facts into their maintained owners and link task evidence. Preserve significant decisions in existing records or dated sections. Git and milestones support audit; implementation claims still require scoped checks.
 
 ## Coordinating shared edits
 
-Separate task folders protect task records, but maintained feature designs, `current.md`, `PROJECT.md`, decision records, and the catalogue can be shared across tasks. Before overlapping edits, one coordinator assigns a single writer for each shared document. Record the assignment in existing task context and agent instructions. Assignment comes from the coordinator rather than agents independently claiming the same file.
+Before overlapping edits to designs, summaries, indexes, decisions or the catalogue, one coordinator assigns a single writer per shared file and records ownership in existing context and agent instructions. Separate task IDs do not exempt shared files; agents cannot independently claim the same document.
 
-Other agents keep contributions and evidence in their existing task records or send them to the assigned writer. The writer rereads the current document, preserves unrelated edits, reconciles conflicting proposals, and integrates the result. Handoffs identify the new writer and any pending contributions. Tasks with different IDs still follow this rule when they affect the same maintained document.
+Contributors use their task records or send evidence to the writer. The writer rereads the document, preserves unrelated edits, reconciles proposals and integrates contributions. Explicit handoffs name the new writer and pending contributions. Until ownership is resolved, keep contributions in context.
 
-If a writer has not been coordinated while overlapping edits are active, keep contributions in the task context until the assignment is resolved. These are cooperation rules, not automatic filesystem locks. The pilot must exercise two agents working on the same feature as well as on separate task records.
+This is cooperation, not an automatic filesystem lock. The pilot must exercise two agents sharing a feature as well as agents using separate task records.
 
 ## Writing guidance and media
 
-`AGENTS.md` owns document maintenance, task recovery and shared-writer rules. The ordinary [writing style guide](../projects/vault/guides/markdown-style.md) records the user's preference for simple, formal English, concise wording, no unnecessary repetition or stock AI phrasing, and bullets or tables where useful. The [task tools guide](../projects/vault/guides/task-tools.md) covers useful utilities. Further corrections update these documents in place.
+`AGENTS.md` owns maintenance, recovery and writer coordination. The ordinary [writing style guide](../projects/vault/guides/markdown-style.md) records simple, formal English, concise wording, no unnecessary repetition or stock AI phrasing, and useful bullets/tables. The [task tools guide](../projects/vault/guides/task-tools.md) owns utility guidance. Update these documents in place.
 
-Use relative image paths inside documents. Keep feature media in `features/assets/<feature-id>/` when using the suggested layout, and task-only media in the task's `assets/` folder. Existing documents can retain their existing media locations. Link reusable media rather than copying it into every task. Use Mermaid for diagrams where the viewer renders it, with an SVG or PNG alternative when needed. Alt text explains what the image shows, and nearby prose or a caption explains its significance. [Markdown and media links](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax), [Mermaid support](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).
+Use relative media links. Retain existing locations; for new content under the suggested layout, use `features/assets/<feature-id>/` for feature media and task `assets/` for task-only media. Link reusable assets instead of copying them. Keep editable diagram sources beside rendered assets. Use Mermaid where supported, with SVG or PNG alternatives when needed. Alt text describes content; nearby prose explains significance. Check the intended viewer. [Markdown and media links](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax), [Mermaid support](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).
 
-Use short decision records for decisions that matter beyond one task. Record context, status, decision, and consequences. Preserve a superseded record and link its replacement. [ADR precedent](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
+For lasting decisions, use short records with context, status, decision and consequences. Preserve superseded records and link replacements. [ADR precedent](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
 
 ## Implementation and remaining work
 
-The descriptor, generated catalogue, consistency helper, ordinary guides and editable diagram with SVG fallback are retained. Skills and the local installer are removed. This documentation project is the first real indexed project. The historical checkpoints below distinguish earlier rules-only and installed setup tests; the removal task records checks for the revised repository.
+Retained components are the descriptor, catalogue, helper, guides and editable diagram/SVG fallback; skills and installer are removed. Vault is the first real indexed project. Earlier rules-only and installed setup checks remain historical; the removal task records revised-repository checks.
 
-Writing preferences are recorded; further style refinements can come from user edits to real documents. New projects can be indexed as they are needed. Other hosts and review viewers need their own access and rendering checks before their behaviour is claimed. Shared-document coordination remains cooperative; introduce enforcement only if real work demonstrates that need.
+Refine writing guidance from real user edits and index new projects as needed. Other hosts and viewers need their own access/rendering checks. Introduce coordination enforcement only if demonstrated need warrants it.
 
 Pilot acceptance checks:
 
-- A fresh agent can identify the correct project from its description and repository identity without reading unrelated project documents.
-- An agent supplied with Vault's location can find relevant documents through the catalogue and project index, subject to session filesystem access.
-- A fresh session can recover a task's state and next action, including what has and has not been verified.
-- A reader can distinguish current behaviour, accepted decisions, and proposals. An accepted but unimplemented design is never presented as a working capability.
-- A design-only task can complete while its change remains unimplemented, and acceptance alone does not trigger implementation.
-- A feature extension updates the indexed maintained design, with no competing task design created by default.
-- Documents and images remain linked after the repository is cloned elsewhere. Diagrams work in the chosen review viewer.
-- Agents updating different tasks preserve each other's work.
-- Agents working on the same feature share a coordinated writer and do not race to edit its maintained documents.
-- A completed task retains its delivery and design basis after the maintained feature design is updated. Exact historical document retrieval is checked when Git is available.
-- Editing a project's description regenerates a consistent catalogue.
-- A produced document follows the agreed style and makes its proposal or implementation status clear.
-- A new finding or requirement updates the appropriate existing document without creating a duplicate, and outdated claims are corrected throughout that document.
-- A follow-up or resumed session reuses the same task record, and partial checks establish only the stated subset of a change.
+- Fresh agents select the correct project from description and repository identity without reading unrelated projects; supplied location and session access enable catalogue/index discovery.
+- Fresh sessions recover matching task state, next action and checked/unchecked scopes.
+- Readers distinguish current behaviour, accepted decisions and proposals; unimplemented acceptance is never presented as working capability.
+- Design-only tasks can complete before implementation; acceptance does not trigger implementation.
+- Extensions update indexed maintained designs without competing task designs by default.
+- Relative document/media links survive cloning elsewhere; diagrams render in the chosen viewer.
+- Agents preserve each other's task work and coordinate one writer for shared feature documents.
+- Completed tasks retain delivery and design basis after maintained designs change; exact historical retrieval is checked when Git exists.
+- Project description changes regenerate a consistent catalogue.
+- Produced documents follow agreed style and expose proposal/implementation status.
+- New findings and requirements update existing documents, correct stale claims throughout and create no duplicates.
+- Follow-ups and resumptions reuse context; partial checks establish only their stated subset.
 
 ## Worked example: extending search
 
-This is an illustrative walkthrough, not an implemented feature in this repo. Assume an existing search document records checked keyword-search behaviour. That existing file remains the maintained design even if its path differs from the suggested layout.
+Illustration only: assume an existing document records checked keyword search. Keep that design at its existing path.
 
 | Event | Documentation action | Task outcome | Filter-change state |
 | --- | --- | --- | --- |
-| User asks to design search filters. | Find and check the existing design and code. Add an identified filters proposal to the same design; record its intended behaviour, interfaces, trade-offs, and open issues. Use one task context for this design work. | Complete when the requested design is delivered. Preserve a checkpoint of its scope and design basis. | `proposed` / `not-started` / `not-checked`. |
-| User accepts the design. | Update that change's decision and record the source of acceptance. Keep the current keyword-search account separate from the intended filters. | The completed design task remains complete. | `accepted` / `not-started` / `not-checked`. |
-| User asks to implement the filters. | Track the new implementation scope in its own task context, linked to the design task and the same filter-change identifier. Reuse the maintained design. | In progress until its requested implementation scope and checks are satisfied. | Implementation moves to `partial` or `implemented`; verification follows the checks actually performed. |
-| Only category filtering is implemented and checked. | Record category and date results separately in the scoped-state table. Keep the remaining filter work pending. | Implementation task remains incomplete if its scope includes the remaining filters. | `accepted` / `partial` / `not-checked` for the whole change; category checks are `passed`. |
-| The full requested filters are implemented and checked. | Integrate the resulting current behaviour, retain the change's delta and rationale, and add the implementation completion checkpoint and revision references. | Implementation task is complete. The earlier design checkpoint still describes design work only. | `accepted` / `implemented` / `passed` for the stated scope and revision. |
+| User requests filter design. | Check existing design/code; add an identified proposal with behaviour, interfaces, trade-offs and open issues. Use one design context. | Complete on design delivery; retain scope/design-basis checkpoint. | `proposed` / `not-started` / `not-checked`. |
+| User accepts design. | Record acceptance source; keep keyword behaviour separate from intended filters. | Design task stays complete. | `accepted` / `not-started` / `not-checked`. |
+| User requests implementation. | Create the distinct implementation context, linked to design task and same change ID; reuse maintained design. | In progress until requested scope and checks are satisfied. | Implementation becomes `partial` or `implemented`; verification follows actual checks. |
+| Only category filtering is implemented and checked. | Record category/date results separately; preserve pending work. | Incomplete while requested filters remain missing. | `accepted` / `partial` / `not-checked` overall; category `passed`. |
+| Full requested filters are implemented and checked. | Integrate current behaviour; retain delta/rationale and implementation checkpoint/revisions. | Complete; earlier checkpoint still describes design-only delivery. | `accepted` / `implemented` / `passed` within stated scope/revision. |
 
-Follow-up questions during design reuse the design task. If another agent is concurrently designing search ranking, the coordinator assigns one writer for the shared search document and both agents contribute through their own task records. The project current-state summary links to the maintained search facts rather than duplicating them.
+Design follow-ups reuse its task. Concurrent ranking design requires one coordinated search-document writer; agents contribute through their task records. Project summaries link to maintained search facts.
 
 ## Design review resolutions
 
-Historical review and delivery records follow. References to skills and installation describe the earlier setup and are superseded by [Change remove-skills](#change-remove-skills).
-
-Reviewed and revised: 11 October 2026. The user requested that the five identified issues be addressed. They are resolved as design definitions and local operating rules. The checkpoints below record the representative cases exercised locally and through fresh external Codex sessions.
+Historical review: 11 October 2026. The user requested resolution of five issues; design definitions and operating rules address them. Checkpoints below record representative local and fresh external Codex exercises. Skill/installation references describe the earlier setup, superseded by [Change remove-skills](#change-remove-skills).
 
 | Reviewed issue | Resolution |
 | --- | --- |
-| No maintained feature-design home. | One indexed existing feature or project design is authoritative. The suggested default is `features/<feature-id>.md`; task designs are optional distinct artifacts. |
-| Mixed current and proposed behaviour. | Separate current design from identified changes. Each change has independent decision, implementation, and verification states, with evidence scope. Detailed facts have one owner. |
-| Mutable links obscure history. | Existing task contexts preserve completion checkpoints and relevant design contracts. Git provides exact commit-and-path references; a mutable link or revision label alone is insufficient. |
-| Concurrent tasks share documents. | A coordinator assigns one writer before overlapping edits to shared documents. Contributors use task records or coordination messages; no automatic lock is claimed. |
-| Completion mismatches the request. | Requested deliverables govern completion. Design-only work can finish before implementation, and acceptance alone does not authorise code changes. |
+| No maintained feature-design home. | One indexed existing feature/project design; otherwise `features/<feature-id>.md`. Task designs are optional distinct artifacts. |
+| Mixed current/proposed behaviour. | Separate current design and identified changes; independent decision, implementation and verification with scoped evidence and one fact owner. |
+| Mutable links obscure history. | Context checkpoints preserve contracts; Git adds exact commit/path references. Mutable links or labels are insufficient. |
+| Concurrent tasks share documents. | Coordinator assigns one writer; contributions use context/messages. No automatic lock. |
+| Completion mismatches request. | Deliverables govern completion; design can finish before implementation and acceptance alone authorises no code changes. |
 
-OpenSpec's maintained domain specs and separate change records provide a useful precedent for maintained facts and task history. The design adapts that separation to the user's preference for updating existing documents. [OpenSpec structure](https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md).
+[OpenSpec's separation of maintained domain specs and change records](https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md) informed the design, adapted to in-place document maintenance. [The ADR convention](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) supports preserving superseded decisions.
 
-The original ADR convention preserves superseded decisions, which supports retaining a historical account even while the maintained design changes. [ADR history convention](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions).
-
-The catalogue, skills, helper, and user-level pointer now exist; [CURRENT.md](../CURRENT.md) records their observed state. Git preserves the documentation. The earlier isolated pilot below demonstrated rules before those components existed. The subsequent full integration checks cover discovery, external access, installed skills, shared edits, and media within their stated environments; neither pilot proves arbitrary viewers or sessions work automatically.
-
-The reviewed structural and workflow issues are specified and the core is implemented. The user's writing preferences are recorded in the maintained style guide. Optional document forms can be refined from real work without creating empty scaffolding. Further integration work follows observed gaps rather than assuming all environments share the tested access and rendering behaviour.
+The isolated pilot preceded core implementation. The later 11 October setup added catalogue, skills, helper and user pointer, then checked discovery, external access, installed skills, shared edits and media within recorded environments. Skills and installer have since been removed; use [CURRENT.md](../CURRENT.md) for observed current state. Neither pilot establishes automatic behaviour in arbitrary viewers or sessions. Refine optional forms from real work without empty scaffolding; further integration follows observed gaps.
 
 ## Completion checkpoint: docs-workflow-refinements
 

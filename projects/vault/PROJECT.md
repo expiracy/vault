@@ -1,29 +1,30 @@
 ---
 name: vault
 description: >-
-  Vault's shared project documentation, discovery, task context, writing guidance,
-  and task-tool conventions. Consult when building or using Vault, its catalogue,
-  documentation conventions, or storage for standalone task utilities.
+  Vault's project documentation, task tools, catalogue, maintenance rules and
+  writing guidance. Use for work on Vault or its shared documentation workflow.
 aliases: [agent-docs, shared-docs, docs-repo]
 repositories: [https://github.com/expiracy/vault]
 ---
 
 # Vault
 
-This project owns Vault's documentation and task-tool system. Other subjects have their own project descriptors, including work with no code repository.
+Owns the shared documentation/task-tool system. Other subjects, including work without a code repo, use their own project descriptors.
 
-- Current capabilities and evidence: [CURRENT.md](../../CURRENT.md)
-- Maintained system design and historical checkpoints: [docs repo design](../../planning/docs-repo-design.md)
-- Research: [existing approaches](../../research/existing-approaches.md)
-- Local maintenance rules: [AGENTS.md](../../AGENTS.md)
-- Writing style: [style guide](guides/markdown-style.md)
-- Task-owned utilities: [task tools guide](guides/task-tools.md)
+| Document | Owns |
+| --- | --- |
+| [CURRENT.md](../../CURRENT.md) | Observed state and evidence. |
+| [Maintained design](../../planning/docs-repo-design.md) | Layout/contracts and historical checkpoints. |
+| [Research](../../research/existing-approaches.md) | Dated source comparisons. |
+| [AGENTS.md](../../AGENTS.md) | Maintenance and coordination rules. |
+| [Writing guide](guides/markdown-style.md) | Prose, structure and media. |
+| [Task tools guide](guides/task-tools.md) | Utility storage and execution. |
 
 Task records:
 
-- [Setup remediation](tasks/setup-remediation/context.md): repair the six setup-review findings, repeat the setup checks, and commit the authorised changes.
-- [File metadata](tasks/file-metadata/context.md): completed design description for optional YAML frontmatter; parsing/removal support and webpage syncing remain unimplemented.
-- [Remove skills](tasks/remove-skills/context.md): remove packaged skills and the installer while retaining ordinary guides and repository checks.
-- [External document skills](tasks/external-document-skills/context.md): documentation writing style and canonical UML diagram assets through external skills; Vault stays Markdown and contains no packaged skills.
+- [Setup remediation](tasks/setup-remediation/context.md): six findings repaired; original checks and publication.
+- [File metadata](tasks/file-metadata/context.md): optional YAML design; parsing/removal and webpage sync remain unimplemented.
+- [Remove skills](tasks/remove-skills/context.md): packaged skills/installer removed; guides and checks retained.
+- [External document skills](tasks/external-document-skills/context.md): writing-guide consolidation, concise repository docs and external UML skill; no packaged Vault skills.
 
-Use those documents for current work on this system. Additional feature documents and task contexts are created only when separate authorised scope needs an appropriate home. Follow-ups to the existing system design update it in place.
+Reuse matching task contexts and maintained designs. Create separate records only for distinct authorised scope needing a home.

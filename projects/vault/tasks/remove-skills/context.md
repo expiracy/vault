@@ -2,27 +2,21 @@
 
 Task: `remove-skills`. Started: 12 October 2026. Completed: 13 October 2026. Status: complete.
 
-Requested deliverable: remove skills and their local installer from Vault. Keep project documentation, task tools, catalogue discovery and useful writing guidance. Preserve the accepted [file metadata description](../../../../planning/docs-repo-design.md#change-file-metadata).
-
-Root is the sole writer of the implementation, maintained design, current-state record, guides, indexes and this context. The user explicitly requested that Vault contain no skills; this supersedes the installation component of the completed [setup-remediation task](../setup-remediation/context.md), whose historical evidence remains intact.
+Deliverable: remove Vault's skills/installer; retain documentation, task tools, catalogue and writing guidance, including the [accepted metadata design](../../../../planning/docs-repo-design.md#change-file-metadata). Root owned code/shared docs and this context. This supersedes the [setup task's](../setup-remediation/context.md) installation component; its evidence remains historical.
 
 ## Implementation plan
 
-Goal: make Vault a documentation and task-tool repository without packaged skills or an installer.
+Completed with existing Python 3.10+/PyYAML and Markdown, without new dependencies or global configuration changes:
 
-Architecture: retain the existing catalogue and consistency helper. Move writing and task-tool references into ordinary project guides, remove skill installation code, and let isolated integration sessions consume normal documents.
-
-Tech stack: existing Python 3.10+ scripts and PyYAML; Markdown guidance. No new dependency or global configuration changes.
-
-- [x] Establish the baseline: 49 tests ran, 35 passed and 14 Windows installer tests were skipped on macOS.
-- [x] Change `tests/test_integration.py` to replay a checkout without `.agents`; run it before modifying the harness and confirm the missing dependency causes failure.
-- [x] Move both reference guides to `projects/vault/guides/`; delete both `SKILL.md` files, `scripts/install-local.ps1` and `tests/test_install_local.py`. Update `scripts/test_integration.py` and the seed fixture's `AGENTS.md` to use plain guidance; remove installed-file and skill-bootstrap checks and their tests.
-- [x] Update `AGENTS.md`, `README.md`, `CURRENT.md`, `PROJECT.md`, the generated catalogue and the maintained design. Preserve historical checkpoints and use historical commit links for removed sources.
-- [x] Run the remaining unit suite, catalogue/link checks, whitespace checks and offline replay. Record a completion checkpoint; leave browser and paid live-agent runs unchecked.
+- [x] Baseline: 49 tests, 35 passed, 14 Windows installer skips on macOS.
+- [x] Regression first failed when integration replay omitted `.agents`.
+- [x] Move both guides to `projects/vault/guides/`; remove skill manifests, `scripts/install-local.ps1` and installation tests. Revise harness, seed instructions and tests to consume ordinary guidance.
+- [x] Update operating docs, indexes, catalogue and design; preserve historical checkpoints and exact removed-source commit links.
+- [x] Run unit, catalogue/link, offline replay and whitespace checks; record scope/limits below.
 
 ## Progress and next action
 
-The regression check first failed because replay attempted to copy the omitted `.agents/skills` directory. After removing that dependency, all nine remaining integration tests passed. Both reference guides were preserved byte-for-byte at their new paths. No `docs-context` or `write-project-doc` user-skill links exist on this Mac. The full 34-test suite, catalogue/link checks, offline replay and whitespace checks passed. Independent read-only review found two stale descriptions; both were corrected, and the reviewer reported no remaining actionable findings. The removal work is complete; publication was subsequently authorised below.
+All 34 remaining tests, including nine integration tests, passed. Guides matched their source bytes at removal; no Vault user-skill links were present on this Mac. Independent review found two stale descriptions, both corrected, with no remaining actionable findings. Removal is complete; the publication follow-up is below. Fresh live-agent/browser runs were excluded.
 
 ## Completion checkpoint: remove-skills
 

@@ -1,33 +1,24 @@
 # External document skills
 
-Task: `external-document-skills`. Started and completed after the final clarification: 13 October 2026. Status: complete. Earlier completion checkpoints are retained below.
+Task: `external-document-skills`. Started/completed: 13 October 2026. Status: complete for writing consolidation and concise agent-facing docs. Earlier delivery checkpoints remain unchanged below.
 
-Requested deliverable, further clarified on 13 October 2026: documentation writing style and LaTeX/TikZ UML diagram assets for Markdown documents. Use the name `uml-diagrams` and keep only sequence, activity, state machine, class, component, deployment and use case views, with explicit scenario-to-view guidance and the existing canonical style. The full LaTeX-document skill created under the earlier interpretation is removed. Keep Vault Markdown and free of packaged skills.
+Deliverable: one maintained Vault writing guide required by `AGENTS.md`; concise maintained repository docs; the external `uml-diagrams` skill with sequence, activity, state machine, class, component, deployment and use case views. Vault packages no skills. Remove the redundant writing skills; the previously excluded coding/full-LaTeX skills remain removed.
 
-Root is the sole writer of the packages, their skills-index entries, this context and Vault's project-index entry. Canonical source belongs in `/Users/jgray/skills`, now configured as `expiracy/dotfiles`, under `skills/vault-doc-style/` and `skills/uml-diagrams/`. The earlier full-document package is removed. Reuse the existing writing, document and TikZ guidance. Preserve the unrelated chezmoi migration; update only the relevant skill entries, shared instruction reference and matching link templates.
+Root owns shared routing/current-state files, guides, task records, this context and external consolidation. `/root/concise_design` wrote `planning/docs-repo-design.md`; `/root/concise_research` wrote `research/existing-approaches.md`. Both have handed back their completed edits; root owns final integration. Keep contracts, evidence, stable links and historical checkpoints. Fixtures and executable source are outside this prose edit.
 
 ## Original scope and checks
 
-This was the initial interpretation; the diagram-only clarification below supersedes the full-document portion.
-
-- Create one concise `SKILL.md` per skill, with no additional helper scripts or templates.
-- Keep Vault's [writing guide](../../guides/markdown-style.md) as the detailed style authority. Preserve custom metadata, change states, links and historical checkpoints during prose edits.
-- Cover editable LaTeX source, existing assets, native or available compilation, limited repairs and honest visual-verification reporting. Keep Markdown metadata separate from exported LaTeX prose.
-- Validate each manifest and perform isolated document-edit/generation trials before linking the new skills into the existing user skill directory.
+The initial two-skill interpretation and subsequent diagram-only, seven-view and naming changes are recorded in the completion checkpoints. Their original deliverables and check limits are preserved.
 
 ## Clarification and current work
 
-The user clarified that LaTeX is for diagrams accompanying Markdown, not full documents, then restricted the skill to common views and requested clear selection guidance. Root preserved `vault-doc-style`, removed the newly created `latex-documents` package and its links/templates, and revised the existing diagram skill before renaming it to `uml-diagrams`. The canonical visual theme is the existing blue/grey palette, typography and line conventions; formal UML notation is checked separately against primary specifications. The unrelated chezmoi migration was subsequently committed outside this task.
+The writing guide now owns prose and document-structure guidance. `AGENTS.md` requires it. The external collection contains only `uml-diagrams`; its canonical blue/grey theme, notation reference and diagram assets remain. Source repository: `/Users/jgray/skills` (`expiracy/dotfiles`).
 
-The final seven-view manifest passed validation. Examples for all seven retained views compiled and rendered with the trimmed shared theme, and root inspected every PNG. An independent trial selected the intended views, handled an unclear brief and an excluded type, and generated a checked sequence diagram. Installed links resolve to the tested source. Earlier checks of the broader scope remain historical evidence in their checkpoint below.
-
-Current published skill source: [dotfiles commit a144d16](https://github.com/expiracy/dotfiles/commit/a144d1602c5fab71a85d0c1bcf2ce20c9518ed91). The checkpoints below record the original publication and subsequent rename; earlier names and uncommitted states describe those historical deliveries.
+Published external source: [d13bc76](https://github.com/expiracy/dotfiles/commit/d13bc766105fbfdc24113ce18176f395864bf883), containing the 414-word UML instructions and skill cleanup. The user explicitly authorised publication of the Vault documentation and guide refinements on 13 October 2026. Automatic repository maintenance remains outside scope.
 
 ## Earlier progress
 
-The writing-style baseline preserved facts but rephrased the historical completion checkpoint. The new skill's trial preserved that checkpoint exactly, as well as metadata, states and links. Its manifest passed validation, and its source was added to the agent skills repository.
-
-The baseline and skill-guided LaTeX documents compiled successfully through the native compiler. Their editor openings were queued in hidden test chats, so visual layout was not checked. Root independently confirmed successful compilation of the skill-guided source. Both manifests passed, and the four selected Codex/Claude links passed chezmoi verification. No creation work remains.
+Earlier checkpoints preserve document/diagram revisions and checked scopes. Later checkpoints record the rewrite and limited fresh writing trials; full live workflow and browser behaviour remain unchecked.
 
 ## Completion checkpoint: external-document-skills
 
@@ -78,3 +69,35 @@ Fresh pre-publication checks passed: both skill manifests, target-scoped verific
 Recorded: 13 October 2026. Renamed the diagram skill to `uml-diagrams` because the name describes its purpose; TikZ remains its rendering method. Updated the package path, manifest name/title, README entry, shared instruction reference and two chezmoi link templates. Both installed skill links use the new name; only the two verified old links were removed. The seven supported views, scenario guidance, reference and diagram assets retain their previous content. Committed and pushed the change as [a144d1602c5fab71a85d0c1bcf2ce20c9518ed91](https://github.com/expiracy/dotfiles/commit/a144d1602c5fab71a85d0c1bcf2ce20c9518ed91); the [renamed skill source](https://github.com/expiracy/dotfiles/blob/a144d1602c5fab71a85d0c1bcf2ce20c9518ed91/skills/uml-diagrams/SKILL.md) is the maintained entry point.
 
 Checks: the renamed manifest passed validation; both skill links and the two shared-instruction links passed target-scoped chezmoi verification. Hash comparisons confirmed identical reference/template/preview bytes and an unchanged manifest body apart from its name/title. Old package, template and installed-link paths are absent. Diagram rendering was not repeated because its inputs were unchanged; the earlier visual-check limits still apply.
+
+## Completion checkpoint: concise instructions
+
+Recorded: 13 October 2026. Shortened the main `uml-diagrams` instructions from 800 to 414 words, retaining the seven-view scenario table, model semantics, canonical theme, asset placement and compile/render verification requirements. Removed repeated explanations and moved class-spacing defaults into the existing reference; diagram assets are unchanged. Reviewed the before/after wording; manifest and whitespace checks passed. Following the user's correction about TDD for prose, verification was limited to this editorial scope. No new diagram-generation result is claimed. The changes remain local, uncommitted and unpushed; automatic skills-repository maintenance is outside the requested scope.
+
+## Completion checkpoint: documentation-only collection
+
+Recorded: 13 October 2026. At the user's request, removed `skills/canon-tdd/` and `skills/cpp-style/` from the external repository, their four chezmoi templates and four verified installed links. Removed their README entries and shared-instruction references, retaining the general requirement to run meaningful checks and report actual results. The four remaining skills support writing and UML diagrams for Vault; the earlier concise UML edit is preserved. All four manifests passed validation, the eight remaining skill links and two shared-instruction links passed target-scoped chezmoi verification, and no references to the removed skills remain in the external working tree. Whitespace checks passed. Source baseline: [a144d16](https://github.com/expiracy/dotfiles/commit/a144d1602c5fab71a85d0c1bcf2ce20c9518ed91). No commit or push was performed; Vault still packages no skills.
+
+## Completion checkpoint: concise agent documentation
+
+Recorded: 13 October 2026. Shortened all 13 maintained Markdown documents in place, using explicit actions, conditions, ownership and links. Consolidated writing/document-structure guidance in `projects/vault/guides/markdown-style.md`, required by `AGENTS.md`. Removed the three redundant writing packages, six templates and six owned installed links from the external collection; only `uml-diagrams` remains. Preserved schema/state/access/authorisation contracts. Historical checkpoint suffixes and setup commands/versions are byte-identical; executable source, fixtures and diagram assets are unchanged.
+
+Checks: all 34 unit tests, offline routing/history, task-tool and media-source replay, descriptor/catalogue/local-link checks and whitespace checks passed with Python 3.12.14/PyYAML 6.0.3 on macOS. The UML manifest and its two skill/two shared-instruction links passed validation/chezmoi verification. Read-only reviews checked lost conditions and task/history scope; three conditions were restored. An initial copied-guide link failure was fixed by keeping state guidance self-contained. Replay evidence: `/private/tmp/vault-concise-docs-integration.json`.
+
+Limits: no fresh live-agent or browser-rendering runs; the earlier diagram/viewer limits remain. Source baselines: Vault `510de053956152d48b449090c28ec3eb3b47e6a5` and dotfiles `a144d1602c5fab71a85d0c1bcf2ce20c9518ed91`. Changes are local, uncommitted and unpushed; no automatic repository maintenance was performed.
+
+## Completion checkpoint: writing-guide validation
+
+Recorded: 13 October 2026. `AGENTS.md` now requires reading the guide before each document edit and checking drafts before delivery. Three fresh Codex CLI 0.160.0 writing cases (proposal, procedure, task history) read the copied guide before edits without style cues in their task prompts; the history case started in a nested directory. YAML, literal commands/identifiers, original checkpoints and allowed-file boundaries were checked. One history draft omitted an unresolved question; a clearer source-fact/open-issue comparison rule preserved it on a fresh retest with the same prompt. Four sessions completed. Evidence: `/private/tmp/vault-style-validation/summary.json` and its temporary outputs/events.
+
+Recommendation: keep always-applicable Vault rules in `AGENTS.md` with one maintained guide. Official [instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md) loads repo guidance; [skills](https://learn.chatgpt.com/docs/build-skills) depend on selection/invocation. This architectural recommendation was not an A/B skill trial. Finite checks cannot guarantee every draft, enforce manual edits or establish other hosts/outside-repo behaviour. No skill was added and no commit or push performed.
+
+## Completion checkpoint: format and explanation depth
+
+Recorded: 13 October 2026. Updated the writing guide at the user's request: prefer applicable tables, then bullet/numbered lists, then prose; group related points and make each section, paragraph and bullet develop a clear connected flow. Added the whiteboard test for sufficient explanatory detail, including function-level roles/interactions when useful, while avoiding line-by-line commentary and routine source line numbers. Required specification/procedure precision and evidence references remain. Earlier live trials tested the prior guide revision; these refinements have only document-consistency and whitespace checks. No commit or push performed.
+
+## Publication checkpoint: consolidated guidance
+
+Recorded: 13 October 2026, after explicit commit-and-push authorisation. The external cleanup/concision is published as [d13bc766105fbfdc24113ce18176f395864bf883](https://github.com/expiracy/dotfiles/commit/d13bc766105fbfdc24113ce18176f395864bf883); [uml-diagrams](https://github.com/expiracy/dotfiles/blob/d13bc766105fbfdc24113ce18176f395864bf883/skills/uml-diagrams/SKILL.md) is its only remaining skill. The Vault revision containing this checkpoint records the 13 maintained-document updates, mandatory guide use, consolidated writing rules, formatting priorities and whiteboard test.
+
+Fresh checks passed: 34 unit tests, offline routing/history, task-tool/media replay, catalogue/descriptors/local links, whitespace, protected-history comparisons and UML manifest/installed-link verification. Evidence: `/private/tmp/vault-publication-integration.json`. Code, fixtures and diagram assets remain unchanged. The latest format/depth preferences have not had fresh-agent trials; full live workflow/browser checks remain outside this publication check.
