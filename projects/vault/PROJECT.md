@@ -24,5 +24,6 @@ Task records:
 - [Setup remediation](tasks/setup-remediation/context.md): repair the six setup-review findings, repeat the setup checks, and commit the authorised changes.
 - [File metadata](tasks/file-metadata/context.md): completed design description for optional YAML frontmatter; parsing/removal support and webpage syncing remain unimplemented.
 - [Remove skills](tasks/remove-skills/context.md): remove packaged skills and the installer while retaining ordinary guides and repository checks.
+- [External document skills](tasks/external-document-skills/context.md): documentation writing style and canonical UML diagram assets through external skills; Vault stays Markdown and contains no packaged skills.
 
 Use those documents for current work on this system. Additional feature documents and task contexts are created only when separate authorised scope needs an appropriate home. Follow-ups to the existing system design update it in place.
