@@ -1,6 +1,6 @@
 # Project documentation writing style
 
-Use simple, formal British English and concise wording. Prefer tables, then lists, then prose where applicable. Explicit document requirements take precedence. Preferences recorded 11 October 2026; refined 13 October 2026.
+Use simple, formal British English and concise wording by default. Adapt length, detail, structure and format to the audience, purpose and content; this guide is not a fixed template. Prefer tables, then lists, then prose where applicable. Preserve facts, evidence and required project conventions. Explicit document requirements take precedence. Preferences recorded 11 October 2026; refined 13 October 2026.
 
 ## Language and length
 
@@ -21,7 +21,7 @@ Specifications, references and procedures retain their required precision and de
 
 ## Structure and formatting
 
-Prefer formats in this order where they fit the content:
+Prefer formats in this order where they fit the content. Choose the form that makes the point clearest; do not force a table, list or section when it obscures the explanation.
 
 | Priority | Format | Use for |
 | --- | --- | --- |
@@ -34,11 +34,15 @@ Prefer formats in this order where they fit the content:
 
 Example: “It is important to note that the proposed service would retry failed requests” becomes “The proposed service would retry failed requests.” The proposal remains a proposal.
 
+## YAML frontmatter
+
+Markdown file metadata, when useful, goes at the very top as a YAML mapping between two `---` delimiter lines. Ordinary documents may omit it; `PROJECT.md` requires its descriptor frontmatter. Custom fields can record a related webpage, branch, commit or other file context. Add only useful metadata, keep it separate from prose, and preserve existing keys/values during prose edits unless asked to change them. Metadata does not establish implementation or verification.
+
 ## Current facts and changes
 
 Read the surrounding document and update its maintained account. Preserve frontmatter, code, quotations, identifiers, links and historical checkpoints unless the request targets them. Correct historical facts with dated amendments retaining the original account.
 
-Separate current facts from identified changes. Track each change independently:
+Separate current facts from identified changes. When a document tracks changes, use the project's independent states; these describe work, not a mandatory document structure:
 
 | State | Values |
 | --- | --- |
@@ -51,7 +55,7 @@ Record evidence, date, revision, environment and checked scope; mark unknown or 
 ## Sources and media
 
 - Link evidence near the supported claim. Distinguish observation, inference and proposal; use exact commits/paths for historical sources where available.
-- Use relative local links and keep existing media paths. New feature assets belong in `features/assets/<feature-id>/`; task-only assets belong in the task's `assets/`. Link reusable media instead of copying it.
+- Use relative local links, keep existing media paths and follow the project's asset-location conventions. Link reusable media instead of copying it.
 - Keep editable diagram sources, including `.tex`, beside rendered SVG/PNG assets. Use Mermaid where the viewer supports it; provide a portable fallback when needed. Describe content in alt text and explain the diagram's purpose nearby. Export alone does not verify viewer rendering.
 
 Before delivery, compare the draft with every supplied fact and open issue. Keep unresolved issues unless new evidence or an explicit instruction resolves or excludes them. Check meaning, status, spelling, scope and links. Run applicable existing checks and report only what was actually checked.
