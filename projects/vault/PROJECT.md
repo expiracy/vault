@@ -25,6 +25,6 @@ Task records:
 - [Setup remediation](tasks/setup-remediation/context.md): six findings repaired; original checks and publication.
 - [File metadata](tasks/file-metadata/context.md): optional YAML design; parsing/removal and webpage sync remain unimplemented.
 - [Remove skills](tasks/remove-skills/context.md): packaged skills/installer removed; guides and checks retained.
-- [External document skills](tasks/external-document-skills/context.md): writing-guide consolidation, concise repository docs and external UML skill; no packaged Vault skills.
+- [Writing guide and document maintenance](tasks/external-document-skills/context.md): consolidated writing guidance, concise repository docs and their checks.
 
 Reuse matching task contexts and maintained designs. Create separate records only for distinct authorised scope needing a home.

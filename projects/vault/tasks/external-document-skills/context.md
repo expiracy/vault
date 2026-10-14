@@ -1,10 +1,10 @@
-# External document skills
+# Writing guide and document maintenance
 
-Task: `external-document-skills`. Started/completed: 13 October 2026. Status: complete for writing consolidation and concise agent-facing docs. Earlier delivery checkpoints remain unchanged below.
+Task: `external-document-skills`. Started: 13 October 2026. Latest follow-up: 14 October 2026. Status: complete for writing consolidation and concise agent-facing docs. The stable task ID and earlier delivery checkpoints are retained.
 
-Deliverable: one maintained Vault writing guide required by `AGENTS.md`; concise maintained repository docs; the external `uml-diagrams` skill with sequence, activity, state machine, class, component, deployment and use case views. Vault packages no skills. Remove the redundant writing skills; the previously excluded coding/full-LaTeX skills remain removed.
+Current deliverable: one maintained Vault writing guide required by `AGENTS.md` and concise maintained repository docs. Vault packages no skills. Earlier external work is historical scope, recorded in the checkpoints below.
 
-Root owns shared routing/current-state files, guides, task records, this context and external consolidation. `/root/concise_design` wrote `planning/docs-repo-design.md`; `/root/concise_research` wrote `research/existing-approaches.md`. Both have handed back their completed edits; root owns final integration. Keep contracts, evidence, stable links and historical checkpoints. Fixtures and executable source are outside this prose edit.
+Root owns shared routing/current-state files, guides, task records and this context. `/root/concise_design` wrote `planning/docs-repo-design.md`; `/root/concise_research` wrote `research/existing-approaches.md`. Both handed back their completed edits. Keep contracts, evidence, stable links and historical checkpoints. Fixtures and executable source are outside this prose edit.
 
 ## Original scope and checks
 
@@ -12,9 +12,9 @@ The initial two-skill interpretation and subsequent diagram-only, seven-view and
 
 ## Clarification and current work
 
-The writing guide now owns prose and document-structure guidance. `AGENTS.md` requires it. The external collection contains only `uml-diagrams`; its canonical blue/grey theme, notation reference and diagram assets remain. Source repository: `/Users/jgray/skills` (`expiracy/dotfiles`).
+The writing guide owns prose and document-structure guidance; `AGENTS.md` requires it. Vault does not own or distribute agent skills.
 
-Published external source: [d13bc76](https://github.com/expiracy/dotfiles/commit/d13bc766105fbfdc24113ce18176f395864bf883), containing the 414-word UML instructions and skill cleanup. The user explicitly authorised publication of the Vault documentation and guide refinements on 13 October 2026. Automatic repository maintenance remains outside scope.
+Published Vault baseline: [96e0360](https://github.com/expiracy/vault/commit/96e0360f20d2e540a26fbbedd8b59b5fbd53bcc7). The user authorised removing the current external-skill ownership references and publishing this follow-up on 14 October 2026. Automatic repository maintenance remains outside scope.
 
 ## Earlier progress
 
@@ -107,3 +107,7 @@ Fresh checks passed: 34 unit tests, offline routing/history, task-tool/media rep
 Recorded: 13 October 2026. Clarified that style defaults adapt to audience, purpose and content, with no fixed template or forced tables/sections. Scoped change-state guidance to documents tracking changes and deferred specific media locations to project conventions. Added explicit top-of-file YAML mapping guidance: optional ordinary-document metadata, required `PROJECT.md` descriptors, useful custom fields and preservation during prose edits. Fact/evidence and required-contract protections remain. Document consistency and whitespace checks passed; no new agent trials or metadata parser implementation. Changes are uncommitted and unpushed.
 
 Publication follow-up, 13 October 2026: the user authorised commit and push of this refinement. Catalogue, descriptor/local-link and whitespace checks passed again before publication; no new agent trials were run.
+
+## Completion checkpoint: remove current skill references
+
+Recorded: 14 October 2026. Confirmed that Vault has no tracked or local skill package. Removed external-skill ownership from the current project index and task summary; retained the stable task path and historical checkpoints. The existing skill remains in the separate project named `skills`; its source and installed links were not changed. The user authorised commit and push of this Vault-only follow-up. Checks: package inventory, descriptors/catalogue/local links and whitespace. No new agent or diagram trials.
